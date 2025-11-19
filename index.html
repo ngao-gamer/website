@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://getalacrity.github.io/getsynapse-remake/# -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Purium - New Free Executor</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body, html { height: 100%; font-family: "Segoe UI", Tahoma, sans-serif; color: white; text-align: center; overflow-x: hidden; }
+body { background: url("background .jpg") no-repeat center center fixed; background-size: cover; }
+
+/* Navbar 固定，不縮放 */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    opacity: 0;
+    animation: fadeIn 0.8s forwards; animation-delay:0.2s;
+    flex-wrap: wrap;
+}
+.navbar-left { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
+.navbar-logo { width: 180px; height: 40px; object-fit: contain; }
+.navbar ul { list-style: none; display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px; }
+.navbar ul li a { text-decoration: none; font-size: 14px; color: #ddd; transition: color 0.3s ease; }
+.navbar ul li a:hover { color: #fff; }
+
+/* Wrapper 改成流動寬度，保持 hero 中心 */
+#wrapper {
+    width: 100%;
+    max-width: 1920px; /* 保留原始設計最大寬度 */
+    margin: 0 auto;
+    padding: 0px 0px; /* 小螢幕保留內距 */
+}
+
+/* Hero 永遠置中 */
+.hero {
+    min-height: calc(115vh - 150px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 改成 flex-start，讓 padding 有作用 */
+    align-items: center;
+    text-align: center;
+    background: rgba(0,0,0,0.4);
+    padding: 150px 20px 0 20px; /* 上方增加 100px，整體往下 */
+}
+
+
+.hero h2 { font-size: 48px; margin-bottom: 20px; opacity:0; animation: slideUpFast 0.5s forwards; animation-delay:0.2s; }
+.hero p { font-size:20px; margin-bottom:20px; color:#bbb; opacity:0; animation: slideUpFast 0.5s forwards; animation-delay:0.3s; }
+.hero .light { color:#FFF}
+
+/* Buttons */
+/* Buttons 保持水平置中 */
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 60px;
+}
+.btn-group a { opacity:0; animation: slideUpFast 0.5s forwards; }
+.btn-group a:nth-child(1){ animation-delay:0.5s; }
+.btn-group a:nth-child(2){ animation-delay:0.6s; }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    background: rgba(15,15,15,0.5);
+    border: 1px solid rgba(100,100,100,0.7);
+    backdrop-filter: blur(6px);
+    transition: background 0.3s ease, transform 0.2s ease, border 0.3s ease;
+}
+.btn:hover { background: rgba(100,100,100,0.55); transform: translateY(0px); }
+.btn-download { border: 2px solid rgba(125,82,222,0.5); box-shadow:0 0 10px rgba(125,82,222,0.3),0 0 20px rgba(125,82,222,0.2);}
+.btn-purchase { border: 2px solid rgba(30,124,205,0.5); box-shadow:0 0 10px rgba(30,124,205,0.3),0 0 20px rgba(30,124,205,0.2);}
+
+.btn-download img.icon, .btn-purchase img.icon {
+    width: 17px;
+    height: 17px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: brightness(0.92);
+    transition: filter 0.22s ease, transform 0.18s ease;
+}
+.btn-download:hover img.icon,
+.btn-download:focus img.icon,
+.btn-purchase:hover img.icon,
+.btn-purchase:focus img.icon {
+    filter: brightness(1.2);
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Navbar buttons */
+.btn-novbar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: transparent;
+    color: #bfbfbf;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    transition: all 0.22s ease;
+    line-height: 1;
+}
+.btn-novbar img.icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: brightness(0.92);
+    transition: filter 0.22s ease, transform 0.18s ease;
+}
+.btn-novbar:hover,
+.btn-novbar:focus { color: #fff; border-color: rgba(145,150,245,0.55); background: rgba(145,150,245,0.06); transform: translateY(-1px); }
+.btn-novbar:hover img.icon,
+.btn-novbar:focus img.icon { filter: brightness(1.2); transform: translateY(-1px) scale(1.02); }
+
+/* Features Cards */
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* 保持水平置中 */
+    gap: 20px;
+    width: 100%;
+    max-width: 1400px; /* 限制卡片總寬度 */
+    margin: 0 auto 220px auto;
+}
+
+.features .card {
+    position: relative;
+    background: rgba(15,15,15,0.7);
+    border:1px solid rgba(100,100,100,0.7);
+    backdrop-filter: blur(15px);
+    border-radius:5px;
+    padding:15px 30px;
+    width: 310px;
+    height: 300px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    text-align:left;
+    font-weight:normal;
+    overflow:hidden;
+    opacity:0;
+    transform: translateY(100px);
+    animation: slideUpFast 0.5s forwards;
+}
+
+/* 每張 card 延遲 0.1s */
+.features .card:nth-child(1) { animation-delay: 0.0s; }
+.features .card:nth-child(2) { animation-delay: 0.1s; }
+.features .card:nth-child(3) { animation-delay: 0.2s; }
+.features .card:nth-child(4) { animation-delay: 0.3s; }
+
+
+.card {
+    position: relative;
+    background: rgba(15,15,15,0.7);
+    border:1px solid rgba(100,100,100,0.7);
+    backdrop-filter: blur(15px);
+    border-radius:5px;
+    padding:15px 30px;
+    width: 310px;
+    height: 300px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    text-align:left;
+    font-weight:normal;
+    overflow:hidden;
+    opacity:0;
+    transform: translateY(100px);
+    animation:slideUpFast 0.5s forwards;
+}
+.card-icon {
+    position: absolute;
+    top: 20px; left: 65px;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 5px; border:1px solid rgba(100,100,100,0.7);
+    display: flex; justify-content:center; align-items:center;
+    background: rgba(0,0,0,0.5); box-shadow:0 4px 20px rgba(0,0,0,0.3); z-index:1;
+}
+.card-icon img { width:50%; height:50%; object-fit:contain; }
+.card::before { content:""; position:absolute; top:-40px; left:-40px; width:200px; height:200px; border-radius:50%; opacity:0.5; pointer-events:none; transition: all 0.4s ease;}
+.card-red::before { background: radial-gradient(circle, rgba(255,0,0,0.25) 0%, rgba(255,0,0,0) 70%);}
+.card-blue::before { background: radial-gradient(circle, rgba(30,194,255,0.25) 0%, rgba(30,144,255,0) 70%);}
+.card-green::before { background: radial-gradient(circle, rgba(46,254,113,0.25) 0%, rgba(46,204,113,0) 70%);}
+.card-yellow::before { background: radial-gradient(circle, rgba(255,255,0,0.25) 0%, rgba(255,255,0,0) 70%);}
+.card:hover::before { width:300px; height:300px; top:-100px; left:-100px; opacity:0.6; filter:blur(5px);}
+.card h1 { font-size:30px; margin-bottom:16px; margin-top:70px; margin-left:10px;}
+.card p { font-size:15px; line-height:1.6; color:#B4B4B4; margin-top:6px; margin-left:10px;}
+.card p { white-space: pre-line; line-height: 1.6; }
+.card .bold { font-weight: bold; }
+
+/* Footer */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 75px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.4);
+    color: #ddd;
+    animation:fadeIn 0.5s forwards;
+}
+
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 左對齊 */
+    text-align: left;
+}
+
+.footer-left h1 {
+    font-size: 30px;
+    color: #ddd;          /* 主文字 */
+    margin-bottom: 5px;   /* 保留間距 */
+}
+
+.footer-left h1 .version {
+    color: #9196F5;       /* 版本號顏色保留 */
+}
+
+.footer-left h3 {
+    font-size: 20px;
+    color: #ccc;          /* 文字顏色 */
+    line-height: 1.4;     /* 保留行距 */
+}
+
+.footer-left h3 .light {
+    color: #fff;          /* light 特效保留 */
+}
+
+
+/* Copyright */
+.copyright {
+    position: fixed;
+    bottom: 150px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+    opacity:0;
+    animation: slideUpFast 0.6s forwards;
+    animation-delay:0.5s;
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUpFast { from { opacity: 0; transform: translateY(100px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Media Queries：小螢幕微調，不破壞 hover / 文字動畫 */
+@media (max-width: 1600px) {
+    .hero h2 { font-size:44px; }
+    .hero p { font-size:18px; }
+    .btn-group a { padding:10px 24px; font-size:15px; }
+}
+
+@media (max-width: 1200px) {
+    .hero h2 { font-size:40px; }
+    .hero p { font-size:16px; }
+    .features { width:85%; }
+}
+
+@media (max-width: 768px) {
+    .navbar { flex-wrap: wrap; padding:10px 20px; }
+    .navbar-left, .navbar ul { flex-wrap: wrap; justify-content:center; }
+    .btn-group { flex-direction: column; gap:15px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar 固定 -->
+<div class="navbar">
+   <div class="navbar-left">
+      <img src="./Synapse X_files/logo.png" alt="Logo" class="navbar-logo">
+      <a href="rebrand.ly/purium" class="btn-novbar"><img src="./Synapse X_files/home.png" class="icon"> Home</a>
+      <a href="rebrand.ly/purium" class="btn-novbar"><img src="./Synapse X_files/question.png" class="icon"> Questions</a>
+      <a href="rebrand.ly/purium" class="btn-novbar"><img src="./Synapse X_files/gear.png" class="icon"> Troubleshooting</a>
+   </div>
+    <ul>
+      <li><a href="rebrand.ly/purium" class="btn-novbar"><img src="./Synapse X_files/Documentation.png" class="icon"> Documentation</a></li>
+      <li><a href="rebrand.ly/purium" class="btn-novbar"><img src="./Synapse X_files/TeamofService.png" class="icon"> Team of Service</a></li>
+      <li><a href="rebrand.ly/purium" class="btn-novbar"><img src="./Synapse X_files/status.png" class="icon"> Status</a></li>
+      <li><a href="https://discord.gg/kSpXgcVhVU" class="btn-novbar"><img src="./Synapse X_files/support.png" class="icon"> Support</a></li>
+    </ul>
+</div>
+
+<div id="wrapper">er">
+
+<!-- Hero -->
+<div class="hero">
+    <h2>Purium</h2>
+    <p>The <span class="light">classic solution</span> to <span class="light">script execution.</span></p>
+    <div class="btn-group">
+        <a href="https://raw.githubusercontent.com/ngao-gamer/Purium/refs/heads/main/all-in-one.lua" class="btn btn-purchase"><img src="./Synapse X_files/purchase.png" class="icon">Script</a>
+        <a href="https://store-na-phx-4.gofile.io/download/web/396ddf20-ee37-49b2-a771-a9b9f8963130/Bootsrapper.zip" class="btn btn-download"><img src="./Synapse X_files/install.png" class="icon"> Download</a>
+    </div>
+
+    <div class="features">
+        <div class="card card-red">
+            <div class="card-icon"><img src="./Synapse X_files/icon-red.png" alt="Powerful Icon"></div>
+            <h1>Powerful</h1>
+            <p><span class="bold">Purium</span> has everything you 
+            should need for development, 
+            analysis, and execution. Our API 
+            empowers scripts with many 
+            capabilities not otherwise offered 
+            in a pure vanilla enviroment.</p>
+        </div>
+        <div class="card card-blue">
+            <div class="card-icon"><img src="./Synapse X_files/icon-blue.png" alt="Lightweight Icon"></div>
+            <h1>Lightweight</h1>
+            <p><span class="bold">Purium</span> is very simple, yet
+            very powerful coding software.
+            We do not decide where you get
+            your scripts, or what you should
+            use out of the box. We give you
+            the tools and leave you to play.</p>
+        </div>
+        <div class="card card-green">
+            <div class="card-icon"><img src="./Synapse X_files/icon-green.png" alt="Stable Icon"></div>
+            <h1>Stable</h1>
+            <p><span class="bold">Purium</span> relies on a well-tested
+            heavy duty execution engine that
+            can run pretty much anything you
+            throw at it. No need to live in fear
+            of bugs and crashes anymore
+            with the stability of our software.</p>
+        </div>
+        <div class="card card-yellow">
+            <div class="card-icon"><img src="./Synapse X_files/icon-yellow.png" alt="Private Icon"></div>
+            <h1>Private</h1>
+            <p><span class="bold">Purium</span> collects no personal
+            information, aside from what is
+            requested by our payment
+            processors. The information we
+            do store is very minimal and is
+            explained in our privacy policy.</p>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- Footer 固定 -->
+<div class="footer">
+   <div class="footer-left">
+        <h1>Purium<span class="version">1.0.6</span></h1>
+        <h3>An <span class="light">evolution</span> of <span class="light">execution.</span> Coming soon to a computer near you.</h3>
+   </div>
+   <div class="footer-right">
+        <a href="https://discord.gg/kSpXgcVhVU" class="btn btn-download"><img src="./Synapse X_files/discord.png" class="icon"> Follow us on discord!</a>
+        <a href="rebrand.ly/purium" class="btn btn-download"><img src="./Synapse X_files/beta.png" class="icon"> Coming soon!</a>
+   </div>
+</div>
+
+<!-- Copyright -->
+<div class="copyright">
+    <p>© 2025 Purium by hlck49really. All rights reserved.</p>
+</div>
+
+
+
+</body></html>
