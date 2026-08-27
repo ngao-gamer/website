@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UT-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purium - Script Execution Platform</title>
+    <!-- Imported Inter Font & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --pur: #7d52de;
@@ -18,8 +23,8 @@
             --amb: #f5a623;
             --amb-dim: rgba(245, 166, 35, 0.14);
             --amb-border: rgba(245, 166, 35, 0.38);
-            --card: rgba(14, 14, 20, 0.85);
-            --nav: rgba(10, 10, 16, 0.92);
+            --card: rgba(16, 16, 24, 0.6);
+            --nav: rgba(10, 10, 16, 0.75);
             --glass: rgba(255, 255, 255, 0.05);
             --gb: rgba(255, 255, 255, 0.09);
         }
@@ -31,71 +36,89 @@
         }
 
         html, body {
-            min-height: 100%;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #080810 0%, #0d0a1c 45%, #080e18 100%);
+            min-height: 100vh;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: radial-gradient(circle at 50% 0%, rgba(125, 82, 222, 0.15), transparent 60%), linear-gradient(135deg, rgba(8, 8, 16, 0.92) 0%, rgba(13, 10, 28, 0.85) 45%, rgba(8, 14, 24, 0.92) 100%), url('TryHard_files/background.jpg') no-repeat center center fixed;
+            background-size: cover;
             color: #e0e0ef;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(125, 82, 222, 0.5); }
+            100% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); }
         }
 
         /* ── NAV ── */
         .nav {
             background: var(--nav);
             border-bottom: 1px solid var(--gb);
-            padding: 9px 20px;
+            padding: 12px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 12px;
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: fadeUp 0.5s ease-out;
         }
 
         .nav-brand {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 800;
-            letter-spacing: -.3px;
-        }
-
-        .nav-brand .acc {
-            color: var(--pur);
-        }
-
-        .nav-brand .ver {
-            font-size: 10px;
-            color: #555;
-            margin-left: 5px;
-            font-weight: 400;
-        }
-
-        .nav-links {
+            letter-spacing: -.5px;
             display: flex;
-            gap: 3px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
         }
+
+        .nav-logo-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+            animation: glow 3s infinite ease-in-out;
+        }
+
+        .nav-brand .acc { color: var(--pur); }
+        .nav-brand .ver { font-size: 10px; color: #666; margin-left: 6px; font-weight: 400; }
+
+        .nav-links { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
 
         .nbtn {
-            font-size: 12px;
-            color: #999;
+            font-size: 13px;
+            color: #ccc;
             background: transparent;
             border: 1px solid transparent;
-            border-radius: 6px;
-            padding: 5px 9px;
+            border-radius: 8px;
+            padding: 8px 12px;
             cursor: pointer;
-            transition: all .18s;
+            transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            font-weight: 500;
+            position: relative; /* For tooltip */
         }
 
         .nbtn:hover {
             color: #fff;
             border-color: var(--gb);
             background: var(--glass);
+            transform: translateY(-2px);
         }
 
         .nbtn.sp {
@@ -103,32 +126,85 @@
             background: var(--pur-dim);
             color: #c8aaff;
         }
+        .nbtn.sp:hover {
+            background: rgba(125, 82, 222, 0.3);
+            box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2);
+        }
+
+        /* Disabled Obfuscator Button & Tooltip */
+        .nbtn.disabled {
+            border-color: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+            color: #555;
+            cursor: not-allowed;
+            pointer-events: auto; /* Allow hover for tooltip */
+        }
+        
+        .nbtn.disabled:hover {
+            transform: none;
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            width: 120px;
+            background-color: #1a1a2e;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 6px 8px;
+            position: absolute;
+            z-index: 200;
+            top: 125%;
+            left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            transition: opacity 0.3s, transform 0.3s;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid var(--gb);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+
+        .nbtn.disabled:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .nav-ico { width: 18px; height: 18px; object-fit: contain; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
 
         /* ── HERO ── */
         .hero {
-            padding: 52px 20px 30px;
+            padding: 80px 20px 50px;
             text-align: center;
+            animation: fadeUp 0.8s ease-out;
         }
 
         .hero-badge {
             display: inline-block;
-            font-size: 10px;
-            letter-spacing: 1.3px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             color: #9b84e8;
             border: 1px solid var(--pur-border);
             background: var(--pur-dim);
             border-radius: 20px;
-            padding: 4px 13px;
-            margin-bottom: 16px;
+            padding: 6px 16px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 15px rgba(125, 82, 222, 0.15);
         }
 
         .hero h1 {
-            font-size: 44px;
-            font-weight: 800;
-            letter-spacing: -1.5px;
+            font-size: 52px;
+            font-weight: 900;
+            letter-spacing: -2px;
             line-height: 1.1;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         .hero h1 em {
@@ -140,597 +216,389 @@
         }
 
         .hero-sub {
-            font-size: 14px;
-            color: #777;
-            max-width: 380px;
-            margin: 0 auto 26px;
+            font-size: 15px;
+            color: #aaa;
+            max-width: 450px;
+            margin: 0 auto 32px;
             line-height: 1.6;
         }
 
-        /* ── BUTTON ROW ── */
         .btn-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
-            margin-bottom: 36px;
+            margin-bottom: 40px;
         }
 
         .hbtn {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 9px 17px;
-            border-radius: 9px;
-            font-size: 12px;
-            font-weight: 500;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
             border: 1px solid var(--gb);
-            background: var(--card);
+            background: rgba(20, 20, 30, 0.6);
             color: #ccc;
             cursor: pointer;
-            transition: all .2s;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
+            backdrop-filter: blur(8px);
         }
 
         .hbtn:hover {
             background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.2);
             color: #fff;
-            transform: translateY(-1px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
 
-        .hbtn.pur {
-            border-color: var(--pur-border);
-            background: var(--pur-dim);
-            color: #c4a8ff;
-        }
-
-        .hbtn.blu {
-            border-color: var(--blu-border);
-            background: var(--blu-dim);
-            color: #90c8f8;
-        }
-
-        .hbtn.grn {
-            border-color: var(--grn-border);
-            background: var(--grn-dim);
-            color: #7fdfaa;
-        }
+        .hbtn.pur { border-color: var(--pur-border); background: var(--pur-dim); color: #c4a8ff; }
+        .hbtn.pur:hover { background: rgba(125, 82, 222, 0.3); box-shadow: 0 6px 16px rgba(125, 82, 222, 0.2); }
+        .hbtn.blu { border-color: var(--blu-border); background: var(--blu-dim); color: #90c8f8; }
+        .hbtn.blu:hover { background: rgba(30, 124, 205, 0.3); box-shadow: 0 6px 16px rgba(30, 124, 205, 0.2); }
+        .hbtn.grn { border-color: var(--grn-border); background: var(--grn-dim); color: #7fdfaa; }
+        .hbtn.grn:hover { background: rgba(46, 200, 113, 0.3); box-shadow: 0 6px 16px rgba(46, 200, 113, 0.2); }
 
         /* ── FEATURE CARDS ── */
         .cards-g {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            padding: 0 20px 28px;
-            max-width: 920px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            padding: 0 24px 32px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         .fcard {
             background: var(--card);
             border: 1px solid var(--gb);
-            border-radius: 13px;
-            padding: 18px;
+            border-radius: 16px;
+            padding: 24px;
             position: relative;
             overflow: hidden;
-            transition: transform .22s, border-color .22s;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px) saturate(150%);
+            animation: fadeUp 0.8s ease-out backwards;
         }
+        
+        .fcard:nth-child(1) { animation-delay: 0.1s; }
+        .fcard:nth-child(2) { animation-delay: 0.2s; }
+        .fcard:nth-child(3) { animation-delay: 0.3s; }
+        .fcard:nth-child(4) { animation-delay: 0.4s; }
 
         .fcard:hover {
-            transform: translateY(-3px);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.15);
         }
 
         .fcard::before {
             content: '';
             position: absolute;
-            top: -55px;
-            left: -55px;
-            width: 150px;
-            height: 150px;
+            top: -60px;
+            left: -60px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
-            opacity: .16;
+            opacity: .15;
             pointer-events: none;
-            transition: opacity .3s;
+            transition: all .4s ease;
         }
 
-        .fcard:hover::before {
-            opacity: .3;
-        }
-
-        .fcard.red::before {
-            background: radial-gradient(circle, #ff4444, transparent 70%);
-        }
-
-        .fcard.blue::before {
-            background: radial-gradient(circle, #1ec2ff, transparent 70%);
-        }
-
-        .fcard.green::before {
-            background: radial-gradient(circle, #2efd71, transparent 70%);
-        }
-
-        .fcard.yellow::before {
-            background: radial-gradient(circle, #ffd700, transparent 70%);
-        }
+        .fcard:hover::before { opacity: .35; transform: scale(1.2); }
+        .fcard.red::before { background: radial-gradient(circle, #ff4444, transparent 70%); }
+        .fcard.blue::before { background: radial-gradient(circle, #1ec2ff, transparent 70%); }
+        .fcard.green::before { background: radial-gradient(circle, #2efd71, transparent 70%); }
+        .fcard.yellow::before { background: radial-gradient(circle, #ffd700, transparent 70%); }
 
         .fcard-ico {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             border: 1px solid var(--gb);
             background: rgba(0, 0, 0, .4);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 17px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            font-size: 18px;
         }
-
-        .fcard h3 {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 7px;
-        }
-
-        .fcard p {
-            font-size: 12px;
-            color: #777;
-            line-height: 1.6;
-        }
+        .fcard-ico img { width: 24px; height: 24px; object-fit: contain; }
+        .fcard h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .fcard p { font-size: 13px; color: #888; line-height: 1.6; }
 
         /* ── SECTION DIVIDER ── */
-        .sdiv {
-            border: none;
-            border-top: 1px solid var(--gb);
-            margin: 6px 20px 22px;
-        }
-
-        .slabel {
-            text-align: center;
-            font-size: 10px;
-            letter-spacing: 1.4px;
-            text-transform: uppercase;
-            color: #444;
-            margin-bottom: 14px;
-        }
+        .sdiv { border: none; border-top: 1px solid var(--gb); margin: 10px 24px 24px; }
+        .slabel { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #666; margin-bottom: 16px; font-weight: 600; }
 
         /* ── DROPDOWN SYSTEM ── */
-        .dd-wrap {
-            max-width: 580px;
-            margin: 0 auto 10px;
-            padding: 0 20px;
-        }
-
-        .dd-title {
-            font-size: 11px;
-            color: #666;
-            font-weight: 600;
-            letter-spacing: .5px;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
+        .dd-wrap { max-width: 620px; margin: 0 auto 12px; padding: 0 24px; }
+        .dd-title { font-size: 12px; color: #888; font-weight: 600; letter-spacing: .5px; margin-bottom: 8px; text-transform: uppercase; }
 
         .dd-trigger {
             width: 100%;
             background: var(--card);
             border: 1px solid var(--gb);
-            border-radius: 10px;
-            padding: 11px 15px;
+            border-radius: 12px;
+            padding: 14px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
             color: #ddd;
-            font-size: 13px;
-            transition: border-color .18s;
+            font-size: 14px;
+            transition: all .25s;
             user-select: none;
+            backdrop-filter: blur(10px) saturate(150%);
         }
 
-        .dd-trigger:hover {
-            border-color: var(--pur-border);
-        }
-
-        .dd-trigger.open {
-            border-color: var(--pur-border);
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .dd-tl {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-
-        .dd-arrow {
-            transition: transform .2s;
-            color: #555;
-            font-size: 12px;
-        }
-
-        .dd-arrow.open {
-            transform: rotate(180deg);
-        }
+        .dd-trigger:hover { border-color: var(--pur-border); background: rgba(125, 82, 222, 0.08); }
+        .dd-trigger.open { border-color: var(--pur-border); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+        .dd-tl { display: flex; align-items: center; gap: 10px; }
+        .dd-arrow { transition: transform .3s; color: #888; font-size: 14px; }
+        .dd-arrow.open { transform: rotate(180deg); }
 
         .dd-menu {
             width: 100%;
-            background: #0c0c14;
+            background: rgba(12, 12, 20, 0.95);
             border: 1px solid var(--pur-border);
             border-top: none;
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 12px 12px;
             overflow: hidden;
-            display: none;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.25s ease;
+            backdrop-filter: blur(16px) saturate(150%);
         }
 
-        .dd-menu.open {
-            display: block;
-        }
-
-        .dd-search {
-            padding: 9px 13px;
-            border-bottom: 1px solid var(--gb);
-        }
+        .dd-menu.open { max-height: 500px; opacity: 1; }
+        .dd-search { padding: 10px 14px; border-bottom: 1px solid var(--gb); }
 
         .dd-search input {
             width: 100%;
             background: rgba(255, 255, 255, .05);
             border: 1px solid var(--gb);
-            border-radius: 6px;
-            padding: 5px 9px;
-            font-size: 12px;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 13px;
             color: #ddd;
             outline: none;
+            transition: border-color .2s;
+            font-family: inherit;
         }
-
-        .dd-search input::placeholder {
-            color: #444;
-        }
-
-        .dd-search input:focus {
-            border-color: var(--pur-border);
-        }
-
-        .dd-opts {
-            max-height: 240px;
-            overflow-y: auto;
-        }
-
-        .dd-opts::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        .dd-opts::-webkit-scrollbar-thumb {
-            background: #2a2a3a;
-            border-radius: 3px;
-        }
+        .dd-search input::placeholder { color: #444; }
+        .dd-search input:focus { border-color: var(--pur-border); }
+        .dd-opts { max-height: 260px; overflow-y: auto; }
+        .dd-opts::-webkit-scrollbar { width: 4px; }
+        .dd-opts::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
 
         .dd-opt {
-            padding: 10px 15px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 11px;
+            gap: 12px;
             cursor: pointer;
-            transition: background .14s;
+            transition: background .2s;
             border-bottom: 1px solid rgba(255, 255, 255, .03);
         }
+        .dd-opt:last-child { border-bottom: none; }
+        .dd-opt:hover, .dd-opt.sel { background: var(--pur-dim); }
+        .dd-opt-icon { font-size: 18px; width: 30px; text-align: center; flex-shrink: 0; }
+        .dd-opt-info { flex: 1; min-width: 0; }
+        .dd-opt-name { font-size: 13px; font-weight: 600; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dd-opt-desc { font-size: 11px; color: #666; margin-top: 2px; }
 
-        .dd-opt:last-child {
-            border-bottom: none;
-        }
+        .badge { font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+        .b-stable { background: rgba(46, 200, 113, .14); color: var(--grn); border: 1px solid var(--grn-border); }
+        .b-beta { background: rgba(245, 166, 35, .14); color: var(--amb); border: 1px solid var(--amb-border); }
+        .b-outdated { background: rgba(150, 150, 150, .12); color: #888; border: 1px solid rgba(150, 150, 150, .28); }
+        .b-link { background: var(--blu-dim); color: #90c8f8; border: 1px solid var(--blu-border); }
 
-        .dd-opt:hover, .dd-opt.sel {
-            background: var(--pur-dim);
-        }
-
-        .dd-opt-icon {
-            font-size: 17px;
-            width: 28px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .dd-opt-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .dd-opt-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: #ddd;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .dd-opt-desc {
-            font-size: 10px;
-            color: #555;
-            margin-top: 1px;
-        }
-
-        .badge {
-            font-size: 10px;
-            padding: 2px 7px;
-            border-radius: 20px;
-            font-weight: 600;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .b-stable {
-            background: rgba(46, 200, 113, .14);
-            color: var(--grn);
-            border: 1px solid var(--grn-border);
-        }
-
-        .b-beta {
-            background: rgba(245, 166, 35, .14);
-            color: var(--amb);
-            border: 1px solid var(--amb-border);
-        }
-
-        .b-outdated {
-            background: rgba(150, 150, 150, .12);
-            color: #888;
-            border: 1px solid rgba(150, 150, 150, .28);
-        }
-
-        .b-link {
-            background: var(--blu-dim);
-            color: #90c8f8;
-            border: 1px solid var(--blu-border);
-        }
-
-        .b-new {
-            background: var(--pur-dim);
-            color: #c4a8ff;
-            border: 1px solid var(--pur-border);
-        }
-
-        .dd-check {
-            color: var(--pur);
-            font-size: 13px;
-            flex-shrink: 0;
-        }
-
-        .dd-action {
-            padding: 10px 14px;
-            display: flex;
-            gap: 8px;
-            background: rgba(0, 0, 0, .3);
-        }
-
+        .dd-action { padding: 12px 16px; display: flex; gap: 10px; background: rgba(0, 0, 0, .3); }
         .dd-copy-btn, .dd-open-btn {
             flex: 1;
-            padding: 8px;
-            border-radius: 7px;
-            font-size: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             border: 1px solid;
-            transition: all .18s;
+            transition: all .25s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 6px;
+            font-family: inherit;
         }
+        .dd-copy-btn { background: var(--pur-dim); border-color: var(--pur-border); color: #c4a8ff; }
+        .dd-copy-btn:hover { background: rgba(125, 82, 222, .3); transform: translateY(-1px); }
+        .dd-open-btn { background: var(--blu-dim); border-color: var(--blu-border); color: #90c8f8; }
+        .dd-open-btn:hover { background: rgba(30, 124, 205, .3); transform: translateY(-1px); }
 
-        .dd-copy-btn {
-            background: var(--pur-dim);
-            border-color: var(--pur-border);
-            color: #c4a8ff;
-        }
-
-        .dd-copy-btn:hover {
-            background: rgba(125, 82, 222, .3);
-        }
-
-        .dd-open-btn {
-            background: var(--blu-dim);
-            border-color: var(--blu-border);
-            color: #90c8f8;
-        }
-
-        .dd-open-btn:hover {
-            background: rgba(30, 124, 205, .3);
-        }
-
-        /* ── DOWNLOAD CARDS ── */
-        .dl-section {
-            padding: 0 20px 32px;
-            max-width: 860px;
-            margin: 0 auto;
-        }
-
-        .dl-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 11px;
-        }
+        /* ── REWORKED DOWNLOAD CARDS (QUICK DOWNLOADS) ── */
+        .dl-section { padding: 0 24px 40px; max-width: 1000px; margin: 0 auto; }
+        .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
 
         .dl-card {
             background: var(--card);
             border: 1px solid var(--gb);
-            border-radius: 13px;
-            padding: 16px;
-            transition: border-color .2s, transform .2s;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px) saturate(150%);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dl-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--pur), #64b2f5);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s ease;
         }
 
         .dl-card:hover {
-            border-color: var(--pur-border);
-            transform: translateY(-2px);
+            border-color: rgba(125, 82, 222, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.35);
         }
+        .dl-card:hover::after { transform: scaleX(1); }
 
-        .dl-hdr {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .dl-title {
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .dl-ico {
-            font-size: 19px;
-        }
-
-        .dl-meta {
-            font-size: 11px;
-            color: #666;
-            margin-bottom: 12px;
-            line-height: 1.55;
-        }
-
-        .dl-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 12px;
-        }
-
-        .dl-tag {
-            font-size: 10px;
-            padding: 2px 7px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, .05);
-            border: 1px solid var(--gb);
-            color: #777;
-        }
+        .dl-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .dl-title { font-size: 15px; font-weight: 700; color: #fff; }
+        .dl-ico { font-size: 20px; color: #aaa; } /* Using Font Awesome Icons */
+        .dl-meta { font-size: 12px; color: #888; margin-bottom: 14px; line-height: 1.5; flex-grow: 1; }
+        .dl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+        .dl-tag { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: rgba(255, 255, 255, .05); border: 1px solid var(--gb); color: #aaa; font-weight: 500; }
 
         .dl-btn {
             width: 100%;
-            padding: 8px;
-            border-radius: 7px;
+            padding: 12px;
+            border-radius: 10px;
             background: var(--pur-dim);
             border: 1px solid var(--pur-border);
             color: #c4a8ff;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            transition: all .18s;
+            gap: 8px;
+            transition: all .25s;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+        }
+
+        .dl-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left .5s ease;
         }
 
         .dl-btn:hover {
-            background: rgba(125, 82, 222, .28);
+            background: rgba(125, 82, 222, .3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2);
         }
+        .dl-btn:hover::before { left: 100%; }
 
-        .dl-btn.blu {
-            background: var(--blu-dim);
-            border-color: var(--blu-border);
-            color: #90c8f8;
-        }
+        .dl-btn.blu { background: var(--blu-dim); border-color: var(--blu-border); color: #90c8f8; }
+        .dl-btn.blu:hover { background: rgba(30, 124, 205, .3); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
+        .dl-btn.grn { background: var(--grn-dim); border-color: var(--grn-border); color: #7fdfaa; }
+        .dl-btn.grn:hover { background: rgba(46, 200, 113, .3); box-shadow: 0 4px 12px rgba(46, 200, 113, 0.2); }
 
-        .dl-btn.blu:hover {
-            background: rgba(30, 124, 205, .28);
-        }
-
-        .dl-btn.grn {
-            background: var(--grn-dim);
-            border-color: var(--grn-border);
-            color: #7fdfaa;
-        }
-
-        .dl-btn.grn:hover {
-            background: rgba(46, 200, 113, .28);
-        }
-
-        .dl-prog {
-            margin-top: 8px;
-        }
-
-        .dl-bar {
-            height: 2px;
-            background: rgba(255, 255, 255, .05);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .dl-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--pur), #64b2f5);
-            border-radius: 2px;
-            width: 0;
-            transition: width 0.6s ease;
-        }
+        .dl-prog { margin-top: 10px; }
+        .dl-bar { height: 3px; background: rgba(255, 255, 255, .05); border-radius: 3px; overflow: hidden; }
+        .dl-fill { height: 100%; background: linear-gradient(90deg, var(--pur), #64b2f5); border-radius: 3px; width: 0; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
         /* ── TOAST ── */
         .toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
+            bottom: 30px;
+            right: 30px;
             background: #1a1a2e;
             border: 1px solid var(--pur-border);
             color: #c4a8ff;
-            font-size: 13px;
-            padding: 10px 18px;
-            border-radius: 10px;
+            font-size: 14px;
+            padding: 14px 24px;
+            border-radius: 12px;
             opacity: 0;
-            transform: translateY(10px);
-            transition: all .3s;
+            transform: translateY(20px);
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
             z-index: 999;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            backdrop-filter: blur(12px);
+            font-weight: 600;
         }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .toast.show { opacity: 1; transform: translateY(0); }
 
         /* ── FOOTER ── */
         .footer {
             background: var(--nav);
             border-top: 1px solid var(--gb);
-            padding: 16px 20px;
+            padding: 24px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 12px;
+            margin-top: 20px;
+            backdrop-filter: blur(16px) saturate(180%);
         }
+        .footer-brand { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .footer-brand span { color: var(--pur); }
+        .footer-copy { font-size: 11px; color: #666; margin-top: 4px; }
 
-        .footer-brand {
-            font-size: 14px;
-            font-weight: 800;
-        }
-
-        .footer-brand span {
-            color: var(--pur);
-        }
-
-        .footer-copy {
-            font-size: 10px;
-            color: #444;
-            margin-top: 2px;
-        }
+        .tsb-wrap { text-align: center; margin-bottom: 40px; animation: fadeUp 1s ease-out; }
+        .tsb-label { font-size: 12px; color: #777; }
+        .tsb-code { font-size: 14px; color: #c4a8ff; background: var(--pur-dim); border: 1px solid var(--pur-border); padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: all .2s; font-weight: 700; }
+        .tsb-code:hover { background: rgba(125, 82, 222, 0.3); transform: scale(1.05); }
     </style>
 </head>
 <body>
 
     <div class="nav">
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-            <div class="nav-brand">Purium<span class="acc">.</span><span class="ver">v0.0.0.3</span></div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <div class="nav-brand">
+                <img src="TryHard_files/logo.png" alt="Logo" class="nav-logo-img">
+                Purium<span class="acc">.</span><span class="ver">v0.0.0.3</span>
+            </div>
             <div class="nav-links">
-                <a class="nbtn" href="#">🏠 Home</a>
-                <a class="nbtn" href="#">❓ FAQ</a>
-                <a class="nbtn" href="#">⚙️ Help</a>
-                <a class="nbtn sp" href="obfusecator.html">🛡️ Obfuscator</a>
+                <a class="nbtn" href="#"><img src="TryHard_files/home.png" class="nav-ico" alt=""> Home</a>
+                <a class="nbtn" href="#"><img src="TryHard_files/question.png" class="nav-ico" alt=""> FAQ</a>
+                <a class="nbtn" href="#"><img src="TryHard_files/support.png" class="nav-ico" alt=""> Help</a>
+                <a class="nbtn disabled" href="#" onclick="return false;">
+                    <img src="TryHard_files/shield.png" class="nav-ico" alt=""> Obfuscator 
+                    <span class="tooltip-text">Coming Soon</span>
+                </a>
             </div>
         </div>
         <div class="nav-links">
-            <a class="nbtn" href="#">📖 Docs</a>
-            <a class="nbtn" href="#">📄 ToS</a>
-            <a class="nbtn" href="#">🟢 Status</a>
-            <a class="nbtn sp" href="https://discord.gg/kSpXgcVhVU" target="_blank">💬 Discord</a>
+            <a class="nbtn" href="#"><img src="TryHard_files/docs.png" class="nav-ico" alt=""> Docs</a>
+            <a class="nbtn" href="#"><img src="TryHard_files/TeamofService.png" class="nav-ico" alt=""> ToS</a>
+            <a class="nbtn" href="#"><img src="TryHard_files/status.png" class="nav-ico" alt=""> Status</a>
+            <a class="nbtn sp" href="https://discord.gg/kSpXgcVhVU" target="_blank"><img src="TryHard_files/discord.png" class="nav-ico" alt=""> Discord</a>
         </div>
     </div>
 
@@ -739,32 +607,31 @@
         <h1>Welcome to <em>Purium</em></h1>
         <p class="hero-sub">The classic solution to script execution — powerful, lightweight, and completely private.</p>
         <div class="btn-row">
-            <a class="hbtn pur" href="https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security" target="_blank">📜 Main Script</a>
-            <a class="hbtn blu" href="https://www.dropbox.com/scl/fi/betbjt1ig3ydf4umzt552/guide-pvp.text?rlkey=lvxemw59d8p3cpa9w224uy7k4&st=m2p8ujlc&dl=0" target="_blank">⚔️ PvP Guide</a>
-            <a class="hbtn" href="https://youtu.be/ohz9EXtmVY8?si=0ZGpsVETDS4n3AeJ" target="_blank">🎵 Giao hưởng phùng</a>
-            <a class="hbtn grn" href="https://blur009.vercel.app/projects/blur-autoclicker" target="_blank">🖱️ Auto Clicker</a>
-            <a class="hbtn" href="https://discord.gg/kSpXgcVhVU" target="_blank">💬 Discord</a>
+            <a class="hbtn pur" href="https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security" target="_blank"><img src="TryHard_files/script.png" class="nav-ico" alt=""> Main Script</a>
+            <a class="hbtn blu" href="https://www.dropbox.com/scl/fi/betbjt1ig3ydf4umzt552/guide-pvp.text?rlkey=lvxemw59d8p3cpa9w224uy7k4&st=m2p8ujlc&dl=0" target="_blank"><img src="TryHard_files/sword.png" class="nav-ico" alt=""> PvP Guide</a>
+            <a class="hbtn" href="https://youtu.be/ohz9EXtmVY8?si=0ZGpsVETDS4n3AeJ" target="_blank"><img src="TryHard_files/music.png" class="nav-ico" alt=""> Giao hưởng phùng</a>
+            <a class="hbtn grn" href="https://blur009.vercel.app/projects/blur-autoclicker" target="_blank"><img src="TryHard_files/mouse.png" class="nav-ico" alt=""> Auto Clicker</a>
         </div>
     </div>
 
     <div class="cards-g">
         <div class="fcard red">
-            <div class="fcard-ico">⚡</div>
+            <div class="fcard-ico"><img src="TryHard_files/power.png" alt="Powerful"></div>
             <h3>Powerful</h3>
             <p>Everything you need for development, analysis, and execution. Our API empowers scripts beyond vanilla environments.</p>
         </div>
         <div class="fcard blue">
-            <div class="fcard-ico">🪶</div>
+            <div class="fcard-ico"><img src="TryHard_files/feather.png" alt="Lightweight"></div>
             <h3>Lightweight</h3>
             <p>Simple yet powerful. We hand you the tools and leave you to play — no bloat, no friction.</p>
         </div>
         <div class="fcard green">
-            <div class="fcard-ico">🔒</div>
+            <div class="fcard-ico"><img src="TryHard_files/lock.png" alt="Stable"></div>
             <h3>Stable</h3>
             <p>Built on a battle-tested execution engine. No more fear of crashes and random bugs.</p>
         </div>
         <div class="fcard yellow">
-            <div class="fcard-ico">🛡️</div>
+            <div class="fcard-ico"><img src="TryHard_files/purchase.png" alt="Private"></div>
             <h3>Private</h3>
             <p>Zero personal data collected. Minimal, transparent practices explained in our privacy policy.</p>
         </div>
@@ -795,29 +662,7 @@
         </div>
     </div>
 
-    <div class="slabel" style="margin-top:18px">FFlags & Config</div>
-    <div class="dd-wrap">
-        <div class="dd-title">Select an fflag file to download</div>
-        <div class="dd-trigger" id="dd-fflags-trigger" onclick="ddToggle('fflags')">
-            <div class="dd-tl">
-                <span id="dd-fflags-si">🚩</span>
-                <span id="dd-fflags-sn">Choose an fflag...</span>
-                <span class="badge b-stable" id="dd-fflags-sb" style="display:none"></span>
-            </div>
-            <span class="dd-arrow" id="dd-fflags-arrow">▾</span>
-        </div>
-        <div class="dd-menu" id="dd-fflags-menu">
-            <div class="dd-search">
-                <input type="text" placeholder="Search fflags..." oninput="ddFilter('fflags',this.value)">
-            </div>
-            <div class="dd-opts" id="dd-fflags-opts"></div>
-            <div class="dd-action">
-                <button class="dd-open-btn" onclick="ddDownloadFile('fflags')" style="flex:1">📥 Download file</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="slabel" style="margin-top:18px">Music & Vibes</div>
+    <div class="slabel" style="margin-top:24px">Music & Vibes</div>
     <div class="dd-wrap">
         <div class="dd-title">Pick a track</div>
         <div class="dd-trigger" id="dd-music-trigger" onclick="ddToggle('music')">
@@ -836,16 +681,15 @@
         </div>
     </div>
 
-    <hr class="sdiv" style="margin-top:22px">
+    <hr class="sdiv" style="margin-top:28px">
 
     <div class="slabel">Quick Downloads</div>
     <div class="dl-section">
         <div class="dl-grid">
-
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Main Script</div>
-                    <div class="dl-ico">📜</div>
+                    <i class="fa-solid fa-scroll dl-ico"></i>
                 </div>
                 <div class="dl-meta">All Purium scripts in one raw file. Copy & run in your executor.</div>
                 <div class="dl-tags">
@@ -854,57 +698,56 @@
                     <span class="dl-tag">Raw</span>
                 </div>
                 <button class="dl-btn" onclick="dlGo(this,'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security')">📥 View Raw Script</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
+                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Quality FFlag</div>
-                    <div class="dl-ico">🌟</div>
+                    <i class="fa-solid fa-star dl-ico"></i>
                 </div>
                 <div class="dl-meta">Extreme graphics, max shadows, and render distance.</div>
                 <div class="dl-tags">
                     <span class="dl-tag">.json</span>
                     <span class="dl-tag">Max Graphics</span>
                 </div>
-                <button class="dl-btn pur" onclick="dlEmbed(this,'quality_fflag')">📥 Download quality_fflag.json</button>
+                <!-- REPLACE LINK WITH YOUR DIRECT DOWNLOAD URL -->
+                <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/quality_fflag.json')">📥 Download JSON</button>
                 <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Roshade Presets</div>
-                    <div class="dl-ico">✨</div>
+                    <i class="fa-solid fa-palette dl-ico"></i>
                 </div>
                 <div class="dl-meta">Zealot's Presets - Low to Ultra/Glossy configurations.</div>
                 <div class="dl-tags">
                     <span class="dl-tag">Shader</span>
                     <span class="dl-tag">GitHub</span>
                 </div>
-                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/bituq/Roshade/tree/main/Files/Preset')">🔗 Open GitHub</button>
+                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/bituq/Roshade/releases/latest')">🔗 Get Latest Release</button>
                 <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Bloxshade Presets</div>
-                    <div class="dl-ico">🎨</div>
+                    <i class="fa-solid fa-palette dl-ico"></i>
                 </div>
                 <div class="dl-meta">Extravi's Presets - Highly optimized for bootstrappers.</div>
                 <div class="dl-tags">
                     <span class="dl-tag">Shader</span>
                     <span class="dl-tag">GitHub</span>
                 </div>
-                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/Extravi/Bloxshade/tree/main/Presets')">🔗 Open GitHub</button>
+                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/Extravi/Bloxshade/releases/latest')">🔗 Get Latest Release</button>
                 <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Roblox Shaders Guide</div>
-                    <div class="dl-ico">🛠️</div>
+                    <i class="fa-solid fa-book-open dl-ico"></i>
                 </div>
                 <div class="dl-meta">Deep configuration presets (NVIDIA users recommended).</div>
                 <div class="dl-tags">
@@ -918,125 +761,65 @@
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">PvP Guide</div>
-                    <div class="dl-ico">⚔️</div>
+                    <i class="fa-solid fa-khanda dl-ico"></i>
                 </div>
                 <div class="dl-meta">Full Minecraft PvP guide — combos, timing, strats.</div>
                 <div class="dl-tags">
                     <span class="dl-tag">.txt</span>
                     <span class="dl-tag">Minecraft</span>
                 </div>
-                <button class="dl-btn blu" onclick="dlGo(this,'https://www.dropbox.com/scl/fi/betbjt1ig3ydf4umzt552/guide-pvp.text?rlkey=lvxemw59d8p3cpa9w224uy7k4&st=m2p8ujlc&dl=0')">📥 Download Guide</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
+                <button class="dl-btn blu" onclick="dlGo(this,'https://www.dropbox.com/scl/fi/betbjt1ig3ydf4umzt552/guide-pvp.text?rlkey=lvxemw59d8p3cpa9w224uy7k4&st=m2p8ujlc&dl=1')">📥 Download Guide</button>
+                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">FFlags (FPS+Fling)</div>
-                    <div class="dl-ico">⚡</div>
+                    <i class="fa-solid fa-bolt dl-ico"></i>
                 </div>
                 <div class="dl-meta">Helps FPS & makes fling bugs easier. Paste into ClientAppSettings.</div>
                 <div class="dl-tags">
                     <span class="dl-tag">.json</span>
                     <span class="dl-tag">FFlag</span>
-                    <span class="dl-tag">Embedded</span>
                 </div>
-                <button class="dl-btn pur" onclick="dlEmbed(this,'fflag')">📥 Download fflag.json</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
+                <!-- REPLACE LINK WITH YOUR DIRECT DOWNLOAD URL -->
+                <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/fflag.json')">📥 Download JSON</button>
+                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Custom FFlags 1</div>
-                    <div class="dl-ico">🔧</div>
+                    <i class="fa-solid fa-wrench dl-ico"></i>
                 </div>
                 <div class="dl-meta">Performance and techs focused fflags — recommended for pefo.</div>
                 <div class="dl-tags">
                     <span class="dl-tag">.json</span>
                     <span class="dl-tag">Custom</span>
-                    <span class="dl-tag">Embedded</span>
                 </div>
-                <button class="dl-btn pur" onclick="dlEmbed(this,'custom1')">📥 Download Best fflags.json</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
-            </div>
-
-            <div class="dl-card">
-                <div class="dl-hdr">
-                    <div class="dl-title">Custom FFlags 2</div>
-                    <div class="dl-ico">🐛</div>
-                </div>
-                <div class="dl-meta">Bug exploits and tech fflags for advanced users.</div>
-                <div class="dl-tags">
-                    <span class="dl-tag">.json</span>
-                    <span class="dl-tag">Custom</span>
-                    <span class="dl-tag">Embedded</span>
-                </div>
-                <button class="dl-btn pur" onclick="dlEmbed(this,'custom2')">📥 Download CustomFFLAGS-Copy.json</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
-            </div>
-
-            <div class="dl-card">
-                <div class="dl-hdr">
-                    <div class="dl-title">FFFlag Fusion</div>
-                    <div class="dl-ico">💥</div>
-                </div>
-                <div class="dl-meta">Experimental combined fflags. May cause instability.</div>
-                <div class="dl-tags">
-                    <span class="dl-tag">.json</span>
-                    <span class="dl-tag">Beta</span>
-                    <span class="dl-tag">Embedded</span>
-                </div>
-                <button class="dl-btn blu" onclick="dlEmbed(this,'fusion')">📥 Download broken.json</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
-            </div>
-
-            <div class="dl-card">
-                <div class="dl-hdr">
-                    <div class="dl-title">FFlag List</div>
-                    <div class="dl-ico">📋</div>
-                </div>
-                <div class="dl-meta">Full reference list of all available fflag keys.</div>
-                <div class="dl-tags">
-                    <span class="dl-tag">.txt</span>
-                    <span class="dl-tag">Reference</span>
-                    <span class="dl-tag">Embedded</span>
-                </div>
-                <button class="dl-btn grn" onclick="dlEmbed(this,'list')">📥 Download list.txt</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
+                <!-- REPLACE LINK WITH YOUR DIRECT DOWNLOAD URL -->
+                <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/Best-fflags.json')">📥 Download JSON</button>
+                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Voidstrap</div>
-                    <div class="dl-ico">🚀</div>
+                    <i class="fa-solid fa-rocket dl-ico"></i>
                 </div>
                 <div class="dl-meta">Recommended Roblox bootstrapper for FFlag injection.</div>
                 <div class="dl-tags">
                     <span class="dl-tag">GitHub</span>
                     <span class="dl-tag">v1.1.0.5</span>
-                    <span class="dl-tag">Recommended</span>
                 </div>
                 <button class="dl-btn" onclick="dlGo(this,'https://github.com/voidstrap/Voidstrap/releases/tag/v1.1.0.5')">📥 GitHub Release</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
+                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Solas Shader</div>
-                    <div class="dl-ico">🌅</div>
+                    <i class="fa-solid fa-sun dl-ico"></i>
                 </div>
                 <div class="dl-meta">Solas Shader for Minecraft via OptiFine. Best visuals.</div>
                 <div class="dl-tags">
@@ -1044,15 +827,13 @@
                     <span class="dl-tag">OptiFine</span>
                 </div>
                 <button class="dl-btn" onclick="dlGo(this,'https://www.curseforge.com/minecraft/shaders/solas-shader')">🔗 CurseForge</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
+                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
                 <div class="dl-hdr">
                     <div class="dl-title">Auto Clicker</div>
-                    <div class="dl-ico">🖱️</div>
+                    <i class="fa-solid fa-computer-mouse dl-ico"></i>
                 </div>
                 <div class="dl-meta">Best auto clicker — blur009 project. Free web tool.</div>
                 <div class="dl-tags">
@@ -1060,19 +841,14 @@
                     <span class="dl-tag">Free</span>
                 </div>
                 <button class="dl-btn grn" onclick="dlGo(this,'https://blur009.vercel.app/projects/blur-autoclicker')">🔗 Open Tool</button>
-                <div class="dl-prog">
-                    <div class="dl-bar"><div class="dl-fill"></div></div>
-                </div>
+                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
-
         </div>
     </div>
 
-    <div style="text-align:center;margin-bottom:28px;">
-        <span style="font-size:11px;color:#555">TSB Place ID: </span>
-        <code id="tsb-id" style="font-size:12px;color:#c4a8ff;background:var(--pur-dim);border:1px solid var(--pur-border);
-            padding:3px 10px;border-radius:6px;cursor:pointer"
-            onclick="copyText('10449761463',this,'Copied!')">10449761463</code>
+    <div class="tsb-wrap">
+        <span class="tsb-label">TSB Place ID: </span>
+        <code id="tsb-id" class="tsb-code" onclick="copyText('10449761463',this,'Copied!')">10449761463</code>
     </div>
 
     <div class="footer">
@@ -1081,7 +857,7 @@
             <div class="footer-copy">© 2025 Purium by hlck49really. All rights reserved.</div>
         </div>
         <div class="nav-links">
-            <a class="nbtn sp" href="https://discord.gg/kSpXgcVhVU" target="_blank">💬 Discord</a>
+            <a class="nbtn sp" href="https://discord.gg/kSpXgcVhVU" target="_blank"><img src="TryHard_files/discord.png" class="nav-ico" alt=""> Discord</a>
             <a class="nbtn" href="#">🚀 Coming soon</a>
         </div>
     </div>
@@ -1139,82 +915,6 @@
                     }
                 ]
             },
-            fflags: {
-                items: [
-                    {
-                        icon: '🌟',
-                        name: 'Quality FFlag (Max Graphics)',
-                        desc: 'Ép đồ họa lên mức cực hạn',
-                        badge: 'Ultra',
-                        badgeClass: 'b-new',
-                        filename: 'quality_fflag.json',
-                        key: 'quality_fflag'
-                    },
-                    {
-                        icon: '⚡',
-                        name: 'FFlags (FPS + fling bugs)',
-                        desc: 'Helps FPS & easier fling bugs',
-                        badge: 'Stable',
-                        badgeClass: 'b-stable',
-                        filename: 'fflag.json',
-                        key: 'fflag'
-                    },
-                    {
-                        icon: '🔧',
-                        name: 'Custom FFlags 1 (Pefo & Techs)',
-                        desc: 'Performance and tech fflags',
-                        badge: 'Custom',
-                        badgeClass: 'b-new',
-                        filename: 'Best fflags.json',
-                        key: 'custom1'
-                    },
-                    {
-                        icon: '🐛',
-                        name: 'Custom FFlags 2 (Bugs & Techs)',
-                        desc: 'Bug exploits and tech fflags',
-                        badge: 'Custom',
-                        badgeClass: 'b-new',
-                        filename: 'CustomFFLAGS-Copy.json',
-                        key: 'custom2'
-                    },
-                    {
-                        icon: '💥',
-                        name: 'FFFlag Fusion (Broken)',
-                        desc: 'Experimental combined fflags',
-                        badge: 'Beta',
-                        badgeClass: 'b-beta',
-                        filename: 'broken.json',
-                        key: 'fusion'
-                    },
-                    {
-                        icon: '👑',
-                        name: 'Tsb Fflags',
-                        desc: 'Support For Both Blade Ball And Tsb',
-                        badge: 'Strongest Today',
-                        badgeClass: 'b-stable',
-                        filename: 'The Strongest Of Today.json',
-                        key: 'strongest_today'
-                    },
-                    {
-                        icon: '🗡',
-                        name: 'Blade Ball FFlags',
-                        desc: 'Support For Blade Ball ',
-                        badge: 'Strongest Today',
-                        badgeClass: 'b-stable',
-                        filename: 'blade.json',
-                        key: 'blade_ball'
-                    },
-                    {
-                        icon: '📋',
-                        name: 'FFlag List (reference)',
-                        desc: 'Full list of available fflag keys',
-                        badge: 'Txt',
-                        badgeClass: 'b-link',
-                        filename: 'list.txt',
-                        key: 'list'
-                    }
-                ]
-            },
             music: {
                 items: [
                     {
@@ -1261,1751 +961,7 @@
             }
         };
 
-        const EMBEDDED_FILES = {
-            quality_fflag: {
-                filename: 'quality_fflag.json',
-                data: `{
-  "DFFlagDebugRenderForceFutureIsBrightPhase3": "true",
-  "FIntRenderShadowmapBias": "75",
-  "FIntRenderShadowQuality": "9000",
-  "DFIntCullDistance": "100000",
-  "DFIntDebugForceLODResolution": "0",
-  "DFFlagTextureQualityOverrideEnabled": "true",
-  "FIntTextureQualityOverride": "3",
-  "FFlagCommitToDrawInstanced": "true",
-  "FIntRenderQualityItemTotal": "21"
-}`
-            },
-            fflag: {
-                filename: 'fflag.json',
-                data: `{
-  "FFlagHandleAltEnterFullscreenManually": "False",
-  "FLogNetwork": "7",
-  "DFIntTaskSchedulerTargetFps": "10000",
-  "FFlagEnableV3MenuABTest3": "False",
-  "FFlagFixGraphicsQuality": "True",
-  "FFlagEnableInGameMenuModernization": "True",
-  "DFFlagDisableDPIScale": "True",
-  "FFlagEnableMenuControlsABTest": "False",
-  "FFlagDisableNewIGMinDUA": "True",
-  "FFlagEnableInGameMenuControls": "True",
-  "DFIntCanHideGuiGroupId": "32380007",
-  "DFIntAnimationLodFacsDistanceMin": "0",
-  "DFIntCSGLevelOfDetailSwitchingDistance": " 1",
-  "DFIntHttpCurlConnectionCacheSize": "134217728",
-  "FIntFontSizePadding": "2",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "FIntFullscreenTitleBarTriggerDelayMillis": "18000000",
-  "DFFlagDebugPauseVoxelizer": "True",
-  "FIntTerrainArraySliceSize": "0",
-  "FIntRenderShadowIntensity": "0",
-  "FFlagEnableInGameMenuChrome": "True",
-  "FFlagDebugLightGridShowChunks": "False",
-  "FStringPerformanceSendMeasurementAPISubdomain": "opt-out",
-  "DFIntTextureQualityOverride": "0",
-  "DFIntUserIdPlayerNameLifetimeSeconds": "86400",
-  "FFlagDisablePostFx": "True",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "3",
-  "DFFlagEnableLightstepReporting2": "False",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "FFlagNewLightAttenuation": "True",
-  "FFlagEnableMenuModernizationABTest2": "False",
-  "DFStringRobloxAnalyticsSubDomain": "opt-out",
-  "DFFlagEnableGCapsHardwareTelemetry": "False",
-  "DFStringTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "FFlagEnableSoundTelemetry": "False",
-  "DFStringCrashUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "DFIntHardwareTelemetryHundredthsPercent": "0",
-  "FIntEmotesAnimationsPerPlayerCacheSize": "16777216",
-  "FIntFRMMinGrassDistance": "0",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "FIntDefaultMeshCacheSizeMB": "256",
-  "FIntBootstrapperTelemetryReportingHundredthsPercentage": "0",
-  "DFFlagGpuVsCpuBoundTelemetry": "False",
-  "DFIntUserIdPlayerNameCacheSize": "33554432",
-  "DFIntMegaReplicatorNetworkQualityProcessorUnit": "10",
-  "FIntRenderLocalLightUpdatesMax": "1",
-  "FFlagDebugSkyGray": "false",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "4",
-  "FFlagChatTranslationSettingEnabled3": "false",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "false",
-  "DFIntMaxProcessPacketsJobScaling": "10000",
-  "DFFlagAudioDeviceTelemetry": "False",
-  "FIntRenderLocalLightUpdatesMin": "1",
-  "FIntLmsClientRollout2": "0",
-  "FFlagLuaAppSystemBar": "False",
-  "FIntRakNetResendBufferArrayLength": "1024",
-  "FFlagPreloadAllFonts": "True",
-  "DFStringHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "FIntFRMMaxGrassDistance": "0",
-  "DFIntLargePacketQueueSizeCutoffMB": "1000",
-  "FFlagGpuGeometryManager7": "True",
-  "DFStringRobloxAnalyticsURL": "http://opt-out.roblox.com",
-  "DFFlagQueueDataPingFromSendData": "True",
-  "FFlagEnableQuickGameLaunch": "False",
-  "FFlagTopBarUseNewBadge": "True",
-  "FFlagAnimationClipMemCacheEnabled": "True",
-  "FFlagFastGPULightCulling3": "True",
-  "DFIntRakNetNakResendDelayRttPercent": "50",
-  "DFIntAnimationLodFacsDistanceMax": "0",
-  "DFIntReportRecordingDeviceInfoRateHundredthsPercentage": "0",
-  "FFlagOptimizeServerTickRate": "True",
-  "FFlagEnableInGameMenuV3": "True",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FFlagBatchAssetApi": "True",
-  "DFIntAnimationLodFacsVisibilityDenominator": "0",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL12": "2",
-  "FStringErrorUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "FFlagRenderGpuTextureCompressor": "True",
-  "DFFlagBatchAssetApiNoFallbackOnFail": "False",
-  "FFlagEnableMenuModernizationABTest": "False",
-  "DFIntMaxProcessPacketsStepsPerCyclic": "5000",
-  "FIntUITextureMaxRenderTextureSize": "1024",
-  "FFlagPreloadTextureItemsOption4": "True",
-  "DFIntReportOutputDeviceInfoRateHundredthsPercentage": "0",
-  "DFStringAltTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "DFStringAltHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "FStringPartTexturePackTablePre2022": "{\\"foil\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[255,255,255,255]},\\"brick\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[204,201,200,232]},\\"cobblestone\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[212,200,187,250]},\\"concrete\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[208,208,208,255]},\\"diamondplate\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[170,170,170,255]},\\"fabric\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[105,104,102,244]},\\"glass\\":{\\"ids\\":[\\"rbxassetid://7547304948\\",\\"rbxassetid://7546645118\\"],\\"color\\":[254,254,254,7]},\\"granite\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[113,113,113,255]},\\"grass\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[165,165,159,255]},\\"ice\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[255,255,255,255]},\\"marble\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[199,199,199,255]},\\"metal\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[199,199,199,255]},\\"pebble\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[208,208,208,255]},\\"corrodedmetal\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[159,119,95,200]},\\"sand\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[220,220,220,255]},\\"slate\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[193,193,193,255]},\\"wood\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[227,227,227,255]},\\"woodplanks\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[212,209,203,255]},\\"asphalt\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[123,123,123,234]},\\"basalt\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[154,154,153,238]},\\"crackedlava\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[74,78,80,156]},\\"glacier\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[226,229,229,243]},\\"ground\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[114,114,112,240]},\\"leafygrass\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[121,117,113,234]},\\"limestone\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[235,234,230,250]},\\"mud\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[130,130,130,252]},\\"pavement\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[142,142,144,236]},\\"rock\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[154,154,154,248]},\\"salt\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[220,220,221,255]},\\"sandstone\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[174,171,169,246]},\\"snow\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[218,218,218,255]}}",
-  "DFFlagEnableFmodErrorsTelemetry": "False",
-  "DFIntMaxProcessPacketsStepsAccumulated": "0",
-  "FFlagDontCreatePingJob": "True",
-  "FFlagLuaAppExitModalDoNotShow": "True",
-  "FIntTerrainOTAMaxTextureSize": "1024",
-  "FFlagCoreGuiTypeSelfViewPresent": "False",
-  "FIntRenderGrassHeightScaler": "0",
-  "DFIntGoogleAnalyticsLoadPlayerHundredth": "0",
-  "DFIntServerTickRate": "60",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FIntRenderGrassDetailStrands": "0",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "DFIntConnectionMTUSize": "1472",
-  "DFFlagDebugAnalyticsSendUserId": "False",
-  "DFFlagSimReportCPUInfo": "False",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "FFlagCommitToGraphicsQualityFix": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "FStringPartTexturePackTable2022": "{\\"foil\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[238,238,238,255]},\\"asphalt\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[227,227,228,234]},\\"basalt\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[160,160,158,238]},\\"brick\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[229,214,205,227]},\\"cobblestone\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[218,219,219,243]},\\"concrete\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[225,225,224,255]},\\"crackedlava\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[76,79,81,156]},\\"diamondplate\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[210,210,210,255]},\\"fabric\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[221,221,221,255]},\\"glacier\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[225,229,229,243]},\\"glass\\":{\\"ids\\":[\\"rbxassetid://9873284556\\",\\"rbxassetid://9438453972\\"],\\"color\\":[254,254,254,7]},\\"granite\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[210,206,200,255]},\\"grass\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[196,196,189,241]},\\"ground\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[165,165,160,240]},\\"ice\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[235,239,241,248]},\\"leafygrass\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[182,178,175,234]},\\"limestone\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[250,248,243,250]},\\"marble\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[181,183,193,249]},\\"metal\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[226,226,226,255]},\\"mud\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[193,192,193,252]},\\"pavement\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[218,218,219,236]},\\"pebble\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[204,203,201,234]},\\"plastic\\":{\\"ids\\":[\\"\\",\\"rbxassetid://0\\"],\\"color\\":[255,255,255,255]},\\"rock\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[211,211,210,248]},\\"corrodedmetal\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[206,177,163,180]},\\"salt\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[249,249,249,255]},\\"sand\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[218,216,210,240]},\\"sandstone\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[241,234,230,246]},\\"slate\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[235,234,235,254]},\\"snow\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[239,240,240,255]},\\"wood\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[217,209,208,255]},\\"woodplanks\\":{\\"ids\\":[\\"rbxassetid://0\\",\\"rbxassetid://0\\"],\\"color\\":[207,208,206,254]}}",
-  "DFStringAnalyticsEventStreamUrlEndpoint": "opt-out",
-  "FFlagReconnectDisabled": "True",
-  "DFFlagRakNetUseSlidingWindow4": "True",
-  "FIntMeshContentProviderForceCacheSize": "268435456",
-  "FIntRakNetDatagramMessageIdArrayLength": "1024",
-  "DFIntOptimizePingThreshold": "50",
-  "DFIntDebugFRMQualityLevelOverride": "1",
-  "DFIntLightstepHTTPTransportHundredthsPercent2": "0",
-  "DFFlagEnableHardwareTelemetry": "False",
-  "FIntRenderShadowmapBias": "0",
-  "FFlagLuaAppExitModal2": "False",
-  "FFlagInGameMenuV1FullScreenTitleBar": "False",
-  "FIntDebugForceMSAASamples": "1",
-  "FFlagAdServiceEnabled": "False",
-  "FFlagEnableAccessibilitySettingsEffectsInCoreScripts2": "True",
-  "FFlagGameBasicSettingsFramerateCap5": "false",
-  "FFlagEnableAccessibilitySettingsEffectsInExperienceChat": "True",
-  "DFIntRaknetBandwidthInfluxHundredthsPercentageV2": "10000",
-  "DFIntCodecMaxOutgoingFrames": "10000",
-  "FFlagMSRefactor5": "False",
-  "FFlagEnableAccessibilitySettingsInExperienceMenu2": "True",
-  "FFlagEnableChromePinnedChat": "True",
-  "DFFlagDebugPerfMode": "True",
-  "DFIntMaxFrameBufferSize": "4",
-  "FFlagEnableAccessibilitySettingsAPIV2": "True",
-  "FFlagDebugGraphicsDisableMetal": "true",
-  "FIntRobloxGuiBlurIntensity": "0"
-}`
-            },
-            custom1: {
-                filename: 'Best fflags.json',
-                data: `{
-  "FFlagHandleAltEnterFullscreenManually": "False",
-  "FLogNetwork": "4",
-  "DFIntTaskSchedulerTargetFps": "10000",
-  "FFlagEnableV3MenuABTest3": "False",
-  "FFlagFixGraphicsQuality": "True",
-  "FFlagEnableInGameMenuModernization": "True",
-  "DFFlagDisableDPIScale": "True",
-  "FFlagEnableMenuControlsABTest": "False",
-  "FFlagDisableNewIGMinDUA": "True",
-  "FFlagEnableInGameMenuControls": "True",
-  "DFIntCanHideGuiGroupId": "32380007",
-  "DFIntHttpCurlConnectionCacheSize": "134217728",
-  "FIntFontSizePadding": "2",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "FIntFullscreenTitleBarTriggerDelayMillis": "18000000",
-  "DFFlagDebugPauseVoxelizer": "True",
-  "FFlagDisablePostFx": "True",
-  "FIntTerrainArraySliceSize": "0",
-  "FFlagEnableInGameMenuChrome": "True",
-  "FFlagDebugLightGridShowChunks": "False",
-  "DFIntUserIdPlayerNameLifetimeSeconds": "86400",
-  "DFFlagEnableLightstepReporting2": "False",
-  "FFlagNewLightAttenuation": "False",
-  "FFlagEnableMenuModernizationABTest2": "False",
-  "DFFlagEnableGCapsHardwareTelemetry": "False",
-  "FFlagEnableSoundTelemetry": "False",
-  "DFIntHardwareTelemetryHundredthsPercent": "0",
-  "DFFlagGpuVsCpuBoundTelemetry": "False",
-  "DFIntUserIdPlayerNameCacheSize": "33554432",
-  "FFlagDebugSkyGray": "False",
-  "FFlagChatTranslationSettingEnabled3": "False",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "DFFlagAudioDeviceTelemetry": "False",
-  "FIntLmsClientRollout2": "0",
-  "FFlagLuaAppSystemBar": "False",
-  "FFlagPreloadAllFonts": "True",
-  "FFlagGpuGeometryManager7": "True",
-  "DFFlagQueueDataPingFromSendData": "True",
-  "FFlagEnableQuickGameLaunch": "False",
-  "FFlagTopBarUseNewBadge": "True",
-  "FFlagAnimationClipMemCacheEnabled": "True",
-  "FFlagFastGPULightCulling3": "True",
-  "FFlagOptimizeServerTickRate": "True",
-  "FFlagEnableInGameMenuV3": "True",
-  "FFlagBatchAssetApi": "True",
-  "FFlagRenderGpuTextureCompressor": "True",
-  "DFFlagBatchAssetApiNoFallbackOnFail": "False",
-  "FFlagEnableMenuModernizationABTest": "False",
-  "FFlagPreloadTextureItemsOption4": "True",
-  "FFlagDontCreatePingJob": "True",
-  "FFlagLuaAppExitModalDoNotShow": "True",
-  "FFlagCoreGuiTypeSelfViewPresent": "False",
-  "DFIntServerTickRate": "60",
-  "DFIntConnectionMTUSize": "1492",
-  "DFFlagDebugAnalyticsSendUserId": "False",
-  "DFFlagSimReportCPUInfo": "False",
-  "FFlagCommitToGraphicsQualityFix": "True",
-  "FFlagReconnectDisabled": "True",
-  "DFFlagRakNetUseSlidingWindow4": "True",
-  "DFIntOptimizePingThreshold": "25",
-  "DFFlagEnableHardwareTelemetry": "False",
-  "FFlagLuaAppExitModal2": "False",
-  "FFlagInGameMenuV1FullScreenTitleBar": "False",
-  "FFlagAdServiceEnabled": "False",
-  "DFIntPriorityTickRatePhysX": "480",
-  "FFlagEnableAccessibilitySettingsEffectsInCoreScripts2": "True",
-  "FFlagGameBasicSettingsFramerateCap5": "False",
-  "FFlagEnableAccessibilitySettingsEffectsInExperienceChat": "True",
-  "DFIntRaknetBandwidthInfluxHundredthsPercentageV2": "10000",
-  "DFIntCodecMaxOutgoingFrames": "10000",
-  "FFlagMSRefactor5": "False",
-  "FFlagEnableAccessibilitySettingsInExperienceMenu2": "True",
-  "FFlagEnableChromePinnedChat": "True",
-  "FFlagEnableAccessibilitySettingsAPIV2": "True",
-  "FIntRobloxGuiBlurIntensity": "0",
-  "FStringPerformanceSendMeasurementAPISubdomain": "opt-out",
-  "DFStringRobloxAnalyticsSubDomain": "opt-out",
-  "DFStringTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "DFStringCrashUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "DFStringHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "DFStringRobloxAnalyticsURL": "http://opt-out.roblox.com",
-  "FStringErrorUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "DFStringAltTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "DFStringAltHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "DFStringAnalyticsEventStreamUrlEndpoint": "opt-out",
-  "DFIntLightstepHTTPTransportHundredthsPercent2": "0",
-  "DFIntGoogleAnalyticsLoadPlayerHundredth": "0",
-  "DFIntBootstrapperTelemetryReportingHundredthsPercentage": "0",
-  "DFIntReportRecordingDeviceInfoRateHundredthsPercentage": "0",
-  "DFIntReportOutputDeviceInfoRateHundredthsPercentage": "0",
-  "DFFlagEnableFmodErrorsTelemetry": "False",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "DFIntDebugFRMQualityLevelOverride": "1",
-  "DFIntTextureQualityOverride": "0",
-  "FIntRenderShadowIntensity": "0",
-  "FIntRenderShadowmapBias": "0",
-  "FIntDebugForceMSAASamples": "1",
-  "FIntFRMMinGrassDistance": "0",
-  "FIntFRMMaxGrassDistance": "0",
-  "FIntRenderGrassHeightScaler": "0",
-  "FIntRenderGrassDetailStrands": "0",
-  "FIntRenderLocalLightUpdatesMax": "8",
-  "FIntRenderLocalLightUpdatesMin": "1",
-  "FIntRenderLocalLightFadeSpeed": "1",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "DFIntCSGLevelOfDetailSwitchingDistance": "1",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL12": "2",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "3",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "4",
-  "DFIntAnimationLodFacsDistanceMin": "0",
-  "DFIntAnimationLodFacsDistanceMax": "0",
-  "DFIntAnimationLodFacsVisibilityDenominator": "0",
-  "FIntTerrainOTAMaxTextureSize": "256",
-  "FIntUITextureMaxRenderTextureSize": "512",
-  "DFIntTextureCompositorActiveJobs": "1"
-}`
-            },
-            custom2: {
-                filename: 'CustomFFLAGS-Copy.json',
-                data: `{
-  "FFlagUISUseLastFrameTimeInUpdateInputSignal": "True",
-  "FFlagFasterPreciseTime4": "True",
-  "FFlagOptimizeNetworkTransport": "True",
-  "FFlagHandleAltEnterFullscreenManually": "False",
-  "FFlagEnableInGameMenuModernization": "True",
-  "FFlagEnableInGameMenuChrome": "True",
-  "FFlagDisableNewIGMinDUA": "True",
-  "FFlagEnableInGameMenuControls": "True",
-  "FFlagEnableInGameMenuV3": "True",
-  "FFlagTopBarUseNewBadge": "True",
-  "FFlagEnableChromePinnedChat": "True",
-  "FFlagChatTranslationSettingEnabled3": "False",
-  "FFlagLuaAppExitModalDoNotShow": "True",
-  "DFIntTaskSchedulerTargetFps": "10000",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "FFlagOptimizeServerTickRate": "True",
-  "DFIntServerTickRate": "60",
-  "FIntTaskSchedulerAutoThreadCount": "1",
-  "DFFlagDisableDPIScale": "True",
-  "FFlagFixGraphicsQuality": "True",
-  "FFlagCommitToGraphicsQualityFix": "True",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "DFIntTextureQualityOverride": "0",
-  "FFlagDisablePostFx": "True",
-  "FIntRobloxGuiBlurIntensity": "0",
-  "FIntRenderShadowIntensity": "0",
-  "FIntRenderShadowmapBias": "0",
-  "FIntDebugForceMSAASamples": "1",
-  "FIntTerrainArraySliceSize": "0",
-  "FIntFRMMinGrassDistance": "0",
-  "FIntFRMMaxGrassDistance": "0",
-  "FIntRenderGrassHeightScaler": "0",
-  "FIntRenderGrassDetailStrands": "0",
-  "FIntRenderLocalLightUpdatesMax": "8",
-  "FIntRenderLocalLightUpdatesMin": "1",
-  "FIntRenderLocalLightFadeSpeed": "1",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "DFIntCSGLevelOfDetailSwitchingDistance": "1",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL12": "2",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "3",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "4",
-  "DFIntAnimationLodFacsDistanceMin": "0",
-  "DFIntAnimationLodFacsDistanceMax": "0",
-  "DFIntAnimationLodFacsVisibilityDenominator": "0",
-  "FIntTerrainOTAMaxTextureSize": "256",
-  "FIntUITextureMaxRenderTextureSize": "512",
-  "DFIntTextureCompositorActiveJobs": "1",
-  "FFlagGraphicsVulkanLowLatency": "True",
-  "FFlagDebugD3D11LowLatency": "True",
-  "FFlagG3DComputeMouseHover": "True",
-  "FFlagDirectInputMouseLocation": "True",
-  "DFIntMaxFrameBufferSize": "1",
-  "FFlagPreloadAllFonts": "True",
-  "FFlagGpuGeometryManager7": "True",
-  "FFlagAnimationClipMemCacheEnabled": "True",
-  "FFlagFastGPULightCulling3": "True",
-  "FFlagBatchAssetApi": "True",
-  "FFlagRenderGpuTextureCompressor": "True",
-  "FFlagPreloadTextureItemsOption4": "True",
-  "FIntDefaultMeshCacheSizeMB": "512",
-  "FIntMeshContentProviderForceCacheSize": "536870912",
-  "DFIntUserIdPlayerNameCacheSize": "33554432",
-  "DFIntUserIdPlayerNameLifetimeSeconds": "86400",
-  "FIntEmotesAnimationsPerPlayerCacheSize": "16777216",
-  "DFIntHttpCurlConnectionCacheSize": "134217728",
-  "FLogNetwork": "4",
-  "DFFlagQueueDataPingFromSendData": "True",
-  "DFIntConnectionMTUSize": "1472",
-  "FFlagDontCreatePingJob": "True",
-  "FFlagReconnectDisabled": "True",
-  "DFIntOptimizePingThreshold": "50",
-  "DFIntNetworkClusterPacketCacheNumParallelTasks": "8",
-  "DFIntMegaReplicatorNumParallelTasks": "8",
-  "DFFlagRakNetUseSlidingWindow4": "True",
-  "DFIntRakNetSlidingWindowMinThreshold": "32",
-  "DFIntRakNetNakResendDelayRttPercent": "25",
-  "DFIntRakNetNakResendDelayMs": "20",
-  "DFIntRakNetAllowedMissingDatagramsBeforeNAK": "0",
-  "DFIntRakNetBandwidthPingSendEveryXSeconds": "1",
-  "DFIntRakNetBandwidthPollIntervalMs": "200",
-  "DFIntRakNetConnectionTimeout": "30000",
-  "FIntRakNetResendBufferArrayLength": "1024",
-  "FIntRakNetDatagramMessageIdArrayLength": "1024",
-  "DFIntRaknetBandwidthInfluxHundredthsPercentageV2": "10000",
-  "DFIntMaxReceiveToDeserializeLatencyMilliseconds": "10",
-  "DFIntPhysicsFPSCap": "10000",
-  "DFIntPhysicsReceiveNumPacketsPerStep": "64",
-  "DFIntPhysicsSendNumPacketsPerStep": "64",
-  "DFIntS2PhysicsSenderRate": "60",
-  "FFlagSimPredictAheadMs": "1",
-  "DFIntSimInterpolationStep": "1",
-  "DFIntPhysicsInterpolationMaxNetSteps": "10",
-  "DFIntSimInterpolationLatencyMs": "28",
-  "DFIntPhysicsInterpolationOvershootPercent": "0",
-  "DFIntMaxMissedWorldStepsRemembered": "4",
-  "DFIntPhysicsPacketMaxSteps": "6",
-  "DFIntExtrapolationThresholdSecs100": "15",
-  "DFIntPhysicsGridMinUpdateRate": "240",
-  "DFIntSimSendMaxBundledStatePackets": "300",
-  "DFIntNetworkReplicatorMaxPacketSize": "900",
-  "DFIntNetworkPredictionAllowedLerpMs": "100",
-  "DFIntMegaReplicatorNetworkQualityProcessorUnit": "10",
-  "DFIntLargePacketQueueSizeCutoffMB": "1000",
-  "DFIntReplicationDataCacheNumShards": "8",
-  "DFIntMaxProcessPacketsJobScaling": "10000",
-  "DFIntMaxProcessPacketsStepsPerCyclic": "5000",
-  "DFIntMaxProcessPacketsStepsAccumulated": "0",
-  "DFIntCodecMaxOutgoingFrames": "10000",
-  "DFIntRemoteEventSingleInvocationSizeLimit": "100000",
-  "FStringPerformanceSendMeasurementAPISubdomain": "opt-out",
-  "DFStringRobloxAnalyticsSubDomain": "opt-out",
-  "DFStringTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "DFStringCrashUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "DFStringHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "DFStringRobloxAnalyticsURL": "http://opt-out.roblox.com",
-  "FStringErrorUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "DFStringAltTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "DFStringAltHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "DFStringAnalyticsEventStreamUrlEndpoint": "opt-out",
-  "DFIntLightstepHTTPTransportHundredthsPercent2": "0",
-  "DFIntGoogleAnalyticsLoadPlayerHundredth": "0",
-  "DFIntBootstrapperTelemetryReportingHundredthsPercentage": "0",
-  "DFIntReportRecordingDeviceInfoRateHundredthsPercentage": "0",
-  "DFIntReportOutputDeviceInfoRateHundredthsPercentage": "0",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True"
-}`
-            },
-            blade_ball: {
-                filename: 'blade.json',
-                data: `{
-  "DFIntTaskSchedulerTargetFps": "0",
-  "FIntTaskSchedulerAutoThreadCount": "1",
-  "FIntTaskSchedulerThreadMin": "3",
-  "FFlagFixGraphicsQuality": "True",
-  "DFFlagDisableDPIScale": "True",
-  "DFIntHttpCurlConnectionCacheSize": "134217728",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "DFIntTextureQualityOverride": "1",
-  "DFIntDebugFRMQualityLevelOverride": "1",
-  "FFlagDisablePostFx": "True",
-  "FIntRenderShadowIntensity": "0",
-  "FIntDebugForceMSAASamples": "1",
-  "FIntRenderGrassHeightScaler": "0",
-  "FIntRenderGrassDetailStrands": "0",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "FFlagDebugSkyGray": "True",
-  "FFlagPreloadAllFonts": "True",
-  "FFlagPreloadMinimalFonts": "True",
-  "DFFlagEnableTexturePreloading": "True",
-  "FIntDefaultMeshCacheSizeMB": "512",
-  "DFFlagQueueDataPingFromSendData": "True",
-  "FFlagOptimizeServerTickRate": "True",
-  "DFIntServerTickRate": "60",
-  "DFIntConnectionMTUSize": "1492",
-  "DFFlagRakNetUseSlidingWindow4": "True",
-  "DFIntRakNetSlidingWindowMinThreshold": "128",
-  "DFIntRakNetNakResendDelayRttPercent": "10",
-  "DFIntRakNetNakResendDelayMs": "5",
-  "DFIntRakNetConnectionTimeout": "30000",
-  "FIntRakNetResendBufferArrayLength": "1024",
-  "FIntRakNetDatagramMessageIdArrayLength": "1024",
-  "DFIntNetworkResponseTimeout": "5000",
-  "DFIntOptimizePingThreshold": "25",
-  "DFIntClientPacketMaxDelayMs": "1",
-  "DFIntMaxFramesToSend": "1",
-  "DFIntTargetTimeDelayFacctorTenths": "5",
-  "FIntInterpolationAwareTargetTimeLerpHundredth": "1",
-  "DFIntPhysicsFPSCap": "1000",
-  "DFIntPhysicsReceiveNumPacketsPerStep": "128",
-  "DFIntPhysicsSendNumPacketsPerStep": "128",
-  "DFIntSimInterpolationStep": "1",
-  "DFIntPhysicsInterpolationMaxNetSteps": "4",
-  "DFIntSimInterpolationLatencyMs": "12",
-  "DFIntMaxMissedWorldStepsRemembered": "8",
-  "DFIntPhysicsPacketMaxSteps": "8",
-  "DFIntNetworkReplicatorMaxPacketSize": "1400",
-  "FFlagDirectInputMouseLocation": "True",
-  "FFlagGraphicsVulkanLowLatency": "True",
-  "FFlagDebugD3D11LowLatency": "True",
-  "DFIntMaxFrameBufferSize": "1",
-  "FFlagMovePrerender": "True",
-  "FFlagMovePrerenderV2": "True",
-  "DFFlagDebugPerfMode": "True",
-  "DFIntGraphicsOptimizationModeMinFrameTimeTargetMs": "25",
-  "DFIntGraphicsOptimizationModeMaxFrameTimeTargetMs": "20",
-  "FFlagVRMouseMoveOptimization": "True",
-  "DFFlagSimOptimizeSetSize": "True",
-  "FFlagFixChunkLightingUpdate2": "True",
-  "FFlagRenderTestEnableDistanceCulling": "True",
-  "FFlagDebugDisplayFPS": "True",
-  "DFFlagPhysicsMechanismCacheOptimizeAlloc": "True",
-  "FFlagMessageBusCallOptimization": "True",
-  "FStringPerformanceSendMeasurementAPISubdomain": "opt-out",
-  "DFStringRobloxAnalyticsSubDomain": "opt-out",
-  "DFStringAnalyticsEventStreamUrlEndpoint": "opt-out",
-  "DFStringTelegrafHTTPTransportUrl": "http://127.0.0.1:80",
-  "DFStringCrashUploadToBacktraceBaseUrl": "http://127.0.0.1:80",
-  "DFStringHttpPointsReporterUrl": "http://127.0.0.1:80",
-  "DFStringRobloxAnalyticsURL": "http://127.0.0.1:80",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True"
-}`
-            },
-            fusion: {
-                filename: 'broken.json',
-                data: `{
-  "DFIntTaskSchedulerTargetFps": "10000",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "DFFlagDisableDPIScale": "True",
-  "FFlagDisablePostFx": "True",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "DFIntTextureQualityOverride": "0",
-  "FIntRenderShadowIntensity": "0",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "FIntDebugForceMSAASamples": "1",
-  "DFIntOptimizePingThreshold": "50",
-  "DFIntNetworkPrediction": "120",
-  "DFIntMinimalNetworkPrediction": "1",
-  "DFIntPlayerNetworkUpdateRate": "60",
-  "DFIntClientPacketMaxDelayMs": "1",
-  "DFIntMaxProcessPacketsJobScaling": "10000",
-  "DFIntCodecMaxOutgoingFrames": "10000",
-  "FFlagOptimizeNetworkRouting": "True",
-  "FFlagOptimizeNetworkTransport": "True",
-  "FFlagOptimizeServerTickRate": "True",
-  "FIntRuntimeMaxNumOfThreads": "2400",
-  "DFIntPhysicsReceiveNumParallelTasks": "6",
-  "DFIntNetworkClusterPacketCacheNumParallelTasks": "6",
-  "DFIntMegaReplicatorNetworkQualityProcessorUnit": "10",
-  "DFStringRobloxAnalyticsURL": "http://opt-out.roblox.com",
-  "DFStringTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "DFStringCrashUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "DFStringHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "FStringPerformanceSendMeasurementAPISubdomain": "opt-out",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "DFIntPhysicsFPSCap": "1000",
-  "DFIntPhysicsReceiveNumPacketsPerStep": "64",
-  "DFIntPhysicsSendNumPacketsPerStep": "64",
-  "DFIntS2PhysicsSenderRate": "60",
-  "FFlagSimPredictAheadMs": "1",
-  "DFIntSimInterpolationStep": "1",
-  "DFIntPhysicsInterpolationMaxNetSteps": "8",
-  "DFIntSimInterpolationLatencyMs": "40",
-  "DFIntPhysicsInterpolationOvershootPercent": "0",
-  "DFIntMaxMissedWorldStepsRemembered": "4",
-  "DFIntPhysicsPacketMaxSteps": "6",
-  "DFIntExtrapolationThresholdSecs100": "15",
-  "DFIntInterpolationDtLimitForLod": "10",
-  "DFIntInterpolationFrameRotVelocityThresholdMillionth": "1",
-  "DFIntInterpolationFrameVelocityThresholdMillionth": "1",
-  "DFIntInterpolationNumParallelTasks": "6",
-  "FIntInterpolationMaxDelayMSec": "75",
-  "FIntInterpolationAwareTargetTimeLerpHundredth": "110",
-  "FIntMaxTimestepMultiplierIntegrationError": "4",
-  "FIntMaxTimestepMultiplierVelocity": "6",
-  "FIntMaxTimestepMultiplierAcceleration": "7",
-  "FIntMaxTimestepMultiplierHumanoid": "16",
-  "SFFlagGroundControllerTurningResponsiveness": "2147483647",
-  "SFFlagGroundControllerBalancingResponsiveness": "2147483647",
-  "SFFlagAirControllerTurningResponsiveness": "2147483647",
-  "SFFlagAirControllerBalancingResponsiveness": "2147483647",
-  "DFIntAirControllerTurningResponsiveness": "2147483647",
-  "FIntSmoothMouseSpringFrequencyTenths": "200",
-  "FFlagEarlyUpdateBoundings": "True",
-  "DFFlagNetworkHumanoidStatePropertyReplication3": "True",
-  "FFlagAnimatorRetargetSkipLowerBodyIK": "True",
-  "DFIntTimestepArbiterAccelerationModelFactorThou": "50000",
-  "FFlagUISUseLastFrameTimeInUpdateInputSignal": "True",
-  "FFlagFasterPreciseTime4": "True",
-  "FFlagDirectInputMouseLocation": "True",
-  "FFlagG3DComputeMouseHover": "True",
-  "FFlagGraphicsVulkanLowLatency": "True",
-  "FFlagDebugD3D11LowLatency": "True",
-  "DFIntMaxFrameBufferSize": "1",
-  "DFIntPriorityTickRatePhysX": "240"
-}`
-            },
-            list: {
-                filename: 'list.txt',
-                data: `---\\144fps+0ping
-{
-  "FLogNetwork": "7",
-  "FFlagHandleAltEnterFullscreenManually": "False",
-  "FFlagAdServiceEnabled": "False",
-  "DFIntOcclusionShelfScalarNumerator": "2",
-  "DFFlagFastEndUpdateLoop": "True",
-  "FFlagFRMRefactor": "False",
-  "FFlagFixSensitivityTextPrecision": "False",
-  "DFIntWaitOnUpdateNetworkLoopEndedMS": "100",
-  "FFlagUISUseLastFrameTimeInUpdateInputSignal": "True",
-  "FFlagSimEnableDCD16": "True",
-  "FFlagDebugNextGenReplicatorEnabledWriteCFrameColor": "True",
-  "DFFlagFrameTimeJitterMedians2": "False",
-  "DFFlagReplicatorSeparateVarThresholds": "True",
-  "FFlagFasterPreciseTime4": "True",
-  "DFFlagTeleportClientAssetPreloadingDoingExperiment2": "True",
-  "FIntActivatedCountTimerMSKeyboard": "0",
-  "FIntDebugForceMSAASamples": "1",
-  "DFIntNetworkClusterPacketCacheNumParallelTasks": "12",
-  "FFlagLargeReplicatorRead2": "True",
-  "FFlagPreComputeAcceleratorArrayForSharingTimeCurve": "True",
-  "DFIntMegaReplicatorNumParallelTasks": "12",
-  "FFlagUserBetterInertialScrolling": "True",
-  "DFIntGraphicsOptimizationModeMaxFrameTimeTargetMs": "25",
-  "DFIntGraphicsOptimizationModeMinFrameTimeTargetMs": "16",
-  "DFIntCodecMaxOutgoingFrames": "1000",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "DFFlagNextGenRepRollbackOverbudgetPackets": "True",
-  "DFIntTaskSchedulerJobInitThreads": "12",
-  "FFlagChatTranslationEnableSystemMessage": "False",
-  "DFIntS2PhysicsSenderRate": "128",
-  "DFFlagHumanoidReplicateSimulated2": "True",
-  "FIntRuntimeMaxNumOfMutexes": "1000000",
-  "FIntSSAOMipLevels": "0",
-  "DFIntMemoryUtilityCurveNumSegments": "100",
-  "DFFlagPerformanceControlEnableMemoryProbing3": "True",
-  "DFFlagMouseMoveOncePerFrame": "False",
-  "DFIntRakNetResendRttMultiple": "1",
-  "FIntActivatedCountTimerMSMouse": "0",
-  "FFlagEnablePartyVoiceOnlyForUnfilteredThreads": "False",
-  "DFFlagMergeFakeInputEvents3": "True",
-  "FIntSSAO": "0",
-  "DFIntBatchThumbnailResultsSizeCap": "200",
-  "FFlagTouchscreenSupport": "True",
-  "DFFlagAcceleratorUpdateOnPropsAndValueTimeChange": "True",
-  "FFlagReportGpuLimitedToPerfControl": "False",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FIntRuntimeMaxNumOfDPCs": "64",
-  "DFIntReplicationDataCacheNumParallelTasks": "12",
-  "DFFlagSolverStateReplicatedOnly2": "True",
-  "DFIntJoinDataItemEstimatedCompressionRatioHundreths": "0",
-  "DFIntDebugPerformanceControlFrameTime": "2",
-  "DFIntClientPacketMaxDelayMs": "1",
-  "DFIntMegaReplicatorNetworkQualityProcessorUnit": "10",
-  "FIntRuntimeMaxNumOfSchedulers": "1000000",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "DFIntAnimationLodFacsDistanceMax": "0",
-  "DFIntInitialAccelerationLatencyMultTenths": "1",
-  "DFIntClientNetworkInfluxHundredthsPercentage": "0",
-  "DFIntNetworkInProcessLimitGameplayMsClient": "0",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FFlagDisablePostFx": "True",
-  "DFIntMemoryUtilityCurveBaseHundrethsPercent": "10000",
-  "DFIntOcclusionFresnelEllipsoids": "6",
-  "DFIntMaxDataPacketPerSend": "100000",
-  "DFIntOcclusionFresnelConsensusNumerator": "2",
-  "DFIntRakNetNakResendDelayMs": "1",
-  "FIntGrassMovementReducedMotionFactor": "0",
-  "FIntRuntimeMaxNumOfConditions": "1000000",
-  "FFlagControlBetaBadgeWithGuac": "False",
-  "DFFlagClampIncomingReplicationLag": "True",
-  "DFIntJoinDataCompressionLevel": "0",
-  "FIntEnableCullableScene2HundredthPercent3": "1000",
-  "DFIntDebugFRMQualityLevelOverride": "1",
-  "FFlagDisableFeedbackSoothsayerCheck": "False",
-  "FIntRenderGrassDetailStrands": "0",
-  "FIntSmoothClusterTaskQueueMaxParallelTasks": "12",
-  "FIntRenderMaxShadowAtlasUsageBeforeDownscale": "250",
-  "DFIntAnimationLodFacsDistanceMin": "0",
-  "DFFlagTaskSchedulerAvoidSleep": "True",
-  "DFFlagSimSmoothedRunningController2": "True",
-  "DFIntRakNetApplicationFeedbackScaleUpFactorHundredthPercent": "0",
-  "FIntRenderShadowIntensity": "0",
-  "DFIntMaxProcessPacketsStepsAccumulated": "0",
-  "DFIntHttpBatchApi_maxWaitMs": "40",
-  "FFlagEnableZstdForClientSettings": "False",
-  "DFIntMaxReceiveToDeserializeLatencyMilliseconds": "10",
-  "FIntInterpolationAwareTargetTimeLerpHundredth": "40",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "DFIntPhysicsReceiveNumParallelTasks": "12",
-  "FFlagDebugCheckRenderThreading": "True",
-  "DFIntTargetTimeDelayFacctorTenths": "15",
-  "FIntFontSizePadding": "3",
-  "DFIntSoundVelocitySmoothingNewRatio": "2",
-  "FFlagDebugRenderCollectGpuCounters": "True",
-  "DFIntRakNetApplicationFeedbackScaleUpThresholdPercent": "0",
-  "FIntFRMMinGrassDistance": "0",
-  "DFFlagDebugSkipMeshVoxelizer": "True",
-  "FFlagAddDMLogging": "False",
-  "FIntCameraMaxZoomDistance": "2147483647",
-  "FIntDefaultJitterN": "0",
-  "DFIntTextureQualityOverride": "0",
-  "FIntFullscreenTitleBarTriggerDelayMillis": "3600000",
-  "FIntRenderShadowmapBias": "0",
-  "FFlagVoiceBetaBadge": "False",
-  "FFlagRenderInstanceClusterRetryPartInvalidationWhenMeshNotReady4": "False",
-  "FFlagRenderSkipReadingShaderData": "False",
-  "DFIntTeleportClientAssetPreloadingHundredthsPercentage": "100000",
-  "DFIntHttpBatchApi_minWaitMs": "5",
-  "DFFlagTeleportClientAssetPreloadingEnabled9": "True",
-  "FFlagSortKeyOptimization": "True",
-  "DFIntTrackCountryRegionAPIHundredthsPercent": "10000",
-  "FFlagSoundsUsePhysicalVelocity": "True",
-  "FIntPreferredTextSizeSettingBetaFeatureRolloutPercent": "100",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "0",
-  "DFIntMaxProcessPacketsJobScaling": "10000",
-  "DFIntMemoryUtilityCurveTotalMemoryReserve": "0",
-  "DFIntClientPacketExcessMicroseconds": "1000",
-  "DFFlagFrameTimeStdDev": "False",
-  "DFIntMaxProcessPacketsStepsPerCyclic": "5000",
-  "FIntEnableVisBugChecksHundredthPercent27": "100",
-  "FFlagUserCameraControlLastInputTypeUpdate": "False",
-  "FIntUITextureMaxUpdateDepth": "1",
-  "DFIntCharacterLoadTime": "1",
-  "FFlagNewCameraControls_SpeedAdjustEnum": "False",
-  "FIntRuntimeMaxNumOfSemaphores": "1000000",
-  "DFFlagDisableDPIScale": "False",
-  "DFIntWaitOnRecvFromLoopEndedMS": "10",
-  "DFIntTeleportClientAssetPreloadingHundredthsPercentage2": "1000",
-  "DFFlagDebugPerfMode": "True",
-  "FFlagLargeReplicatorWrite2": "True",
-  "DFIntGraphicsOptimizationModeFRMFrameRateTarget": "1000",
-  "FIntSmoothMouseSpringFrequencyTenths": "100",
-  "FFlagLuaMenuPerfImprovements": "True",
-  "DFIntOcclusionGainScalarNumerator": "2",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "DFIntFrameRateMSToReduceTouchEvents": "30",
-  "FFlagGraphicsEnableD3D10Compute": "True",
-  "FFlagPushFrameTimeToHarmony": "True",
-  "DFFlagTextureQualityOverrideEnabled": "False",
-  "FIntInterpolationMaxDelayMSec": "100",
-  "DFFlagReplicatorCheckReadTableCollisions": "True",
-  "DFFlagRakNetEnablePoll": "True",
-  "FIntFRMMaxGrassDistance": "0",
-  "FIntTerrainArraySliceSize": "0",
-  "FFlagDebugForceFutureIsBrightPhase3": "True",
-  "FFlagRenderFixGrassPrepass": "False",
-  "DFIntPerformanceControlFrameTimeMax": "4",
-  "DFIntRakNetLoopMs": "1",
-  "FIntRuntimeMaxNumOfLatches": "1000000",
-  "FFlagMessageBusCallOptimization": "True",
-  "FFlagVideoServiceAddHardwareCodecMetrics": "True",
-  "DFFlagReplicatorDisKickSize": "True",
-  "FIntSimSolverResponsiveness": "2147483647",
-  "FFlagNextGenReplicatorEnabledRead2": "True",
-  "FFlagUserShowGuiHideToggles": "True",
-  "FFlagDebugGraphicsPreferD3D11": "True",
-  "DFIntContentProviderPreloadHangTelemetryHundredthsPercentage": "0",
-  "FIntLuaGcParallelMinMultiTasks": "12",
-  "DFFlagSimOptimizeGeometryChangedAssemblies3": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabledIXP2": "True",
-  "FIntVertexSmoothingGroupTolerance": "250",
-  "DFIntNetworkSchemaCompressionRatio": "0",
-  "DFIntClientPacketHealthyAllocationPercent": "20",
-  "FIntRuntimeMaxNumOfThreads": "1000000",
-  "FFlagAddHapticsToggle": "False",
-  "FFlagBetaBadgeLearnMoreLinkFormview": "False",
-  "FFlagQuaternionPoseCorrection": "True",
-  "DFFlagRobloxTelemetryAddDeviceRAM": "False",
-  "FFlagImproveShiftLockTransition": "True",
-  "DFIntSoundVelocitySmoothingOldRatio": "5",
-  "DFFlagDebugOverrideDPIScale": "False",
-  "DFIntTaskSchedulerJobInGameThreads": "12",
-  "DFIntTimestepArbiterHumanoidLinearVelThreshold": "1",
-  "FFlagAlwaysShowVRToggleV3": "False",
-  "DFIntMaxAcceptableUpdateDelay": "1",
-  "FFlagLuaAppLegacyInputSettingRefactor": "True",
-  "DFIntNetworkQualityResponderMaxWaitTime": "1",
-  "DFIntCodecMaxIncomingPackets": "100",
-  "FFlagEnableVisBugChecks27": "True",
-  "DFIntServerFramesBetweenJoins": "1",
-  "DFIntHttpBatchApi_cacheDelayMs": "15",
-  "FIntV1MenuLanguageSelectionFeaturePerMillageRollout": "0",
-  "DFIntAnimationLodFacsVisibilityDenominator": "0",
-  "DFIntTimestepArbiterHumanoidTurningVelThreshold": "1",
-  "DFFlagSampleAndRefreshRakPing": "True",
-  "FFlagEnablePartyVoiceOnlyForEligibleUsers": "False",
-  "DFIntBufferCompressionLevel": "0",
-  "FFlagLuauCodegen": "True",
-  "DFIntRakNetSelectTimeoutMs": "1",
-  "FIntTaskSchedulerAutoThreadLimit": "12",
-  "FIntCLI20390_2": "1",
-  "DFFlagUseVisBugChecks": "True",
-  "FIntRenderMeshOptimizeVertexBuffer": "1",
-  "FFlagShoeSkipRenderMesh": "False",
-  "DFIntLargePacketQueueSizeCutoffMB": "1000",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "FFlagRenderNoLowFrmBloom": "False",
-  "DFFlagReplicateCreateToPlayer": "True",
-  "DFIntNetworkQualityResponderUnit": "10",
-  "DFIntPerformanceControlFrameTimeMaxUtility": "-1",
-  "FFlagCreationDBCompressRequest": "False",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL12": "0",
-  "FIntDirectionalAttenuationMaxPoints": "100",
-  "FFlagEnableInGameMenuDurationLogger": "False",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "DFIntTaskSchedulerTargetFps": "9999",
-  "DFIntCanHideGuiGroupId": "10807179",
-  "FFlagDebugSSAOForce": "False",
-  "FFlagDebugForceFutureIsBrightPhase2": "True",
-  "DFIntInterpolationNumParallelTasks": "12",
-  "DFIntClusterEstimatedCompressionRatioHundredths": "0",
-  "FFlagContentProviderPreloadHangTelemetry": "False",
-  "FIntDebugFRMOptionalMSAALevelOverride": "0",
-  "FFlagLargeReplicatorEnabled2": "True",
-  "FFlagUserSoundsUseRelativeVelocity2": "True",
-  "FFlagRenderDynamicResolutionScale9": "True",
-  "FFlagVisBugChecksThreadYield": "True",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "0",
-  "DFIntPerformanceControlReportingPeriodInMs": "700"
-}
-
----\\Voidstrap Fast Flags Script
-{
-  "DFIntTaskSchedulerTargetFps": 240,
-  "FFlagHandleAltEnterFullscreenManually": true,
-  "FIntQualityLevel": 1,
-  "FFlagGraphicsQualityAutoLevel": false,
-  "FFlagFixGraphicsQualityChange": true,
-  "FFlagFixGraphicsQualityReset": true,
-  "FFlagDebugDisableScriptingGC": true,
-  "FFlagDisableShadowRender": true,
-  "FFlagRenderShadow": false,
-  "FFlagTerrainSkipTextures": true,
-  "FFlagUserDisableCoreScriptTexturePreload": true,
-  "FFlagSkipFrameForSlowLoadingAssets": true,
-  "FFlagDoNotUploadRecentlyUsedAssets": true,
-  "FFlagEnableNewLoadingScreen": false,
-  "FFlagEnableNewVRSystem": false,
-  "FFlagNetworkCdnBypass": true,
-  "FFlagNetworkBypassUdpThrottling": true,
-  "FFlagReducePacketLoss": true,
-  "FFlagEnableFastGameJoin": true
-}
-
----\\240 fps + lower ping 
-{
-  "FIntDirectionalAttenuationMaxPoints": "0",
-  "FIntCameraMaxZoomDistance": "2147483647",
-  "FIntRenderMeshOptimizeVertexBuffer": "1",
-  "DFFlagTeleportClientAssetPreloadingDoingExperiment2": "True",
-  "DFFlagTeleportClientAssetPreloadingDoingExperiment": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabledIXP2": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabledIXP": "True",
-  "DFFlagPerformanceControlEnableMemoryProbing3": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabled9": "True",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "DFFlagTeleportPreloadingMetrics5": "True",
-  "FFlagVideoUseNewHardwareCodec4": "True",
-  "DFIntThrottlingPredictionAccelerationHoldThousandth": "2",
-  "DFIntTeleportClientAssetPreloadingHundredthsPercentage": "100000",
-  "FFlagAddHapticsToggle": "False",
-  "DFIntTaskSchedulerTargetFps": "240",
-  "FFlagRemoveRedundantFontPreloading": "True",
-  "FFlagGameBasicSettingsFramerateCap5": "True",
-  "DFIntPerformanceControlTextureQualityBestUtility": "-1",
-  "DFIntCullFactorPixelThresholdShadowMapLowQuality": "2147483647",
-  "FIntStudioWebView2TelemetryHundredthsPercent": "0",
-  "FFlagEnableInGameMenuChromeABTest4": "True",
-  "DFIntEnableVisBugChecksHundredthPercent": "1000",
-  "FFlagSyncWebViewCookieToEngine2": "False",
-  "FIntSmoothTerrainPhysicsCacheSize": "0",
-  "FIntRenderMaxShadowAtlasUsageBeforeDownscale": "0",
-  "DFFlagSimSolverOptimizeGeometricStiffness4": "True",
-  "FFlagEnableAudioEmitterDistanceAttenuation": "True",
-  "FFlagRenderOptimizeDecalTransparencyInvalidation": "True",
-  "DFFlagSimOptimizeSetSize": "True",
-  "FFlagDebugSkyGray": "True",
-  "DFIntCullFactorPixelThresholdShadowMapHighQuality": "2147483647",
-  "FLogNetwork": "7",
-  "FIntSmoothMouseSpringFrequencyTenths": "100",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "FIntRenderMeshOptimizeVertexBuffer": "0",
-  "FFlagEnableVisBugChecks27": "True",
-  "SFFlagGroundControllerTurningResponsiveness": "2147483647",
-  "DFIntAnimationLodFacsDistanceMax": "0",
-  "FFlagRenderShadowSkipHugeCulling": "True",
-  "FFlagEnableIOSWebViewCookieSyncFix": "False",
-  "FFlagUserCameraControlLastInputTypeUpdate": "True",
-  "DFIntTeleportClientAssetPreloadingHundredthsPercentage2": "100000",
-  "FIntRenderGrassDetailStrands": "0",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "FFlagBetaBadgeLearnMoreLinkFormview": "False",
-  "FFlagFixParticleAttachmentCulling": "False",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "DFFlagAudioEnableVolumetricPanningForPolys": "True",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FFlagUpdateHTTPCookieStorageFromWKWebView": "False",
-  "DFFlagPhysicsMechanismCacheOptimizeAlloc": "True",
-  "FFlagUserFixLoadAnimationError": "True",
-  "FFlagVideoServiceAddHardwareCodecMetrics": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabledIXP": "True",
-  "DFFlagEnableMeshPreloading2": "True",
-  "DFFlagDebugSkipMeshVoxelizer": "True",
-  "FIntSSAOMipLevels": "0",
-  "FFlagDebugSSAOForce": "False",
-  "DFFlagDisableDPIScale": "False",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "0",
-  "DFFlagVisBugFixUnloadReadyMesh": "True",
-  "FFlagAlwaysShowVRToggleV3": "False",
-  "FIntBloomFrmCutoff": "0",
-  "FFlagVideoRenderUseHardwareBuffer": "True",
-  "FFlagControlBetaBadgeWithGuac": "False",
-  "FFlagMouseGetPartOptimization": "True",
-  "FIntTerrainArraySliceSize": "0",
-  "FFlagNewOptimizeNoCollisionPrimitiveInMidphase651": "True",
-  "FFlagFRMRefactor": "False",
-  "FIntRenderLocalLightUpdatesMax": "1",
-  "DFFlagEnableTexturePreloading": "True",
-  "FIntUnifiedLightingBlendZone": "0",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "FFlagDebugDeterministicParticles": "False",
-  "FIntGrassMovementReducedMotionFactor": "0",
-  "FFlagShaderLightingRefactor": "True",
-  "DFIntTextureQualityOverride": "0",
-  "SFFlagGroundControllerBalancingResponsiveness": "2147483647",
-  "DFFlagWindowsWebViewTelemetryEnabled": "False",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "0",
-  "FFlagUserHideCharacterParticlesInFirstPerson": "True",
-  "DFIntHACDPointSampleDistApartTenths": "3000000",
-  "FFlagEnableVisBugChecks": "True",
-  "DFFlagDebugPauseVoxelizer": "True",
-  "FFlagChatTranslationEnableSystemMessage": "False",
-  "FFlagDebugForceFSMCPULightCulling": "True",
-  "FFlagDebugCheckRenderThreading": "True",
-  "FFlagDisablePostFx": "True",
-  "DFFlagDebugPerfMode": "True",
-  "FFlagLoginPageOptimizedPngs": "True",
-  "FFlagVRLaserPointerOptimization": "True",
-  "SFFlagAirControllerTurningResponsiveness": "2147483647",
-  "FFlagPreloadMinimalFonts": "True",
-  "DFIntAssetPreloading": "2147483647",
-  "DFFlagDebugUseOcclusionQueries": "True",
-  "DFIntMacWebViewTelemetryThrottleHundredthsPercent": "0",
-  "FIntNewInGameMenuPercentRollout3": "0",
-  "DFFlagAudioUseVolumetricPanning": "True",
-  "FIntDirectionalAttenuationMaxPoints": "0",
-  "DFIntCSGLevelOfDetailSwitchingDistance": "0",
-  "FIntDebugFRMOptionalMSAALevelOverride": "0",
-  "FFlagDisableFeedbackSoothsayerCheck": "False",
-  "DFIntWindowsWebViewTelemetryThrottleHundredthsPercent": "0",
-  "FFlagOcclusionCullingBetaFeature": "True",
-  "FIntRenderLocalLightUpdatesMin": "1",
-  "DFIntNumAssetsMaxToPreload": "2147483647",
-  "FIntCameraMaxZoomDistance": "99999",
-  "FFlagShoeSkipRenderMesh": "False",
-  "FFlagLuauCodegen": "True",
-  "DFIntAnimationLodFacsDistanceMin": "0",
-  "FFlagNewCameraControls_SpeedAdjustEnum": "False",
-  "FFlagUserCameraInputDt": "True",
-  "FFlagAssetPreloadingIXP": "True",
-  "DFIntContentProviderPreloadHangTelemetryHundredthsPercentage": "0",
-  "FFlagFixSensitivityTextPrecision": "False",
-  "FIntEnableVisBugChecksHundredthPercent27": "100",
-  "FFlagEnableRuntimeThreadVisQueries4": "True",
-  "FFlagRenderLightGridEfficientTextureAtlasUpdate": "True",
-  "SFFlagSimAnimationConstraintResponsiveness": "2147483647",
-  "FFlagRenderCBRefactor2": "True",
-  "FFlagRenderNoLowFrmBloom": "False",
-  "FFlagContentProviderPreloadHangTelemetry": "False",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FIntVertexSmoothingGroupTolerance": "0",
-  "FFlagRenderSkipReadingShaderData": "False",
-  "FFlagEnableRuntimeThreadVisQueries": "True",
-  "FFlagAdServiceEnabled": "False",
-  "FFlagUserCameraInputRefactor3": "True",
-  "DFFlagGraphicsOptimizationModeMVPExposureEnrollment4": "False",
-  "FFlagVideoTextureSupportHardwareRender2": "True",
-  "FIntV1MenuLanguageSelectionFeaturePerMillageRollout": "0",
-  "FFlagPreloadAllFonts": "True",
-  "DFFlagEnablePerfDataMainThread": "True",
-  "FFlagEnableCullableScene2OptimizeStep": "True",
-  "FFlagFixParticleEmissionBias2": "False",
-  "FFlagVisBugChecksThreadYield": "True",
-  "FFlagDebugCodegenOptSize": "True",
-  "FFlagCSGDecalOptimizeVB": "True",
-  "FFlagHandleAltEnterFullscreenManually": "False",
-  "FFlagVoiceBetaBadge": "False",
-  "FFlagDebugEnableDirectAudioOcclusion2": "True",
-  "DFFlagAudioToggleVolumetricPanning": "True",
-  "FFlagPreloadTextureItemsOption4": "True",
-  "FFlagVignetteEffectEnabled4": "False",
-  "DFFlagEnableSoundPreloading": "True",
-  "FIntRenderShadowIntensity": "0",
-  "DFFlagAssetPreloadingUrlVersionEnabled2": "True",
-  "FIntGameGridFlexFeedItemTileNumPerFeed": "0",
-  "DFFlagUnifyLegacyJointGeometry": "True",
-  "DFFlagTeleportPreloadingMetrics5": "True",
-  "FFlagDebugGraphicsPreferD3D11": "True",
-  "FIntBootstrapperWebView2InstallationTelemetryHundredthPercent": "0",
-  "DFFlagTeleportClientAssetPreloadingDoingExperiment": "True",
-  "FIntFRMMaxGrassDistance": "0",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "SFFlagAirControllerBalancingResponsiveness": "2147483647",
-  "FFlagPreOptimizeNoCollisionPrimitive": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabled9": "True",
-  "FIntRenderLocalLightFadeInMs": "0",
-  "FFlagRenderEnableGlobalInstancingD3D11": "True",
-  "FFlagLuaMenuPerfImprovements": "True",
-  "DFIntAnimationLodFacsVisibilityDenominator": "0",
-  "FFlagLuaAppGamesPagePreloadingDisabled": "False",
-  "FFlagUserUpdateInputConnections": "True",
-  "FFlagMuteTogglesEnableIXP": "False",
-  "DFIntDebugFRMQualityLevelOverride": "1",
-  "FFlagToastNotificationsProtocolEnabled2": "False",
-  "FFlagVRMouseMoveOptimization": "True",
-  "FFlagDebugForceGenerateHSR": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabledIXP2": "True",
-  "DFFlagOptimizeClusterCacheAlloc": "True",
-  "FFlagRenderDebugCheckThreading2": "True",
-  "FFlagTopBarUseNewBadge": "False",
-  "SFFlagSimSolverResponsiveness": "2147483647",
-  "DFFlagOptimizeIsA": "True",
-  "FFlagFixOutdatedTimeScaleParticles": "False",
-  "DFIntTrackCountryRegionAPIHundredthsPercent": "10000",
-  "FFlagNewLightAttenuation": "True",
-  "DFFlagVisBugFixPartUpdatedLock": "True",
-  "DFIntCanHideGuiGroupId": "32380007",
-  "DFFlagEnableTexturePreloading": "True",
-  "DFFlagSampleAndRefreshRakPing": "True",
-  "DFFlagTaskSchedulerAvoidSleep": "True",
-  "DFFlagDebugSkipMeshVoxelizer": "True",
-  "DFFlagEnableMeshPreloading2": "True",
-  "DFFlagEnableSoundPreloading": "True",
-  "DFFlagDebugPauseVoxelizer": "True",
-  "DFFlagSimOptimizeSetSize": "True",
-  "DFFlagDebugPerfMode": "True",
-  "DFFlagRobloxTelemetryAddDeviceRAM": "False",
-  "DFFlagDebugOverrideDPIScale": "False",
-  "DFFlagDisableDPIScale": "False",
-  "FFlagRenderInstanceClusterRetryPartInvalidationWhenMeshNotReady4": "False",
-  "FFlagEnablePartyVoiceOnlyForUnfilteredThreads": "False",
-  "FFlagEnablePartyVoiceOnlyForEligibleUsers": "False",
-  "FFlagUserCameraControlLastInputTypeUpdate": "False",
-  "FFlagContentProviderPreloadHangTelemetry": "False",
-  "FFlagChatTranslationEnableSystemMessage": "False",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "FFlagHandleAltEnterFullscreenManually": "False",
-  "FFlagBetaBadgeLearnMoreLinkFormview": "False",
-  "FFlagEnablePreferredTextSizeStyleFixesInAppShell3": "True",
-  "FFlagEnablePreferredTextSizeStyleFixesInAvatarExp": "True",
-  "FFlagEnablePreferredTextSizeSettingInMenus2": "True",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "FFlagVideoServiceAddHardwareCodecMetrics": "True",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FFlagRenderLegacyShadowsQualityRefactor": "True",
-  "FFlagEnablePreferredTextSizeGuiService": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "FFlagDebugEnableDirectAudioOcclusion2": "True",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FFlagUserSoundsUseRelativeVelocity2": "True",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "FFlagDebugForceFSMCPULightCulling": "True",
-  "FFlagDebugGraphicsPreferD3D11FL10": "True",
-  "FFlagEnablePreferredTextSizeScale": "True",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "FFlagUserBetterInertialScrolling": "True",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FFlagGraphicsEnableD3D10Compute": "True",
-  "FFlagImproveShiftLockTransition": "True",
-  "FFlagMessageBusCallOptimization": "True",
-  "FFlagPreloadTextureItemsOption4": "True",
-  "FFlagDebugCheckRenderThreading": "True",
-  "FFlagHighlightOutlinesOnMobile": "True",
-  "FFlagSoundsUsePhysicalVelocity": "True",
-  "FFlagQuaternionPoseCorrection": "True",
-  "FFlagLuaMenuPerfImprovements": "True",
-  "FFlagLoginPageOptimizedPngs": "True",
-  "FFlagUserShowGuiHideToggles": "True",
-  "FFlagDebugForceGenerateHSR": "True",
-  "FFlagFastGPULightCulling3": "True",
-  "FFlagNewLightAttenuation": "True",
-  "FFlagAssetPreloadingIXP": "True",
-  "FFlagPreloadAllFonts": "True",
-  "FFlagDisablePostFx": "True",
-  "FFlagLuauCodegen": "True",
-  "FFlagDisableFeedbackSoothsayerCheck": "False",
-  "FFlagEnableInGameMenuDurationLogger": "False",
-  "FFlagFixSensitivityTextPrecision": "False",
-  "FFlagRenderSkipReadingShaderData": "False",
-  "FFlagControlBetaBadgeWithGuac": "False",
-  "FFlagShaderLightingRefactor": "False",
-  "FFlagRenderFixGrassPrepass": "False",
-  "FFlagAlwaysShowVRToggleV3": "False",
-  "FFlagRenderNoLowFrmBloom": "False",
-  "FFlagShoeSkipRenderMesh": "False",
-  "FFlagAddHapticsToggle": "False",
-  "FFlagDebugSSAOForce": "False",
-  "FFlagVoiceBetaBadge": "False",
-  "FFlagAddDMLogging": "False",
-  "FFlagFRMRefactor": "False",
-  "DFIntContentProviderPreloadHangTelemetryHundredthsPercentage": "0",
-  "DFIntTeleportClientAssetPreloadingHundredthsPercentage2": "100000",
-  "DFIntTeleportClientAssetPreloadingHundredthsPercentage": "100000",
-  "DFIntMemoryUtilityCurveBaseHundrethsPercent": "10000",
-  "DFIntTrackCountryRegionAPIHundredthsPercent": "10000",
-  "DFIntHACDPointSampleDistApartTenths": "2147483647",
-  "DFIntAnimationLodFacsVisibilityDenominator": "0",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL12": "0",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "0",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "0",
-  "DFIntMemoryUtilityCurveTotalMemoryReserve": "0",
-  "DFIntAudioOcclusionMaxNumQueriesPerFrame": "6",
-  "DFIntAudioOcclusionMaxPiercedPrimitives": "6",
-  "DFIntOcclusionFresnelConsensusNumerator": "2",
-  "DFIntMemoryUtilityCurveNumSegments": "100",
-  "DFIntNumAssetsMaxToPreload": "2147483647",
-  "DFIntSoundVelocitySmoothingNewRatio": "2",
-  "DFIntSoundVelocitySmoothingOldRatio": "5",
-  "DFIntOcclusionShelfScalarNumerator": "2",
-  "DFIntOcclusionGainScalarNumerator": "2",
-  "DFIntPreloadAvatarAssets": "2147483647",
-  "DFIntAnimationLodFacsDistanceMax": "0",
-  "DFIntAnimationLodFacsDistanceMin": "0",
-  "DFIntAudioOcclusionUpdateRateMs": "2",
-  "DFIntOcclusionFresnelEllipsoids": "6",
-  "DFIntAssetPreloading": "2147483647",
-  "DFIntCanHideGuiGroupId": "32380007",
-  "DFIntTaskSchedulerTargetFps": "240",
-  "DFIntTextureQualityOverride": "0",
-  "DFIntS2PhysicsSenderRate": "128",
-  "DFIntMaxFrameBufferSize": "4",
-  "DFIntCharacterLoadTime": "1",
-  "FIntPreferredTextSizeSettingBetaFeatureRolloutPercent": "100",
-  "FIntV1MenuLanguageSelectionFeaturePerMillageRollout": "0",
-  "FIntFullscreenTitleBarTriggerDelayMillis": "3600000",
-  "FIntRenderMaxShadowAtlasUsageBeforeDownscale": "0",
-  "FIntDebugFRMOptionalMSAALevelOverride": "0",
-  "FIntGrassMovementReducedMotionFactor": "0"
-}
-
----\\ 500 fps 
-{
-  "FFlagAdServiceEnabled": "False",
-  "FIntRakNetResendBufferArrayLength": "128",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "FIntDebugForceMSAASamples": "1",
-  "DFStringLightstepToken": "null",
-  "FFlagDebugForceFutureIsBrightPhase3": "True",
-  "FFlagDebugGraphicsPreferD3D11FL10": "False",
-  "DFStringRobloxAnalyticsURL": "null",
-  "FFlagFixGraphicsQuality": "True",
-  "DFIntRaknetBandwidthInfluxHundredthsPercentageV2": "10000",
-  "DFFlagDebugPerfMode": "False",
-  "FStringCoreScriptBacktraceErrorUploadToken": "null",
-  "DFIntDebugFRMQualityLevelOverride": "1",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "DFStringCrashUploadToBacktraceBaseUrl": "null",
-  "FFlagEnableV3MenuABTest3": "False",
-  "FIntRuntimeMaxNumOfThreads": "2400",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "DFIntCodecMaxIncomingPackets": "100",
-  "FFlagPreloadAllFonts": "False",
-  "FFlagFastGPULightCulling3": "True",
-  "DFStringTelemetryV2Url": "null",
-  "DFIntPerformanceControlTextureQualityBestUtility": "-1",
-  "FFlagDisablePostFx": "True",
-  "DFIntRakNetResendRttMultiple": "1",
-  "FFlagDisableNewIGMinDUA": "True",
-  "DFFlagDebugPauseVoxelizer": "True",
-  "FFlagDebugCheckRenderThreading": "True",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "DFIntRenderingThrottleDelayInMS": "1",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "DFStringCrashUploadToBacktraceMacPlayerToken": "null",
-  "FFlagDebugGraphicsPreferD3D11": "True",
-  "DFStringAltHttpPointsReporterUrl": "null",
-  "DFIntConnectionMTUSize": "1200",
-  "FFlagDebugGraphicsPreferOpenGL": "True",
-  "FFlagEnableInGameMenuChrome": "True",
-  "DFIntWaitOnRecvFromLoopEndedMS": "100",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FFlagDebugSkyGray": "True",
-  "DFFlagDisableDPIScale": "True",
-  "DFIntCodecMaxOutgoingFrames": "10000",
-  "DFIntRaknetBandwidthPingSendEveryXSeconds": "1",
-  "FFlagDebugRenderingSetDeterministic": "True",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "DFIntWaitOnUpdateNetworkLoopEndedMS": "100",
-  "FFlagDebugGraphicsPreferVulkan": "True",
-  "DFIntRakNetClockDriftAdjustmentPerPingMillisecond": "100",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "DFIntCSGLevelOfDetailSwitchingDistance": "0",
-  "FFlagEnableInGameMenuChromeABTest3": "False",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "0",
-  "DFIntTextureQualityOverride": "0",
-  "DFStringLightstepHTTPTransportUrlHost": "null",
-  "FIntRenderShadowIntensity": "0",
-  "DFIntRakNetLoopMs": "1",
-  "FFlagEnableMenuControlsABTest": "False",
-  "FIntFullscreenTitleBarTriggerDelayMillis": "18000000",
-  "DFStringLightstepHTTPTransportUrlPath": "null",
-  "FFlagEnableInGameMenuModernization": "True",
-  "DFIntMaxProcessPacketsJobScaling": "10000",
-  "DFIntTaskSchedulerTargetFps": "69420",
-  "FIntTerrainArraySliceSize": "0",
-  "DFIntMegaReplicatorNetworkQualityProcessorUnit": "10",
-  "DFStringHttpPointsReporterUrl": "null",
-  "FFlagEnableInGameMenuControls": "True",
-  "DFIntClientLightingTechnologyChangedTelemetryHundredthsPercent": "0",
-  "DFIntMaxProcessPacketsStepsPerCyclic": "5000",
-  "FFlagRenderDebugCheckThreading2": "True",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "0",
-  "DFIntLargePacketQueueSizeCutoffMB": "1000",
-  "DFFlagDisableFastLogTelemetry": "True",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL12": "0",
-  "DFIntMaxProcessPacketsStepsAccumulated": "0",
-  "FFlagNewLightAttenuation": "True",
-  "FFlagGameBasicSettingsFramerateCap5": "True",
-  "FIntTaskSchedulerThreadMin": "3",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "DFFlagBrowserTrackerIdTelemetryEnabled": "False",
-  "FLogNetwork": "7",
-  "FFlagDebugForceFutureIsBrightPhase3": "True",
-  "FIntDebugForceMSAASamples": "1",
-  "FIntTerrainArraySliceSize": "0",
-  "FIntFullscreenTitleBarTriggerDelayMillis": "3600000",
-  "FFlagDebugGraphicsPreferOpenGL": "True",
-  "DFFlagDisableDPIScale": "True",
-  "FIntRenderShadowIntensity": "0",
-  "FIntFontSizePadding": "4",
-  "FFlagDisablePostFx": "True",
-  "FFlagDebugGraphicsPreferVulkan": "True",
-  "FFlagDebugGraphicsPreferD3D11FL10": "True",
-  "DFIntTextureQualityOverride": "0",
-  "FFlagDebugGraphicsPreferD3D11": "True",
-  "DFIntTaskSchedulerTargetFps": "69420",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "FFlagEnableInGameMenuControls": "True",
-  "FFlagEnableInGameMenuModernization": "True",
-  "FFlagEnableInGameMenuChrome": "True",
-  "FFlagEnableMenuControlsABTest": "False",
-  "FFlagEnableV3MenuABTest3": "False",
-  "FFlagEnableInGameMenuChromeABTest3": "False",
-  "DFIntNetworkPrediction": "120",
-  "DFIntOptimizePingThreshold": "50",
-  "FIntEmotesAnimationsPerPlayerCacheSize": "16777216",
-  "FStringErrorUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "DFIntRakNetNakResendDelayMs": "10",
-  "DFStringRobloxAnalyticsSubDomain": "opt-out",
-  "FFlagEnableQuickGameLaunch": "False",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "DFIntReportRecordingDeviceInfoRateHundredthsPercentage": "0",
-  "DFStringAltTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "DFIntUserIdPlayerNameLifetimeSeconds": "86400",
-  "DFIntRakNetMtuValue2InBytes": "1240",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FFlagPreloadAllFonts": "True",
-  "DFIntHardwareTelemetryHundredthsPercent": "0",
-  "FIntLmsClientRollout2": "0",
-  "FFlagDebugSkyGray": "True",
-  "FFlagFastGPULightCulling3": "True",
-  "FFlagEnableMenuModernizationABTest": "False",
-  "FIntDefaultMeshCacheSizeMB": "256",
-  "FFlagNewLightAttenuation": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "1",
-  "DFFlagRakNetUseSlidingWindow4": "True",
-  "FFlagDebugLightGridShowChunks": "False",
-  "FFlagOptimizeNetwork": "True",
-  "FIntFRMMinGrassDistance": "0",
-  "FStringInGameMenuChromeForcedUserIds": "1353919681",
-  "FIntMeshContentProviderForceCacheSize": "268435456",
-  "FFlagCoreGuiTypeSelfViewPresent": "False",
-  "DFIntGoogleAnalyticsLoadPlayerHundredth": "0",
-  "FIntRenderLocalLightUpdatesMin": "1",
-  "DFIntPlayerNetworkUpdateRate": "60",
-  "DFIntLightstepHTTPTransportHundredthsPercent2": "0",
-  "DFIntRakNetNakResendDelayRttPercent": "50",
-  "FFlagRenderGpuTextureCompressor": "True",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "DFIntNetworkLatencyTolerance": "1",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FIntRakNetResendBufferArrayLength": "1024",
-  "DFFlagSimReportCPUInfo": "False",
-  "FIntBootstrapperTelemetryReportingHundredthsPercentage": "0",
-  "FFlagTopBarUseNewBadge": "True",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "DFIntConnectionMTUSize": "900",
-  "FFlagEnableInGameMenuV3": "True",
-  "FFlagLuaAppExitModalDoNotShow": "True",
-  "FIntRenderGrassDetailStrands": "0",
-  "FIntTerrainOTAMaxTextureSize": "1024",
-  "FFlagGameBasicSettingsFramerateCap5": "True",
-  "FStringPerformanceSendMeasurementAPISubdomain": "opt-out",
-  "DFIntHttpCurlConnectionCacheSize": "134217728",
-  "FIntRenderGrassHeightScaler": "0",
-  "DFFlagEnableFmodErrorsTelemetry": "False",
-  "DFIntUserIdPlayerNameCacheSize": "33554432",
-  "FFlagOptimizeServerTickRate": "True",
-  "FFlagDontCreatePingJob": "True",
-  "FFlagReconnectDisabled": "True",
-  "FFlagDebugDisplayFPS": "False",
-  "DFFlagEnableGCapsHardwareTelemetry": "False",
-  "FIntFRMMaxGrassDistance": "0",
-  "DFFlagDebugAnalyticsSendUserId": "False",
-  "DFFlagEnableHardwareTelemetry": "False",
-  "DFIntRakNetMtuValue3InBytes": "1200",
-  "FFlagMSRefactor5": "False",
-  "FFlagOptimizeNetworkRouting": "True",
-  "DFIntPlayerNetworkUpdateQueueSize": "20",
-  "FIntRenderShadowmapBias": "0",
-  "DFStringHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "DFIntCSGLevelOfDetailSwitchingDistance": "1",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FIntUITextureMaxRenderTextureSize": "1024",
-  "FFlagLuaAppSystemBar": "False",
-  "DFIntPerformanceControlTextureQualityBestUtility": "-1",
-  "DFFlagEnableLightstepReporting2": "False",
-  "FFlagOptimizeNetworkTransport": "True",
-  "DFIntRaknetBandwidthPingSendEveryXSeconds": "1",
-  "FFlagBatchAssetApi": "True",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "FIntRakNetDatagramMessageIdArrayLength": "1024",
-  "FFlagPreloadTextureItemsOption4": "True",
-  "DFIntRakNetMtuValue1InBytes": "1280",
-  "FFlagEnableMenuModernizationABTest2": "False",
-  "FFlagEnableSoundTelemetry": "False",
-  "DFIntRakNetNakResendDelayMsMax": "100",
-  "FIntRenderLocalLightUpdatesMax": "1",
-  "DFFlagDebugPauseVoxelizer": "True",
-  "DFStringAltHttpPointsReporterUrl": "http://opt-out.roblox.com",
-  "DFStringCrashUploadToBacktraceBaseUrl": "http://opt-out.roblox.com",
-  "DFStringAnalyticsEventStreamUrlEndpoint": "opt-out",
-  "FFlagLuaAppExitModal2": "False",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL12": "1",
-  "DFIntServerTickRate": "60",
-  "DFIntRakNetResendRttMultiple": "1",
-  "DFFlagAudioDeviceTelemetry": "False",
-  "DFFlagGpuVsCpuBoundTelemetry": "False",
-  "DFFlagBatchAssetApiNoFallbackOnFail": "False",
-  "DFFlagQueueDataPingFromSendData": "True",
-  "DFIntServerPhysicsUpdateRate": "60",
-  "FFlagAnimationClipMemCacheEnabled": "True",
-  "DFStringTelegrafHTTPTransportUrl": "http://opt-out.roblox.com",
-  "DFIntReportOutputDeviceInfoRateHundredthsPercentage": "0",
-  "FFlagInGameMenuV1FullScreenTitleBar": "False",
-  "FFlagGpuGeometryManager7": "True",
-  "DFStringRobloxAnalyticsURL": "http://opt-out.roblox.com",
-  "FFlagAdServiceEnabled": "False",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "1",
-  "DFIntMaxFrameBufferSize": "4",
-  "FFlagDebugRenderingSetDeterministic": "False",
-  "FIntRuntimeMaxNumOfThreads": "2400",
-  "FIntTaskSchedulerThreadMin": "3",
-  "DFIntLargePacketQueueSizeCutoffMB": "1000",
-  "DFIntMaxProcessPacketsJobScaling": "10000",
-  "DFIntMaxProcessPacketsStepsAccumulated": "0",
-  "DFIntMaxProcessPacketsStepsPerCyclic": "5000",
-  "DFIntMegaReplicatorNetworkQualityProcessorUnit": "10",
-  "DFIntRakNetLoopMs": "1",
-  "DFIntWaitOnRecvFromLoopEndedMS": "100",
-  "DFIntWaitOnUpdateNetworkLoopEndedMS": "100",
-  "DFIntRakNetClockDriftAdjustmentPerPingMillisecond": "100",
-  "DFIntRaknetBandwidthInfluxHundredthsPercentageV2": "10000",
-  "DFIntCodecMaxIncomingPackets": "100",
-  "DFIntCodecMaxOutgoingFrames": "10000",
-  "FIntNewInGameMenuPercentRollout3": "0",
-  "FFlagEnableInGameMenuChromeABTest4": "False"
-}
-
----\\500 fps instant 
-{
-  "FFlagDebugSkyGray": "True",
-  "DFIntCullFactorPixelThresholdShadowMapHighQuality": "2147483647",
-  "FLogNetwork": "7",
-  "FIntSmoothMouseSpringFrequencyTenths": "100",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "FIntRenderMeshOptimizeVertexBuffer": "0",
-  "FFlagEnableVisBugChecks27": "True",
-  "SFFlagGroundControllerTurningResponsiveness": "2147483647",
-  "DFIntAnimationLodFacsDistanceMax": "0",
-  "FFlagRenderShadowSkipHugeCulling": "True",
-  "FFlagEnableIOSWebViewCookieSyncFix": "False",
-  "FFlagUserCameraControlLastInputTypeUpdate": "True",
-  "DFIntTeleportClientAssetPreloadingHundredthsPercentage2": "100000",
-  "FIntRenderGrassDetailStrands": "0",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "FFlagBetaBadgeLearnMoreLinkFormview": "False",
-  "FFlagFixParticleAttachmentCulling": "False",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "DFFlagAudioEnableVolumetricPanningForPolys": "True",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FFlagUpdateHTTPCookieStorageFromWKWebView": "False",
-  "DFFlagPhysicsMechanismCacheOptimizeAlloc": "True",
-  "FFlagUserFixLoadAnimationError": "True",
-  "FFlagVideoServiceAddHardwareCodecMetrics": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabledIXP": "True",
-  "DFFlagEnableMeshPreloading2": "True",
-  "FIntSSAOMipLevels": "0",
-  "FFlagDebugSSAOForce": "False",
-  "DFFlagDisableDPIScale": "False",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL23": "0",
-  "DFFlagVisBugFixUnloadReadyMesh": "True",
-  "FFlagAlwaysShowVRToggleV3": "False",
-  "FIntBloomFrmCutoff": "0",
-  "FFlagVideoRenderUseHardwareBuffer": "True",
-  "FFlagControlBetaBadgeWithGuac": "False",
-  "FFlagMouseGetPartOptimization": "True",
-  "FIntTerrainArraySliceSize": "0",
-  "FFlagNewOptimizeNoCollisionPrimitiveInMidphase651": "True",
-  "FFlagFRMRefactor": "False",
-  "FIntRenderLocalLightUpdatesMax": "1",
-  "DFFlagEnableTexturePreloading": "True",
-  "FIntUnifiedLightingBlendZone": "0",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "FFlagDebugDeterministicParticles": "False",
-  "FIntGrassMovementReducedMotionFactor": "0",
-  "FFlagShaderLightingRefactor": "True",
-  "DFIntTextureQualityOverride": "0",
-  "SFFlagGroundControllerBalancingResponsiveness": "2147483647",
-  "DFFlagWindowsWebViewTelemetryEnabled": "False",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL34": "0",
-  "FFlagUserHideCharacterParticlesInFirstPerson": "True",
-  "DFIntHACDPointSampleDistApartTenths": "3000000",
-  "FFlagEnableVisBugChecks": "True",
-  "DFFlagDebugPauseVoxelizer": "True",
-  "FFlagChatTranslationEnableSystemMessage": "False",
-  "FFlagDebugForceFSMCPULightCulling": "True",
-  "FFlagDebugCheckRenderThreading": "True",
-  "FFlagDisablePostFx": "True",
-  "DFFlagDebugPerfMode": "True",
-  "FFlagLoginPageOptimizedPngs": "True",
-  "FFlagVRLaserPointerOptimization": "True",
-  "SFFlagAirControllerTurningResponsiveness": "2147483647",
-  "FFlagPreloadMinimalFonts": "True",
-  "DFIntAssetPreloading": "2147483647",
-  "DFFlagDebugUseOcclusionQueries": "True",
-  "DFIntMacWebViewTelemetryThrottleHundredthsPercent": "0",
-  "FIntNewInGameMenuPercentRollout3": "0",
-  "DFFlagAudioUseVolumetricPanning": "True",
-  "FIntDirectionalAttenuationMaxPoints": "0",
-  "DFIntCSGLevelOfDetailSwitchingDistance": "0",
-  "FIntDebugFRMOptionalMSAALevelOverride": "0",
-  "FFlagDisableFeedbackSoothsayerCheck": "False",
-  "DFIntWindowsWebViewTelemetryThrottleHundredthsPercent": "0",
-  "FFlagOcclusionCullingBetaFeature": "True",
-  "FIntRenderLocalLightUpdatesMin": "1",
-  "DFIntNumAssetsMaxToPreload": "2147483647",
-  "FIntCameraMaxZoomDistance": "99999",
-  "FFlagShoeSkipRenderMesh": "False",
-  "FFlagLuauCodegen": "True",
-  "DFIntAnimationLodFacsDistanceMin": "0",
-  "FFlagNewCameraControls_SpeedAdjustEnum": "False",
-  "FFlagUserCameraInputDt": "True",
-  "FFlagAssetPreloadingIXP": "True",
-  "DFIntContentProviderPreloadHangTelemetryHundredthsPercentage": "0",
-  "FFlagFixSensitivityTextPrecision": "False",
-  "FIntEnableVisBugChecksHundredthPercent27": "100",
-  "FFlagEnableRuntimeThreadVisQueries4": "True",
-  "FFlagRenderLightGridEfficientTextureAtlasUpdate": "True",
-  "SFFlagSimAnimationConstraintResponsiveness": "2147483647",
-  "FFlagRenderCBRefactor2": "True",
-  "FFlagRenderNoLowFrmBloom": "False",
-  "FFlagContentProviderPreloadHangTelemetry": "False",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FIntVertexSmoothingGroupTolerance": "0",
-  "FFlagRenderSkipReadingShaderData": "False",
-  "FFlagEnableRuntimeThreadVisQueries": "True",
-  "FFlagAdServiceEnabled": "False",
-  "FFlagUserCameraInputRefactor3": "True",
-  "DFFlagGraphicsOptimizationModeMVPExposureEnrollment4": "False",
-  "FFlagVideoTextureSupportHardwareRender2": "True",
-  "FStringTerrainMaterialTable2022": "",
-  "FIntV1MenuLanguageSelectionFeaturePerMillageRollout": "0",
-  "FFlagPreloadAllFonts": "True",
-  "DFFlagEnablePerfDataMainThread": "True",
-  "FFlagEnableCullableScene2OptimizeStep": "True",
-  "FFlagFixParticleEmissionBias2": "False",
-  "FFlagVisBugChecksThreadYield": "True",
-  "FFlagDebugCodegenOptSize": "True",
-  "FFlagCSGDecalOptimizeVB": "True",
-  "FFlagHandleAltEnterFullscreenManually": "False",
-  "FFlagVoiceBetaBadge": "False",
-  "FFlagDebugEnableDirectAudioOcclusion2": "True",
-  "DFFlagAudioToggleVolumetricPanning": "True",
-  "FFlagPreloadTextureItemsOption4": "True",
-  "FFlagVignetteEffectEnabled4": "False",
-  "DFFlagEnableSoundPreloading": "True",
-  "FIntRenderShadowIntensity": "0",
-  "DFFlagAssetPreloadingUrlVersionEnabled2": "True",
-  "FIntGameGridFlexFeedItemTileNumPerFeed": "0",
-  "DFFlagUnifyLegacyJointGeometry": "True",
-  "DFFlagTeleportPreloadingMetrics5": "True",
-  "FFlagDebugGraphicsPreferD3D11": "True",
-  "FIntBootstrapperWebView2InstallationTelemetryHundredthPercent": "0",
-  "DFFlagTeleportClientAssetPreloadingDoingExperiment": "True",
-  "FIntFRMMaxGrassDistance": "0",
-  "FFlagVRMouseMoveOptimization": "True",
-  "FFlagDebugForceGenerateHSR": "True",
-  "DFFlagTeleportClientAssetPreloadingEnabledIXP2": "True",
-  "DFFlagOptimizeClusterCacheAlloc": "True",
-  "FFlagRenderDebugCheckThreading2": "True",
-  "FFlagTopBarUseNewBadge": "False",
-  "SFFlagSimSolverResponsiveness": "2147483647",
-  "DFFlagOptimizeIsA": "True",
-  "FFlagFixOutdatedTimeScaleParticles": "False",
-  "DFIntTrackCountryRegionAPIHundredthsPercent": "10000",
-  "FFlagNewLightAttenuation": "True",
-  "DFFlagVisBugFixPartUpdatedLock": "True",
-  "FFlagRenderLegacyShadowsQualityRefactor": "True",
-  "FIntRenderShadowmapBias": "0",
-  "DFIntInitialAccelerationLatencyMultTenths": "1",
-  "DFIntCSGLevelOfDetailSwitchingDistanceL12": "0",
-  "FIntFRMMinGrassDistance": "0",
-  "FIntEnableCullableScene2HundredthPercent3": "100",
-  "DFFlagAudioEnableVolumetricPanningForMeshes": "True",
-  "FIntFullscreenTitleBarTriggerDelayMillis": "3600000"
-}
-
----\\1.300fps+ (just tested with bloxtrap , others may dont works)
-
-{
-  "DFIntNetworkLatencyTolerance": "1",
-  "DFFlagRakNetCalculateApplicationFeedback2": "True",
-  "FStringRemoteAnimationSmoothingStrategy": "ExponentialDecay",
-  "DFIntClientPacketMaxFrameMicroseconds": "200",
-  "FIntFontSizePadding": "2",
-  "FFlagDebugSkyGray": "True",
-  "DFIntRakNetNakResendDelayMsMax": "100",
-  "DFIntGraphicsOptimizationModeMaxFrameTimeTargetMs": "20",
-  "FFlagOptimizeNetworkRouting": "true",
-  "DFFlagNetworkUseZstdWrapper": "False",
-  "DFIntRakNetNakResendDelayRttPercent": "50",
-  "FFlagDebugGraphicsPreferD3D11FL10": "True",
-  "DFIntTextureQualityOverride": "0",
-  "FFlagDisableFeedbackSoothsayerCheck": "False",
-  "DFIntPlayerNetworkUpdateRate": "60",
-  "FFlagOptimizeServerTickRate": "true",
-  "DFIntMaxDataPacketPerSend": "2147483647",
-  "FFlagEnableInGameMenuControls": "True",
-  "FIntInterpolationAwareTargetTimeLerpHundredth": "110",
-  "DFIntRakNetMtuValue2InBytes": "1240",
-  "FFlagEnablePerformanceControlService": "True",
-  "DFIntRakNetNakResendDelayMs": "10",
-  "DFIntMegaReplicatorNetworkQualityProcessorUnit": "10",
-  "DFIntInitialAccelerationLatencyMultTenths": "1",
-  "DFIntNetworkSchemaCompressionRatio": "100",
-  "DFIntPerformanceControlFrameTimeMax": "1",
-  "FFlagEnableZstdDictionaryForClientSettings": "False",
-  "DFIntTaskSchedulerTargetFps": "9999",
-  "DFIntMaxAcceptableUpdateDelay": "1",
-  "FFlagDebugLargeReplicatorRead": "True",
-  "DFFlagRakNetDetectRecvThreadOverload": "True",
-  "FFlagFasterPreciseTime4": "True",
-  "FFlagRigScaleShouldAffectAnimations": "True",
-  "DFIntRakNetLoopMs": "1",
-  "DFIntMaxProcessPacketsStepsPerCyclic": "5000",
-  "DFIntCodecMaxIncomingPackets": "100",
-  "DFIntClientPacketHealthyAllocationPercent": "20",
-  "FFlagDebugForceFutureIsBrightPhase3": "True",
-  "FFlagHandleAltEnterFullscreenManually": "False",
-  "DFIntClientPacketMaxDelayMs": "1",
-  "FFlagUserShowGuiHideToggles": "True",
-  "DFFlagSolverStateReplicatedOnly2": "True",
-  "FFlagLoginPageOptimizedPngs": "True",
-  "FFlagDebugForceFutureIsBrightPhase2": "True",
-  "DFIntRakNetMtuValue1InBytes": "1280",
-  "FIntDebugForceMSAASamples": "0",
-  "DFIntDataSenderRate": "128",
-  "FFlagHighlightOutlinesOnMobile": "True",
-  "DFIntWaitOnUpdateNetworkLoopEndedMS": "100",
-  "DFIntRaknetBandwidthPingSendEveryXSeconds": "1",
-  "DFIntMaxProcessPacketsJobScaling": "10000",
-  "FFlagDebugLargeReplicatorWrite": "True",
-  "FIntNewInGameMenuPercentRollout3": "0",
-  "FFlagEnableInGameMenuChrome": "True",
-  "DFIntLargePacketQueueSizeCutoffMB": "1000",
-  "DFFlagAllowRegistrationOfAnimationClipInCoreScripts": "True",
-  "DFIntClientPacketExcessMicroseconds": "1000",
-  "FIntV1MenuLanguageSelectionFeaturePerMillageRollout": "0",
-  "DFIntRakNetMtuValue3InBytes": "1200",
-  "FFlagDebugDisableTelemetryV2Stat": "True",
-  "DFIntMaxProcessPacketsStepsAccumulated": "0",
-  "FFlagLuaAppLegacyInputSettingRefactor": "True",
-  "FFlagEnableInGameMenuDurationLogger": "False",
-  "DFFlagReplicateCreateToPlayer": "True",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "DFIntCanHideGuiGroupId": "32380007",
-  "FFlagDebugCodegenOptSize": "True",
-  "FFlagDebugDisableOptimizedBytecode": "False",
-  "DFFlagRakNetUseSlidingWindow4": "True",
-  "FFlagDebugGraphicsPreferD3D11": "True",
-  "FFlagEnableZstdForClientSettings": "False",
-  "FFlagOptimizeNetwork": "true",
-  "DFFlagReplicatorCheckReadTableCollisions": "True",
-  "FFlagAssetImportRemoveAnimationSuffix": "True",
-  "DFFlagRakNetUnblockSelectOnShutdownByWritingToSocket": "True",
-  "FFlagAlwaysShowVRToggleV3": "False",
-  "DFIntNetworkPrediction": "120",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "FFlagDisablePostFx": "True",
-  "DFIntBufferCompressionLevel": "0",
-  "DFFlagDisableDPIScale": "False",
-  "DFIntBufferCompressionThreshold": "100",
-  "FFlagMessageBusCallOptimization": "True",
-  "DFFlagRakNetEnablePoll": "True",
-  "FFlagTaskSchedulerLimitTargetFpsTo2402": "False",
-  "FFlagEnableInGameMenuChromeABTest4": "True",
-  "FFlagGameBasicSettingsFramerateCap5": "false",
-  "FIntTerrainArraySliceSize": "0",
-  "FFlagGraphicsFixMsaaInGuiScene": "True",
-  "DFIntDebugSimPrimalStiffness": "0",
-  "DFIntGraphicsOptimizationModeMinFrameTimeTargetMs": "25",
-  "FFlagDebugNextGenReplicatorEnabledWriteCFrameColor": "True",
-  "DFFlagSimSolverOptimizeLDLCache": "True",
-  "DFFlagRakNetDetectNetUnreachable": "True",
-  "FFlagLuauSolverV2": "True",
-  "DFIntPlayerNetworkUpdateQueueSize": "20",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "FIntRakNetResendBufferArrayLength": "128",
-  "FFlagKeepZeroInfluenceBones": "False",
-  "FFlagAddHapticsToggle": "False",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "DFIntNetworkInProcessLimitGameplayMsClient": "0",
-  "FFlagEnableSceneAnalysis": "False",
-  "FFlagLuaMenuPerfImprovements": "True",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "DFFlagReplicatorSeparateVarThresholds": "True",
-  "DFIntRaknetBandwidthInfluxHundredthsPercentageV2": "10000",
-  "DFIntRakNetResendRttMultiple": "1",
-  "DFIntRuntimeConcurrency": "12",
-  "FFlagEnableAnimatorSkipCopyPreviousRigKeyOnJointModification": "True",
-  "DFIntWaitOnRecvFromLoopEndedMS": "100",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "DFIntNetworkQualityResponderMaxWaitTime": "1",
-  "FLogNetwork": "7",
-  "FIntFullscreenTitleBarTriggerDelayMillis": "3600000",
-  "DFIntBatchThumbnailResultsSizeCap": "200",
-  "FFlagReplicateAnimationLooped": "False",
-  "FIntRenderShadowIntensity": "0",
-  "DFIntMaxReceiveToDeserializeLatencyMilliseconds": "10",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "DFIntConnectingTimerInterval": "10",
-  "DFIntCodecMaxOutgoingFrames": "10000",
-  "DFFlagDebugPrintDataPingBreakDown": "False",
-  "DFIntPerformanceControlFrameTimeMaxUtility": "-1",
-  "DFIntOptimizePingThreshold": "50",
-  "DFIntNetworkQualityResponderUnit": "10",
-  "FFlagOptimizeNetworkTransport": "true",
-  "DFIntServerTickRate": "60",
-  "FIntInterpolationMaxDelayMSec": "100",
-  "FFlagDebugLargeReplicatorEnabled": "True",
-  "DFIntRakNetClockDriftAdjustmentPerPingMillisecond": "100",
-  "FFlagEnableInGameMenuModernization": "True",
-  "FFlagDebugSimDefaultPrimalSolver": "True",
-  "DFIntMaximumFreefallMoveTimeInTenths": "1000"
-}
-
----\\ low ping 
-{
-  "FFlagDebugDisableTelemetry": "True",
-  "FFlagRakNetDisableFlowControl": "True",
-  "DFFlagRakNetDisableCongestionControl": "True",
-  "FFlagRakNetForceUseUnreliable": "True",
-  "DFFlagSkipValidateReceivedJoinData": "True",
-  "DFIntTaskSchedulerTargetFps": "120"
-}`
-            },
-            strongest_today: {
-                filename: 'The Strongest Of Today.json',
-                data: `{
-  "DFIntTaskSchedulerTargetFps": "0",
-  "FIntTaskSchedulerAutoThreadCount": "1",
-  "FIntTaskSchedulerThreadMin": "3",
-  "FFlagFixGraphicsQuality": "True",
-  "DFFlagDisableDPIScale": "True",
-  "DFIntHttpCurlConnectionCacheSize": "134217728",
-  "DFFlagTextureQualityOverrideEnabled": "True",
-  "DFIntTextureQualityOverride": "1",
-  "DFIntDebugFRMQualityLevelOverride": "1",
-  "FFlagDisablePostFx": "True",
-  "FIntRenderShadowIntensity": "0",
-  "FIntDebugForceMSAASamples": "1",
-  "FIntRenderGrassHeightScaler": "0",
-  "FIntRenderGrassDetailStrands": "0",
-  "DFFlagDebugRenderForceTechnologyVoxel": "True",
-  "FFlagDebugSkyGray": "True",
-  "FFlagPreloadAllFonts": "True",
-  "FFlagPreloadMinimalFonts": "True",
-  "DFFlagEnableTexturePreloading": "True",
-  "FIntDefaultMeshCacheSizeMB": "512",
-  "DFFlagQueueDataPingFromSendData": "True",
-  "FFlagOptimizeServerTickRate": "True",
-  "DFIntServerTickRate": "60",
-  "DFIntConnectionMTUSize": "1492",
-  "DFFlagRakNetUseSlidingWindow4": "True",
-  "DFIntRakNetSlidingWindowMinThreshold": "128",
-  "DFIntRakNetNakResendDelayRttPercent": "10",
-  "DFIntRakNetNakResendDelayMs": "5",
-  "DFIntRakNetConnectionTimeout": "30000",
-  "FIntRakNetResendBufferArrayLength": "1024",
-  "FIntRakNetDatagramMessageIdArrayLength": "1024",
-  "FFlagNetworkBatchSends": "True",
-  "FFlagNetworkUseHighPriorityThreads": "True",
-  "DFIntNetworkResponseTimeout": "5000",
-  "DFIntOptimizePingThreshold": "25",
-  "DFIntPhysicsFPSCap": "1000",
-  "DFIntPhysicsReceiveNumPacketsPerStep": "128",
-  "DFIntPhysicsSendNumPacketsPerStep": "128",
-  "DFIntSimInterpolationStep": "1",
-  "DFIntPhysicsInterpolationMaxNetSteps": "4",
-  "DFIntSimInterpolationLatencyMs": "12",
-  "DFIntMaxMissedWorldStepsRemembered": "8",
-  "DFIntPhysicsPacketMaxSteps": "8",
-  "DFIntNetworkReplicatorMaxPacketSize": "1400",
-  "FFlagDirectInputMouseLocation": "True",
-  "FFlagGraphicsVulkanLowLatency": "True",
-  "FFlagDebugD3D11LowLatency": "True",
-  "DFIntMaxFrameBufferSize": "1",
-  "FMouseDeltaSensitivity": "100",
-  "FFlagMovePrerender": "True",
-  "FFlagMovePrerenderV2": "True",
-  "DFFlagDebugPerfMode": "True",
-  "DFIntGraphicsOptimizationModeMinFrameTimeTargetMs": "25",
-  "DFIntGraphicsOptimizationModeMaxFrameTimeTargetMs": "20",
-  "FFlagVRMouseMoveOptimization": "True",
-  "DFFlagSimOptimizeSetSize": "True",
-  "FFlagFixChunkLightingUpdate2": "True",
-  "FFlagRenderTestEnableDistanceCulling": "True",
-  "FFlagDebugDisplayFPS": "True",
-  "DFFlagPhysicsMechanismCacheOptimizeAlloc": "True",
-  "FFlagMessageBusCallOptimization": "True",
-  "FStringPerformanceSendMeasurementAPISubdomain": "opt-out",
-  "DFStringRobloxAnalyticsSubDomain": "opt-out",
-  "DFStringAnalyticsEventStreamUrlEndpoint": "opt-out",
-  "DFStringTelegrafHTTPTransportUrl": "http://127.0.0.1:80",
-  "DFStringCrashUploadToBacktraceBaseUrl": "http://127.0.0.1:80",
-  "DFStringHttpPointsReporterUrl": "http://127.0.0.1:80",
-  "DFStringRobloxAnalyticsURL": "http://127.0.0.1:80",
-  "FStringErrorUploadToBacktraceBaseUrl": "http://127.0.0.1:80",
-  "DFStringAltTelegrafHTTPTransportUrl": "http://127.0.0.1:80",
-  "DFStringAltHttpPointsReporterUrl": "http://127.0.0.1:80",
-  "DFStringTelemetryV2Url": "http://127.0.0.1:80",
-  "FFlagDebugDisableTelemetryEphemeralCounter": "True",
-  "FFlagDebugDisableTelemetryV2Counter": "True",
-  "FFlagDebugDisableTelemetryPoint": "True",
-  "FFlagDebugDisableTelemetryEventIngest": "True",
-  "FFlagDebugDisableTelemetryEphemeralStat": "True",
-  "FFlagDebugDisableTelemetryV2Event": "True",
-  "FFlagDebugDisableTelemetryV2Stat": "True"
-}`
-            }
-        };
-
-        /* ══════════════════════════════════════════════════════════════════════
-           HÀM JAVASCRIPT XỬ LÝ SỰ KIỆN 
-        ══════════════════════════════════════════════════════════════════════ */
-        let currentSel = {
-            scripts: null,
-            fflags: null,
-            music: null
-        };
+        let currentSel = { scripts: null, music: null };
 
         function renderDropdown(id, filterText = '') {
             const container = document.getElementById(`dd-${id}-opts`);
@@ -3057,36 +1013,24 @@
             document.getElementById(`dd-${id}-arrow`).classList.toggle('open');
         }
 
-        function ddFilter(id, val) {
-            renderDropdown(id, val.toLowerCase());
-        }
+        function ddFilter(id, val) { renderDropdown(id, val.toLowerCase()); }
 
         function ddCopy(id) {
             const item = currentSel[id];
-            if (!item || !item.script) return showToast('Vui lòng chọn một script có hỗ trợ copy!');
-            copyToClipboard(item.script, 'Đã copy loadstring!');
+            if (!item || !item.script) return showToast('Please select a script that supports copy!');
+            copyToClipboard(item.script, 'Copied loadstring!');
         }
 
         function ddOpenLink(id) {
             const item = currentSel[id];
-            if (!item || !item.url) return showToast('Vui lòng chọn một mục trước!');
+            if (!item || !item.url) return showToast('Please select an item first!');
             window.open(item.url, '_blank');
         }
 
-        function ddDownloadFile(id) {
-            const item = currentSel[id];
-            if (!item || !item.key) return showToast('Vui lòng chọn một fflag trước!');
-            const fileData = EMBEDDED_FILES[item.key];
-            if (!fileData) return showToast('Không tìm thấy dữ liệu file!');
-            downloadString(fileData.data, fileData.filename || item.filename);
-        }
-
-        function copyText(text, el, msg) {
-            copyToClipboard(text, msg);
-        }
+        function copyText(text, el, msg) { copyToClipboard(text, msg); }
 
         function copyToClipboard(text, msg) {
-            navigator.clipboard.writeText(text).then(() => showToast(msg)).catch(() => showToast('Lỗi khi copy!'));
+            navigator.clipboard.writeText(text).then(() => showToast(msg)).catch(() => showToast('Error copying!'));
         }
 
         function showToast(msg) {
@@ -3096,46 +1040,17 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        function downloadString(text, filename) {
-            const blob = new Blob([text], {
-                type: 'text/plain'
-            });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
         function dlGo(btn, url) {
             const fill = btn.parentElement.querySelector('.dl-fill');
             if (fill) fill.style.width = '100%';
             setTimeout(() => {
                 window.open(url, '_blank');
-                if (fill) fill.style.width = '0';
+                if (fill) setTimeout(() => fill.style.width = '0', 400);
             }, 500);
         }
 
-        function dlEmbed(btn, key) {
-            const fill = btn.parentElement.querySelector('.dl-fill');
-            if (fill) fill.style.width = '100%';
-            setTimeout(() => {
-                const fileData = EMBEDDED_FILES[key];
-                if (fileData) {
-                    downloadString(fileData.data, fileData.filename);
-                    showToast('Đã tải xuống ' + fileData.filename);
-                } else {
-                    showToast('Không tìm thấy file!');
-                }
-                if (fill) fill.style.width = '0';
-            }, 600);
-        }
-
-        // Khởi tạo giao diện dropdown khi trang vừa tải xong
         window.onload = () => {
             renderDropdown('scripts');
-            renderDropdown('fflags');
             renderDropdown('music');
         };
     </script>
