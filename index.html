@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purium - Multiply Platform</title>
+    <title>Purium - Script Execution Platform</title>
     
     <!-- Website Title Icon (Favicon) -->
     <link rel="icon" href="moon.png" type="image/png">
@@ -47,8 +47,18 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ── BACKGROUND IMAGE + OVERLAY ── */
+        /* ── BACKGROUND VIDEO + IMAGE FALLBACK ── */
+        .bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            z-index: -2;
+            pointer-events: none;
+        }
+
         body {
+            /* Fallback image if video doesn't load */
             background-image: url('background.jpg');
             background-size: cover;
             background-position: center center;
@@ -57,6 +67,7 @@
             position: relative;
         }
 
+        /* Dark overlay to make text readable over video/image */
         body::before {
             content: '';
             position: fixed;
@@ -251,7 +262,7 @@
             margin-bottom: 40px;
         }
 
-        /* FIXED: Hollow buttons (Transparent inside, solid colored rim) */
+        /* Hollow buttons (Transparent inside, solid colored rim) */
         .hbtn {
             display: inline-flex;
             align-items: center;
@@ -268,7 +279,7 @@
             text-decoration: none;
         }
         .hbtn:hover {
-            background: rgba(255, 255, 255, 0.1); /* Slight white tint on hover */
+            background: rgba(255, 255, 255, 0.1);
             border-color: #ffffff;
             transform: translateY(-3px);
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
@@ -525,7 +536,6 @@
         .b-outdated { background: rgba(150, 150, 150, .12); color: #888; border: 1px solid rgba(150, 150, 150, .28); }
         .b-link { background: var(--blu-dim); color: #90c8f8; border: 1px solid var(--blu-border); }
 
-        /* Dropdown Action Buttons (Transparent inside, solid rim) */
         .dd-action { padding: 12px 16px; display: flex; gap: 10px; background: rgba(0, 0, 0, .3); }
         .dd-copy-btn, .dd-open-btn {
             flex: 1; padding: 10px; border-radius: 8px;
@@ -539,7 +549,7 @@
         .dd-open-btn { border: 1px solid var(--blu); color: #90c8f8; }
         .dd-open-btn:hover { background: var(--blu-dim); transform: translateY(-1px); }
 
-        /* ── REWORKED DOWNLOAD CARDS (No fake progress bar) ── */
+        /* ── DOWNLOAD CARDS ── */
         .dl-section { padding: 0 24px 40px; max-width: 1000px; margin: 0 auto; }
         .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
 
@@ -579,7 +589,6 @@
         .dl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
         .dl-tag { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: rgba(255, 255, 255, .05); border: 1px solid var(--gb); color: #aaa; font-weight: 500; }
 
-        /* Download Buttons (Transparent inside, solid rim) */
         .dl-btn {
             width: 100%; padding: 12px; border-radius: 10px;
             font-size: 13px; font-weight: 700; cursor: pointer;
@@ -587,11 +596,11 @@
             transition: all .25s; text-decoration: none;
             position: relative; overflow: hidden; font-family: inherit;
             background: transparent;
-            border: 1px solid var(--pur); /* Solid Purple Rim */
+            border: 1px solid var(--pur); 
             color: #c4a8ff;
         }
         .dl-btn:hover {
-            background: var(--pur-dim); /* Transparent Purple fill on hover */
+            background: var(--pur-dim); 
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2);
         }
@@ -599,6 +608,73 @@
         .dl-btn.blu:hover { background: var(--blu-dim); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
         .dl-btn.grn { border-color: var(--grn); color: #7fdfaa; }
         .dl-btn.grn:hover { background: var(--grn-dim); box-shadow: 0 4px 12px rgba(46, 200, 113, 0.2); }
+
+        /* ── FLOATING MUSIC PLAYER PANEL ── */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 300px;
+            background: rgba(12, 12, 20, 0.85);
+            border: 1px solid var(--pur-border);
+            border-radius: 16px;
+            backdrop-filter: blur(16px) saturate(150%);
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .mp-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gb);
+            cursor: pointer;
+        }
+        .mp-title { font-size: 13px; font-weight: 700; color: #c4a8ff; display: flex; align-items: center; gap: 8px; }
+        .mp-body { padding: 12px 16px; }
+        .mp-track-name { font-size: 12px; color: #fff; font-weight: 600; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .mp-progress {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        .mp-fill {
+            height: 100%;
+            background: var(--pur);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        .mp-time { display: flex; justify-content: space-between; font-size: 10px; color: #888; margin-bottom: 12px; }
+        
+        .mp-controls { display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .mp-btn {
+            background: transparent;
+            border: none;
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 5px;
+        }
+        .mp-btn:hover { color: #fff; transform: scale(1.1); }
+        .mp-btn.play { 
+            background: var(--pur); 
+            color: #fff; 
+            width: 36px; 
+            height: 36px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 16px;
+        }
+        .mp-btn.play:hover { background: #8b62e8; transform: scale(1.05); }
 
         /* ── TOAST ── */
         .toast {
@@ -639,6 +715,11 @@
     </style>
 </head>
 <body>
+
+    <!-- Video Background (supports mp4) -->
+    <video autoplay loop muted playsinline class="bg-video">
+        <source src="background.mp4" type="video/mp4">
+    </video>
 
     <div class="nav">
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
@@ -928,6 +1009,30 @@
         </div>
     </div>
 
+    <!-- ════════ FLOATING CHILL MUSIC PLAYER ════════ -->
+    <div class="music-player">
+        <div class="mp-header" onclick="togglePlayerBody()">
+            <div class="mp-title"><i class="fa-solid fa-headphones"></i> Chill & Cute Vibes</div>
+            <i class="fa-solid fa-chevron-down" id="mp-chevron" style="color:#666;transition:transform .3s"></i>
+        </div>
+        <div class="mp-body" id="mp-body">
+            <div class="mp-track-name" id="mp-track-name">Loading playlist...</div>
+            <audio id="audio-player" loop></audio>
+            <div class="mp-progress" id="mp-progress" onclick="seekTrack(event)">
+                <div class="mp-fill" id="mp-fill"></div>
+            </div>
+            <div class="mp-time">
+                <span id="mp-current">0:00</span>
+                <span id="mp-duration">0:00</span>
+            </div>
+            <div class="mp-controls">
+                <button class="mp-btn" onclick="prevTrack()"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="mp-btn play" id="mp-play-btn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+                <button class="mp-btn" onclick="nextTrack()"><i class="fa-solid fa-forward-step"></i></button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast" id="toast"></div>
 
     <script>
@@ -1108,14 +1213,108 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // Cleaned up function: No fake progress bar, just opens the link directly
         function dlGo(btn, url) {
             window.open(url, '_blank');
+        }
+
+        /* ════════ MUSIC PLAYER LOGIC ════════ */
+        const PLAYLIST = [
+            { name: "Chill Cute Lofi", url: "https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" },
+            { name: "Relaxing Morning", url: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" },
+            { name: "Cute Ambient Vibes", url: "https://cdn.pixabay.com/audio/2023/06/19/audio_d6c7e95a90.mp3" }
+        ];
+        
+        let currentTrack = 0;
+        let isPlaying = false;
+        const audio = document.getElementById('audio-player');
+        const playBtn = document.getElementById('mp-play-btn');
+        const trackName = document.getElementById('mp-track-name');
+        const mpFill = document.getElementById('mp-fill');
+        const mpCurrent = document.getElementById('mp-current');
+        const mpDuration = document.getElementById('mp-duration');
+
+        function loadTrack(index) {
+            currentTrack = index;
+            audio.src = PLAYLIST[index].url;
+            trackName.innerText = PLAYLIST[index].name;
+            mpFill.style.width = '0%';
+            mpCurrent.innerText = '0:00';
+            mpDuration.innerText = '0:00';
+            
+            if (isPlaying) {
+                audio.play().catch(e => console.log("Autoplay blocked"));
+            }
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                isPlaying = false;
+            } else {
+                if (!audio.src) loadTrack(currentTrack);
+                audio.play();
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                isPlaying = true;
+            }
+        }
+
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % PLAYLIST.length;
+            loadTrack(currentTrack);
+        }
+
+        function prevTrack() {
+            currentTrack = (currentTrack - 1 + PLAYLIST.length) % PLAYLIST.length;
+            loadTrack(currentTrack);
+        }
+
+        function seekTrack(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const percent = clickX / rect.width;
+            if (audio.duration) {
+                audio.currentTime = audio.duration * percent;
+            }
+        }
+
+        function togglePlayerBody() {
+            const body = document.getElementById('mp-body');
+            const chevron = document.getElementById('mp-chevron');
+            if (body.style.display === 'none') {
+                body.style.display = 'block';
+                chevron.style.transform = 'rotate(0deg)';
+            } else {
+                body.style.display = 'none';
+                chevron.style.transform = 'rotate(-90deg)';
+            }
+        }
+
+        // Update progress bar and time
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                mpFill.style.width = percent + '%';
+                mpCurrent.innerText = formatTime(audio.currentTime);
+                mpDuration.innerText = formatTime(audio.duration);
+            }
+        });
+
+        // Auto-play next track when current finishes
+        audio.addEventListener('ended', () => {
+            nextTrack();
+        });
+
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${s < 10 ? '0' + s : s}`;
         }
 
         window.onload = () => {
             renderDropdown('scripts');
             renderDropdown('music');
+            loadTrack(0); // Load the first song without playing
         };
     </script>
 </body>
