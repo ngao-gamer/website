@@ -27,11 +27,11 @@
             --amb: #f5a623;
             --amb-dim: rgba(245, 166, 35, 0.14);
             --amb-border: rgba(245, 166, 35, 0.38);
-            /* 90% Transparent Cards to show background */
-            --card: rgba(16, 16, 24, 0.15); 
-            --nav: rgba(10, 10, 16, 0.25);
+            /* 90%+ Transparent Glass Cards */
+            --card: rgba(255, 255, 255, 0.04); 
+            --nav: rgba(255, 255, 255, 0.05);
             --glass: rgba(255, 255, 255, 0.05);
-            --gb: rgba(255, 255, 255, 0.09);
+            --gb: rgba(255, 255, 255, 0.12);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,7 +39,7 @@
         html, body {
             min-height: 100vh;
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            color: #ffffff; /* Changed to pure white for readability over transparent bg */
+            color: #ffffff;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
@@ -59,7 +59,7 @@
         /* Very light overlay to make the background 90% visible */
         body::before {
             content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to bottom, rgba(8, 8, 16, 0.1) 0%, rgba(8, 8, 16, 0.3) 100%);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.35) 100%);
             z-index: -1; pointer-events: none;
         }
 
@@ -74,10 +74,10 @@
             backdrop-filter: blur(12px) saturate(150%); -webkit-backdrop-filter: blur(12px) saturate(150%);
             animation: fadeUp 0.5s ease-out;
         }
-        .nav-brand { font-size: 18px; font-weight: 800; letter-spacing: -.5px; display: flex; align-items: center; gap: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .nav-brand { font-size: 18px; font-weight: 800; letter-spacing: -.5px; display: flex; align-items: center; gap: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .nav-logo-img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; animation: glow 3s infinite ease-in-out; }
         .nav-brand .acc { color: var(--pur); }
-        .nav-brand .ver { font-size: 10px; color: #ccc; margin-left: 6px; font-weight: 400; }
+        .nav-brand .ver { font-size: 10px; color: #ddd; margin-left: 6px; font-weight: 400; }
         .nav-links { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
         .nbtn {
             font-size: 13px; color: #fff; background: transparent;
@@ -114,7 +114,7 @@
             font-style: normal; background: linear-gradient(90deg, #9b84e8, #64b2f5);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .hero-sub { font-size: 15px; color: #ddd; max-width: 450px; margin: 0 auto 32px; line-height: 1.6; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .hero-sub { font-size: 15px; color: #eee; max-width: 450px; margin: 0 auto 32px; line-height: 1.6; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .btn-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; }
 
         /* Hollow buttons */
@@ -122,6 +122,7 @@
             display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px;
             font-size: 13px; font-weight: 600; border: 1px solid #ffffff; background: transparent; color: #ffffff;
             cursor: pointer; transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         .hbtn:hover { background: rgba(255, 255, 255, 0.1); border-color: #ffffff; transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
         .hbtn.pur { border-color: var(--pur); color: #c4a8ff; }
@@ -136,11 +137,12 @@
         .fcard {
             background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 24px;
             position: relative; overflow: hidden; transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(6px) saturate(120%); animation: fadeUp 0.8s ease-out backwards;
+            backdrop-filter: blur(10px) saturate(180%); -webkit-backdrop-filter: blur(10px) saturate(180%);
+            animation: fadeUp 0.8s ease-out backwards;
         }
         .fcard:nth-child(1) { animation-delay: 0.1s; } .fcard:nth-child(2) { animation-delay: 0.2s; }
         .fcard:nth-child(3) { animation-delay: 0.3s; } .fcard:nth-child(4) { animation-delay: 0.4s; }
-        .fcard:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.2); }
+        .fcard:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.3); }
         .fcard::before { content: ''; position: absolute; top: -60px; left: -60px; width: 160px; height: 160px; border-radius: 50%; opacity: .2; pointer-events: none; transition: all .4s ease; }
         .fcard:hover::before { opacity: .4; transform: scale(1.2); }
         .fcard.red::before { background: radial-gradient(circle, #ff4444, transparent 70%); }
@@ -149,12 +151,12 @@
         .fcard.yellow::before { background: radial-gradient(circle, #ffd700, transparent 70%); }
         .fcard-ico { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--gb); background: rgba(0, 0, 0, .4); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 18px; }
         .fcard-ico img { width: 24px; height: 24px; object-fit: contain; }
-        .fcard h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .fcard p { font-size: 13px; color: #ddd; line-height: 1.6; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .fcard h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .fcard p { font-size: 13px; color: #eee; line-height: 1.6; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
         /* ── SECTION DIVIDER ── */
         .sdiv { border: none; border-top: 1px solid var(--gb); margin: 10px 24px 24px; }
-        .slabel { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; margin-bottom: 16px; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .slabel { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; margin-bottom: 16px; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
         /* ════════════════════════════════════════════════════════
            REWORKED SIDE-BY-SIDE PANELS (NO DROPDOWNS)
@@ -168,7 +170,8 @@
 
         .selector-card {
             background: var(--card); border: 1px solid var(--gb); border-radius: 18px; padding: 22px;
-            backdrop-filter: blur(8px) saturate(140%); transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 380px;
         }
         .selector-card::after {
@@ -190,12 +193,12 @@
 
         .field-label {
             font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-            color: #ddd; margin-bottom: 12px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            color: #eee; margin-bottom: 12px; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
         }
 
         /* Shared List Container */
         .list-container {
-            flex: 1; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--gb); 
+            flex: 1; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--gb); 
             border-radius: 12px; overflow-y: auto; margin-bottom: 16px; min-height: 220px;
         }
         .list-container::-webkit-scrollbar { width: 4px; }
@@ -224,8 +227,8 @@
 
         .item-icon { font-size: 16px; width: 30px; text-align: center; flex-shrink: 0; }
         .item-info { flex: 1; min-width: 0; }
-        .item-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
-        .item-desc { font-size: 11px; color: #ddd; margin-top: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .item-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .item-desc { font-size: 11px; color: #eee; margin-top: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
         .badge { font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
         .b-stable { background: rgba(46, 200, 113, .14); color: var(--grn); border: 1px solid var(--grn-border); }
@@ -250,16 +253,17 @@
         .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
         .dl-card {
             background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 20px;
-            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(6px) saturate(120%);
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); 
+            backdrop-filter: blur(10px) saturate(180%); -webkit-backdrop-filter: blur(10px) saturate(180%);
             display: flex; flex-direction: column; position: relative; overflow: hidden;
         }
         .dl-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--pur), #64b2f5); transform: scaleX(0); transform-origin: left; transition: transform .4s ease; }
         .dl-card:hover { border-color: rgba(125, 82, 222, 0.6); transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
         .dl-card:hover::after { transform: scaleX(1); }
         .dl-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .dl-title { font-size: 15px; font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .dl-title { font-size: 15px; font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .dl-ico { font-size: 20px; color: #fff; }
-        .dl-meta { font-size: 12px; color: #ddd; margin-bottom: 14px; line-height: 1.5; flex-grow: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .dl-meta { font-size: 12px; color: #eee; margin-bottom: 14px; line-height: 1.5; flex-grow: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
         .dl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
         .dl-tag { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--gb); color: #fff; font-weight: 500; }
 
@@ -277,8 +281,9 @@
         /* ── DRAGGABLE FLOATING MUSIC PLAYER PANEL ── */
         .music-player {
             position: fixed; top: 20px; right: 20px; width: 320px;
-            background: rgba(12, 12, 20, 0.4); border: 1px solid var(--pur-border); border-radius: 16px;
-            backdrop-filter: blur(12px) saturate(150%); z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            background: rgba(20, 20, 30, 0.45); border: 1px solid var(--pur-border); border-radius: 16px;
+            backdrop-filter: blur(14px) saturate(180%); -webkit-backdrop-filter: blur(14px) saturate(180%);
+            z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
             overflow: hidden; transition: box-shadow 0.3s ease;
         }
         .music-player.dragging { box-shadow: 0 16px 40px rgba(0,0,0,0.8); cursor: grabbing; }
@@ -293,10 +298,10 @@
         .mp-min-btn { background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 12px; padding: 4px; }
         
         .mp-body { padding: 14px 16px; }
-        .mp-track-name { font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .mp-track-name { font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
         .mp-progress { height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; margin-bottom: 8px; }
         .mp-fill { height: 100%; background: var(--pur); border-radius: 4px; width: 0%; transition: width 0.1s linear; }
-        .mp-time { display: flex; justify-content: space-between; font-size: 10px; color: #ddd; margin-bottom: 12px; }
+        .mp-time { display: flex; justify-content: space-between; font-size: 10px; color: #eee; margin-bottom: 12px; }
         .mp-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 12px; }
         .mp-btn { background: transparent; border: none; color: #fff; font-size: 14px; cursor: pointer; transition: all 0.2s; padding: 5px; }
         .mp-btn:hover { color: #c4a8ff; transform: scale(1.1); }
@@ -305,7 +310,7 @@
 
         .mp-add-song { display: flex; gap: 8px; }
         .mp-add-song input {
-            flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--gb); border-radius: 6px;
+            flex: 1; background: rgba(0,0,0,0.35); border: 1px solid var(--gb); border-radius: 6px;
             padding: 8px 10px; color: #fff; font-size: 11px; outline: none; font-family: inherit;
         }
         .mp-add-song input::placeholder { color: #aaa; }
@@ -335,17 +340,20 @@
         }
         .footer-brand { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; color: #fff; }
         .footer-brand span { color: var(--pur); }
-        .footer-copy { font-size: 11px; color: #ddd; margin-top: 4px; }
-        .footer-copy a { color: #ddd; text-decoration: none; }
+        .footer-copy { font-size: 11px; color: #eee; margin-top: 4px; }
+        .footer-copy a { color: #eee; text-decoration: none; }
         .footer-copy a:hover { text-decoration: underline; }
 
         .tsb-wrap { text-align: center; margin-bottom: 40px; animation: fadeUp 1s ease-out; }
-        .tsb-label { font-size: 12px; color: #ddd; }
+        .tsb-label { font-size: 12px; color: #eee; }
         .tsb-code {
             font-size: 14px; color: #c4a8ff; background: transparent; border: 1px solid var(--pur);
             padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: all .2s; font-weight: 700; margin-left: 6px;
         }
         .tsb-code:hover { background: var(--pur-dim); transform: scale(1.05); }
+
+        /* Hidden iframe for YouTube Audio Playback */
+        #yt-player { display: none; }
     </style>
 </head>
 <body>
@@ -427,9 +435,7 @@
             <div class="sec-title"><i class="fa-solid fa-code"></i> Scripts</div>
             <div class="field-label">Select a script</div>
             
-            <div class="list-container" id="dd-scripts-opts">
-                <!-- Scripts list injected here via JS -->
-            </div>
+            <div class="list-container" id="dd-scripts-opts"></div>
             
             <div class="dd-action">
                 <button class="dd-copy-btn" onclick="ddCopy('scripts')">📋 Copy loadstring</button>
@@ -442,9 +448,7 @@
             <div class="sec-title"><i class="fa-solid fa-music"></i> Music &amp; Vibes</div>
             <div class="field-label">Pick a track</div>
             
-            <div class="list-container" id="dd-music-opts">
-                <!-- Music list injected here via JS -->
-            </div>
+            <div class="list-container" id="dd-music-opts"></div>
 
             <div class="dd-action">
                 <button class="dd-open-btn" onclick="ddOpenLink('music')" style="flex:1">▶ Open on YouTube</button>
@@ -558,7 +562,11 @@
         </div>
         <div class="mp-body" id="mp-body">
             <div class="mp-track-name" id="mp-track-name">Loading playlist...</div>
+            <!-- YouTube hidden player for YT links -->
+            <div id="yt-player"></div>
+            <!-- HTML5 Audio player for direct MP3 links -->
             <audio id="audio-player" preload="auto"></audio>
+            
             <div class="mp-progress" id="mp-progress" onclick="seekTrack(event)">
                 <div class="mp-fill" id="mp-fill"></div>
             </div>
@@ -572,7 +580,7 @@
                 <button class="mp-btn" onclick="nextTrack()"><i class="fa-solid fa-forward-step"></i></button>
             </div>
             <div class="mp-add-song">
-                <input type="text" id="mp-url-input" placeholder="Paste MP3 URL to add song...">
+                <input type="text" id="mp-url-input" placeholder="Paste YouTube or MP3 URL...">
                 <button class="mp-add-btn" onclick="addSongUrl()">+</button>
             </div>
         </div>
@@ -610,9 +618,7 @@
             const container = document.getElementById(`dd-${id}-opts`);
             if (!container) return;
             container.innerHTML = '';
-
-            const items = DROPDOWNS[id].items;
-            items.forEach((item, index) => {
+            DROPDOWNS[id].items.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'list-item';
                 if (currentSel[id] && currentSel[id].name === item.name) div.classList.add('selected');
@@ -660,7 +666,7 @@
 
         function dlGo(btn, url) { window.open(url, '_blank'); }
 
-        /* ════════ DRAGGABLE FLOATING MUSIC PLAYER LOGIC ════════ */
+        /* ════════ HYBRID MUSIC PLAYER LOGIC (YT + MP3) ════════ */
         let PLAYLIST = [
             { name: "Chill Cute Lofi", url: "https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" },
             { name: "Relaxing Morning", url: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" },
@@ -669,6 +675,10 @@
         
         let currentTrack = 0;
         let isPlaying = false;
+        let ytPlayer = null;
+        let ytReady = false;
+        let ytTimer = null;
+
         const audio = document.getElementById('audio-player');
         const playBtn = document.getElementById('mp-play-btn');
         const trackName = document.getElementById('mp-track-name');
@@ -677,37 +687,87 @@
         const mpCurrent = document.getElementById('mp-current');
         const mpDuration = document.getElementById('mp-duration');
 
+        // Extract YouTube ID
+        function getYouTubeID(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length == 11) ? match[2] : null;
+        }
+
+        // Fetch Title from URL (YouTube uses noembed)
+        async function fetchTitle(url) {
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                try {
+                    const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+                    const data = await res.json();
+                    if (data && data.title) return data.title;
+                } catch (e) { console.log('Fetch failed', e); }
+                return "YouTube Track";
+            } else {
+                try {
+                    const urlObj = new URL(url);
+                    const path = urlObj.pathname.split('/').pop();
+                    let name = decodeURIComponent(path.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "));
+                    if (!name) name = "Custom Track";
+                    return name;
+                } catch { return "Custom Track"; }
+            }
+        }
+
         function loadTrack(index) {
             currentTrack = index;
             const track = PLAYLIST[index];
-            audio.src = track.url;
-            audio.load(); // Force load
             
             trackName.innerText = track.name;
             headerTrackName.innerText = track.name;
             mpFill.style.width = '0%';
             mpCurrent.innerText = '0:00';
             mpDuration.innerText = '0:00';
-            
-            if (isPlaying) {
-                audio.play().catch(e => {
-                    console.log("Autoplay blocked or error", e);
-                    isPlaying = false;
-                    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                });
+
+            const ytId = getYouTubeID(track.url);
+
+            if (ytId) {
+                // It's a YouTube link
+                audio.pause();
+                audio.src = '';
+                if (ytReady && ytPlayer) {
+                    ytPlayer.loadVideoById(ytId);
+                    if (isPlaying) ytPlayer.playVideo();
+                }
+            } else {
+                // It's an MP3 link
+                if (ytReady && ytPlayer) ytPlayer.stopVideo();
+                audio.src = track.url;
+                audio.load();
+                if (isPlaying) audio.play().catch(e => { console.log("Autoplay blocked", e); isPlaying = false; playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; });
             }
         }
 
         function togglePlay() {
-            if (isPlaying) {
-                audio.pause();
-                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                isPlaying = false;
+            const track = PLAYLIST[currentTrack];
+            const ytId = getYouTubeID(track.url);
+            
+            if (ytId) {
+                if (isPlaying) {
+                    ytPlayer.pauseVideo();
+                    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    isPlaying = false;
+                } else {
+                    ytPlayer.playVideo();
+                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    isPlaying = true;
+                }
             } else {
-                if (!audio.src) loadTrack(currentTrack);
-                audio.play();
-                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                isPlaying = true;
+                if (isPlaying) {
+                    audio.pause();
+                    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    isPlaying = false;
+                } else {
+                    if (!audio.src) loadTrack(currentTrack);
+                    audio.play();
+                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    isPlaying = true;
+                }
             }
         }
 
@@ -718,30 +778,31 @@
             const rect = event.currentTarget.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
             const percent = clickX / rect.width;
-            if (audio.duration) audio.currentTime = audio.duration * percent;
+            
+            const track = PLAYLIST[currentTrack];
+            const ytId = getYouTubeID(track.url);
+            
+            if (ytId && ytPlayer && ytPlayer.getDuration) {
+                const dur = ytPlayer.getDuration();
+                if (dur) ytPlayer.seekTo(dur * percent, true);
+            } else {
+                if (audio.duration) audio.currentTime = audio.duration * percent;
+            }
         }
 
-        function addSongUrl() {
+        async function addSongUrl() {
             const input = document.getElementById('mp-url-input');
             const url = input.value.trim();
             if (!url) return showToast("Please paste a URL first!");
             
-            // Fetch name from URL
-            let name = "Unknown Track";
-            try {
-                const urlObj = new URL(url);
-                const path = urlObj.pathname.split('/').pop();
-                name = decodeURIComponent(path.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "));
-                if (!name) name = urlObj.hostname;
-            } catch(e) {
-                name = "Custom Track";
-            }
-
-            PLAYLIST.push({ name: name, url: url });
             input.value = '';
+            showToast('Fetching song title...');
+
+            const name = await fetchTitle(url);
+            
+            PLAYLIST.push({ name: name, url: url });
             showToast('Song added!');
             
-            // Auto-play the newly added song
             loadTrack(PLAYLIST.length - 1);
             if (!isPlaying) togglePlay();
         }
@@ -751,19 +812,7 @@
             body.style.display = body.style.display === 'none' ? 'block' : 'none';
         }
 
-        // Auto-recovery if song stops mid-play (Stalled or Error)
-        audio.addEventListener('stalled', () => {
-            if (isPlaying) {
-                console.log("Audio stalled, recovering...");
-                audio.load();
-                audio.play();
-            }
-        });
-        audio.addEventListener('error', () => {
-            console.log("Audio error, skipping...");
-            if (PLAYLIST.length > 1) nextTrack();
-        });
-
+        // Audio time update for MP3s
         audio.addEventListener('timeupdate', () => {
             if (audio.duration) {
                 const percent = (audio.currentTime / audio.duration) * 100;
@@ -774,6 +823,51 @@
         });
 
         audio.addEventListener('ended', () => { nextTrack(); });
+
+        // YouTube IFrame API setup
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-player', {
+                height: '0',
+                width: '0',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            ytReady = true;
+            // If a track was already requested, load it now
+            if (PLAYLIST[currentTrack]) {
+                const ytId = getYouTubeID(PLAYLIST[currentTrack].url);
+                if (ytId) ytPlayer.loadVideoById(ytId);
+            }
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                if (!ytTimer) ytTimer = setInterval(updateYTTime, 500);
+            } else if (event.data == YT.PlayerState.PAUSED) {
+                // Handled by togglePlay
+            } else if (event.data == YT.PlayerState.ENDED) {
+                nextTrack();
+            }
+        }
+
+        function updateYTTime() {
+            if (ytPlayer && ytPlayer.getCurrentTime) {
+                const cur = ytPlayer.getCurrentTime();
+                const dur = ytPlayer.getDuration();
+                if (dur > 0) {
+                    mpFill.style.width = ((cur / dur) * 100) + '%';
+                    mpCurrent.innerText = formatTime(cur);
+                    mpDuration.innerText = formatTime(dur);
+                }
+            }
+        }
 
         function formatTime(sec) {
             const m = Math.floor(sec / 60);
@@ -788,7 +882,6 @@
         let offsetX, offsetY;
 
         header.addEventListener('mousedown', (e) => {
-            // Prevent dragging when clicking the minimize button
             if (e.target.closest('.mp-min-btn')) return;
             isDragging = true;
             player.classList.add('dragging');
@@ -802,13 +895,10 @@
                 e.preventDefault();
                 let x = e.clientX - offsetX;
                 let y = e.clientY - offsetY;
-                
-                // Keep it within viewport
                 const maxX = window.innerWidth - player.offsetWidth;
                 const maxY = window.innerHeight - player.offsetHeight;
                 x = Math.max(0, Math.min(x, maxX));
                 y = Math.max(0, Math.min(y, maxY));
-                
                 player.style.left = x + 'px';
                 player.style.top = y + 'px';
                 player.style.right = 'auto';
@@ -827,5 +917,8 @@
             loadTrack(0); 
         };
     </script>
+    
+    <!-- Load YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
