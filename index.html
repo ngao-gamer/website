@@ -27,8 +27,8 @@
             --amb: #f5a623;
             --amb-dim: rgba(245, 166, 35, 0.14);
             --amb-border: rgba(245, 166, 35, 0.38);
-            --card: rgba(16, 16, 24, 0.6);
-            --nav: rgba(10, 10, 16, 0.75);
+            --card: rgba(16, 16, 24, 0.45); /* Made card slightly more transparent to show video */
+            --nav: rgba(10, 10, 16, 0.65);
             --glass: rgba(255, 255, 255, 0.05);
             --gb: rgba(255, 255, 255, 0.09);
         }
@@ -58,7 +58,6 @@
         }
 
         body {
-            /* Fallback image if video doesn't load */
             background-image: url('background.jpg');
             background-size: cover;
             background-position: center center;
@@ -67,13 +66,13 @@
             position: relative;
         }
 
-        /* Dark overlay to make text readable over video/image */
+        /* Decreased static dark overlay to make the dynamic background/video more visible */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(circle at 50% 0%, rgba(125, 82, 222, 0.2), transparent 60%),
-                        linear-gradient(135deg, rgba(8, 8, 16, 0.92) 0%, rgba(13, 10, 28, 0.85) 45%, rgba(8, 14, 24, 0.92) 100%);
+                        linear-gradient(to bottom, rgba(8, 8, 16, 0.45) 0%, rgba(8, 8, 16, 0.75) 100%);
             z-index: -1;
             pointer-events: none;
         }
@@ -94,14 +93,9 @@
             background: var(--nav);
             border-bottom: 1px solid var(--gb);
             padding: 12px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 12px;
+            position: sticky; top: 0; z-index: 100;
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
@@ -109,181 +103,67 @@
         }
 
         .nav-brand {
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: -.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 18px; font-weight: 800; letter-spacing: -.5px;
+            display: flex; align-items: center; gap: 10px;
         }
-
         .nav-logo-img {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            object-fit: cover;
+            width: 32px; height: 32px; border-radius: 8px; object-fit: cover;
             animation: glow 3s infinite ease-in-out;
         }
-
         .nav-brand .acc { color: var(--pur); }
         .nav-brand .ver { font-size: 10px; color: #666; margin-left: 6px; font-weight: 400; }
 
         .nav-links { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
 
         .nbtn {
-            font-size: 13px;
-            color: #ccc;
-            background: transparent;
-            border: 1px solid transparent;
-            border-radius: 8px;
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-            position: relative;
+            font-size: 13px; color: #ccc; background: transparent;
+            border: 1px solid transparent; border-radius: 8px; padding: 8px 12px;
+            cursor: pointer; transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+            font-weight: 500; position: relative;
         }
+        .nbtn:hover { color: #fff; border-color: var(--gb); background: var(--glass); transform: translateY(-2px); }
+        
+        .nbtn.sp { border-color: var(--pur); background: transparent; color: #c8aaff; }
+        .nbtn.sp:hover { background: var(--pur-dim); box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2); }
 
-        .nbtn:hover {
-            color: #fff;
-            border-color: var(--gb);
-            background: var(--glass);
-            transform: translateY(-2px);
-        }
-
-        /* Nav Special Button (Transparent inside, solid rim) */
-        .nbtn.sp {
-            border-color: var(--pur);
-            background: transparent;
-            color: #c8aaff;
-        }
-        .nbtn.sp:hover {
-            background: var(--pur-dim);
-            box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2);
-        }
-
-        .nbtn.disabled {
-            border-color: rgba(255, 255, 255, 0.05);
-            background: rgba(255, 255, 255, 0.02);
-            color: #555;
-            cursor: not-allowed;
-            pointer-events: auto;
-        }
-        .nbtn.disabled:hover {
-            transform: none;
-            background: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.05);
-        }
+        .nbtn.disabled { border-color: rgba(255, 255, 255, 0.05); background: rgba(255, 255, 255, 0.02); color: #555; cursor: not-allowed; pointer-events: auto; }
+        .nbtn.disabled:hover { transform: none; background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.05); }
 
         .tooltip-text {
-            visibility: hidden;
-            opacity: 0;
-            width: 120px;
-            background-color: #1a1a2e;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 6px 8px;
-            position: absolute;
-            z-index: 200;
-            top: 125%;
-            left: 50%;
-            transform: translateX(-50%) translateY(5px);
-            transition: opacity 0.3s, transform 0.3s;
-            font-size: 11px;
-            font-weight: 600;
-            border: 1px solid var(--gb);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            pointer-events: none;
+            visibility: hidden; opacity: 0; width: 120px; background-color: #1a1a2e; color: #fff;
+            text-align: center; border-radius: 6px; padding: 6px 8px; position: absolute; z-index: 200;
+            top: 125%; left: 50%; transform: translateX(-50%) translateY(5px);
+            transition: opacity 0.3s, transform 0.3s; font-size: 11px; font-weight: 600;
+            border: 1px solid var(--gb); box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none;
         }
-        .nbtn.disabled:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        .nbtn.disabled:hover .tooltip-text { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
 
         .nav-ico { width: 18px; height: 18px; object-fit: contain; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
 
         /* ── HERO ── */
-        .hero {
-            padding: 80px 20px 50px;
-            text-align: center;
-            animation: fadeUp 0.8s ease-out;
-        }
-
+        .hero { padding: 80px 20px 50px; text-align: center; animation: fadeUp 0.8s ease-out; }
         .hero-badge {
-            display: inline-block;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #9b84e8;
-            border: 1px solid var(--pur-border);
-            background: var(--pur-dim);
-            border-radius: 20px;
-            padding: 6px 16px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 0 15px rgba(125, 82, 222, 0.15);
+            display: inline-block; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+            color: #9b84e8; border: 1px solid var(--pur-border); background: var(--pur-dim);
+            border-radius: 20px; padding: 6px 16px; margin-bottom: 20px;
+            backdrop-filter: blur(4px); box-shadow: 0 0 15px rgba(125, 82, 222, 0.15);
         }
-
-        .hero h1 {
-            font-size: 52px;
-            font-weight: 900;
-            letter-spacing: -2px;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
+        .hero h1 { font-size: 52px; font-weight: 900; letter-spacing: -2px; line-height: 1.1; margin-bottom: 16px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
         .hero h1 em {
-            font-style: normal;
-            background: linear-gradient(90deg, #9b84e8, #64b2f5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-style: normal; background: linear-gradient(90deg, #9b84e8, #64b2f5);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
+        .hero-sub { font-size: 15px; color #aaa; max-width: 450px; margin: 0 auto 32px; line-height: 1.6; }
+        .btn-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; }
 
-        .hero-sub {
-            font-size: 15px;
-            color: #aaa;
-            max-width: 450px;
-            margin: 0 auto 32px;
-            line-height: 1.6;
-        }
-
-        .btn-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 40px;
-        }
-
-        /* Hollow buttons (Transparent inside, solid colored rim) */
+        /* Hollow buttons */
         .hbtn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            border: 1px solid #ffffff; /* White rim */
-            background: transparent; /* Transparent inside */
-            color: #ffffff;
-            cursor: pointer;
-            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px;
+            font-size: 13px; font-weight: 600; border: 1px solid #ffffff; background: transparent; color: #ffffff;
+            cursor: pointer; transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none;
         }
-        .hbtn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #ffffff;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-        }
+        .hbtn:hover { background: rgba(255, 255, 255, 0.1); border-color: #ffffff; transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
         .hbtn.pur { border-color: var(--pur); color: #c4a8ff; }
         .hbtn.pur:hover { background: var(--pur-dim); box-shadow: 0 6px 16px rgba(125, 82, 222, 0.2); }
         .hbtn.blu { border-color: var(--blu); color: #90c8f8; }
@@ -292,66 +172,27 @@
         .hbtn.grn:hover { background: var(--grn-dim); box-shadow: 0 6px 16px rgba(46, 200, 113, 0.2); }
 
         /* ── FEATURE CARDS ── */
-        .cards-g {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-            padding: 0 24px 32px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
+        .cards-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; padding: 0 24px 32px; max-width: 1000px; margin: 0 auto; }
         .fcard {
-            background: var(--card);
-            border: 1px solid var(--gb);
-            border-radius: 16px;
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
-            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(12px) saturate(150%);
-            animation: fadeUp 0.8s ease-out backwards;
+            background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 24px;
+            position: relative; overflow: hidden; transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px) saturate(150%); animation: fadeUp 0.8s ease-out backwards;
         }
-        .fcard:nth-child(1) { animation-delay: 0.1s; }
-        .fcard:nth-child(2) { animation-delay: 0.2s; }
-        .fcard:nth-child(3) { animation-delay: 0.3s; }
-        .fcard:nth-child(4) { animation-delay: 0.4s; }
-
-        .fcard:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.4);
-            border-color: rgba(255,255,255,0.15);
-        }
-
+        .fcard:nth-child(1) { animation-delay: 0.1s; } .fcard:nth-child(2) { animation-delay: 0.2s; }
+        .fcard:nth-child(3) { animation-delay: 0.3s; } .fcard:nth-child(4) { animation-delay: 0.4s; }
+        .fcard:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.15); }
         .fcard::before {
-            content: '';
-            position: absolute;
-            top: -60px;
-            left: -60px;
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            opacity: .15;
-            pointer-events: none;
-            transition: all .4s ease;
+            content: ''; position: absolute; top: -60px; left: -60px; width: 160px; height: 160px;
+            border-radius: 50%; opacity: .15; pointer-events: none; transition: all .4s ease;
         }
         .fcard:hover::before { opacity: .35; transform: scale(1.2); }
         .fcard.red::before { background: radial-gradient(circle, #ff4444, transparent 70%); }
         .fcard.blue::before { background: radial-gradient(circle, #1ec2ff, transparent 70%); }
         .fcard.green::before { background: radial-gradient(circle, #2efd71, transparent 70%); }
         .fcard.yellow::before { background: radial-gradient(circle, #ffd700, transparent 70%); }
-
         .fcard-ico {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            border: 1px solid var(--gb);
-            background: rgba(0, 0, 0, .4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            font-size: 18px;
+            width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--gb); background: rgba(0, 0, 0, .4);
+            display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 18px;
         }
         .fcard-ico img { width: 24px; height: 24px; object-fit: contain; }
         .fcard h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
@@ -361,174 +202,103 @@
         .sdiv { border: none; border-top: 1px solid var(--gb); margin: 10px 24px 24px; }
         .slabel { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #666; margin-bottom: 16px; font-weight: 600; }
 
-        /* ── REWORKED SELECTOR SECTION ── */
+        /* ════════════════════════════════════════════════════════
+           REWORKED SELECTOR SECTION (Side-by-Side Panels)
+        ════════════════════════════════════════════════════════ */
         .selector-wrap {
-            max-width: 880px;
-            margin: 0 auto 40px;
-            padding: 0 24px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            max-width: 1000px; margin: 0 auto 40px; padding: 0 24px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
             animation: fadeUp 0.8s ease-out;
         }
-        @media (max-width: 720px) {
-            .selector-wrap { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 840px) { .selector-wrap { grid-template-columns: 1fr; } }
 
         .selector-card {
-            background: var(--card);
-            border: 1px solid var(--gb);
-            border-radius: 18px;
-            padding: 22px;
-            backdrop-filter: blur(14px) saturate(160%);
-            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            background: var(--card); border: 1px solid var(--gb); border-radius: 18px; padding: 22px;
+            backdrop-filter: blur(14px) saturate(160%); transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 340px;
         }
         .selector-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
             background: linear-gradient(90deg, var(--pur), #64b2f5);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .4s ease;
+            transform: scaleX(0); transform-origin: left; transition: transform .4s ease;
         }
-        .selector-card:hover {
-            border-color: rgba(125, 82, 222, 0.4);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-        }
+        .selector-card:hover { border-color: rgba(125, 82, 222, 0.4); transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.35); }
         .selector-card:hover::after { transform: scaleX(1); }
-
         .selector-card.music::after { background: linear-gradient(90deg, var(--blu), #64b2f5); }
         .selector-card.music:hover { border-color: rgba(30, 124, 205, 0.4); }
 
         .sec-title {
-            font-size: 13px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #c4a8ff;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+            color: #c4a8ff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
         }
         .sec-title i { font-size: 14px; }
         .selector-card.music .sec-title { color: #90c8f8; }
 
         .field-label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #777;
-            margin-bottom: 8px;
+            font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+            color: #777; margin-bottom: 12px;
+        }
+
+        /* List container for Scripts */
+        .list-container {
+            flex: 1; 
+            background: rgba(0, 0, 0, 0.2); 
+            border: 1px solid var(--gb); 
+            border-radius: 12px; 
+            overflow-y: auto; 
+            margin-bottom: 16px;
+            max-height: 240px;
+        }
+        .list-container::-webkit-scrollbar { width: 4px; }
+        .list-container::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
+
+        .list-item {
+            padding: 12px 14px; display: flex; align-items: center; gap: 12px;
+            cursor: pointer; transition: all .2s; 
+            border-bottom: 1px solid rgba(255, 255, 255, .03);
+            border-left: 3px solid transparent;
+        }
+        .list-item:last-child { border-bottom: none; }
+        .list-item:hover { background: var(--pur-dim); }
+        .list-item.selected {
+            background: var(--pur-dim); 
+            border-left: 3px solid var(--pur);
         }
 
         .dd-trigger {
-            width: 100%;
-            background: rgba(8, 8, 14, 0.55);
-            border: 1px solid var(--gb);
-            border-radius: 12px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            color: #ddd;
-            font-size: 14px;
-            transition: all .25s;
-            user-select: none;
-            backdrop-filter: blur(10px) saturate(150%);
+            width: 100%; background: rgba(8, 8, 14, 0.4); border: 1px solid var(--gb);
+            border-radius: 12px; padding: 14px 16px; display: flex; align-items: center;
+            justify-content: space-between; cursor: pointer; color: #ddd; font-size: 14px;
+            transition: all .25s; user-select: none; margin-bottom: 16px;
         }
-        .dd-trigger:hover { border-color: var(--pur-border); background: rgba(125, 82, 222, 0.08); }
-        .selector-card.music .dd-trigger:hover { border-color: var(--blu-border); background: rgba(30, 124, 205, 0.08); }
-
-        .dd-trigger.open {
-            border-color: var(--pur-border);
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        .selector-card.music .dd-trigger.open { border-color: var(--blu-border); }
+        .dd-trigger:hover { border-color: var(--blu-border); background: rgba(30, 124, 205, 0.08); }
+        .dd-trigger.open { border-color: var(--blu-border); border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: 0; }
 
         .dd-tl { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
         .dd-icon {
-            width: 26px; height: 26px; border-radius: 6px;
-            background: var(--pur-dim); border: 1px solid var(--pur-border);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; color: #c4a8ff; flex-shrink: 0;
+            width: 26px; height: 26px; border-radius: 6px; background: var(--blu-dim); border: 1px solid var(--blu-border);
+            display: flex; align-items: center; justify-content: center; font-size: 13px; color: #90c8f8; flex-shrink: 0;
         }
-        .selector-card.music .dd-icon { background: var(--blu-dim); border-color: var(--blu-border); color: #90c8f8; }
 
-        .dd-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-        .dd-name {
-            font-size: 14px; font-weight: 600; color: #e0e0ef;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
+        .dd-name { font-size: 14px; font-weight: 600; color: #e0e0ef; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .dd-name.placeholder { color: #666; font-weight: 500; }
-
         .dd-arrow { transition: transform .3s; color: #888; font-size: 14px; flex-shrink: 0; margin-left: 8px; }
         .dd-arrow.open { transform: rotate(180deg); }
 
         .dd-menu {
-            width: 100%;
-            background: rgba(12, 12, 20, 0.96);
-            border: 1px solid var(--pur-border);
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-            overflow: hidden;
-            max-height: 0;
-            opacity: 0;
-            transition: max-height 0.4s ease, opacity 0.25s ease;
-            backdrop-filter: blur(16px) saturate(150%);
+            width: 100%; background: rgba(12, 12, 20, 0.85); border: 1px solid var(--blu-border);
+            border-top: none; border-radius: 0 0 12px 12px; overflow: hidden; max-height: 0; opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.25s ease; margin-bottom: 16px;
         }
-        .selector-card.music .dd-menu { border-color: var(--blu-border); }
-        .dd-menu.open { max-height: 520px; opacity: 1; }
-
-        .dd-search { padding: 10px 14px; border-bottom: 1px solid var(--gb); }
-        .dd-search input {
-            width: 100%;
-            background: rgba(255, 255, 255, .05);
-            border: 1px solid var(--gb);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 13px;
-            color: #ddd;
-            outline: none;
-            transition: border-color .2s;
-            font-family: inherit;
-        }
-        .dd-search input::placeholder { color: #444; }
-        .dd-search input:focus { border-color: var(--pur-border); }
-        .selector-card.music .dd-search input:focus { border-color: var(--blu-border); }
-
-        .dd-opts { max-height: 260px; overflow-y: auto; }
+        .dd-menu.open { max-height: 300px; opacity: 1; }
+        .dd-opts { max-height: 220px; overflow-y: auto; }
         .dd-opts::-webkit-scrollbar { width: 4px; }
         .dd-opts::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
 
-        .dd-opt {
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: background .2s;
-            border-bottom: 1px solid rgba(255, 255, 255, .03);
-        }
-        .dd-opt:last-child { border-bottom: none; }
-        .dd-opt:hover, .dd-opt.sel { background: var(--pur-dim); }
-        .selector-card.music .dd-opt:hover, .selector-card.music .dd-opt.sel { background: var(--blu-dim); }
-
-        .dd-opt-icon { font-size: 16px; width: 30px; text-align: center; flex-shrink: 0; }
-        .dd-opt-info { flex: 1; min-width: 0; }
-        .dd-opt-name {
-            font-size: 13px; font-weight: 600; color: #ddd;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .dd-opt-desc { font-size: 11px; color: #666; margin-top: 2px; }
+        .item-icon { font-size: 16px; width: 30px; text-align: center; flex-shrink: 0; }
+        .item-info { flex: 1; min-width: 0; }
+        .item-name { font-size: 13px; font-weight: 600; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-desc { font-size: 11px; color: #666; margin-top: 2px; }
 
         .badge { font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
         .b-stable { background: rgba(46, 200, 113, .14); color: var(--grn); border: 1px solid var(--grn-border); }
@@ -536,13 +306,12 @@
         .b-outdated { background: rgba(150, 150, 150, .12); color: #888; border: 1px solid rgba(150, 150, 150, .28); }
         .b-link { background: var(--blu-dim); color: #90c8f8; border: 1px solid var(--blu-border); }
 
-        .dd-action { padding: 12px 16px; display: flex; gap: 10px; background: rgba(0, 0, 0, .3); }
+        /* Card Action Buttons (Hollow) */
+        .dd-action { display: flex; gap: 10px; }
         .dd-copy-btn, .dd-open-btn {
-            flex: 1; padding: 10px; border-radius: 8px;
-            font-size: 13px; font-weight: 600; cursor: pointer;
-            transition: all .25s; display: flex; align-items: center; justify-content: center;
-            gap: 6px; font-family: inherit;
-            background: transparent; 
+            flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: all .25s; display: flex; align-items: center; justify-content: center; gap: 6px;
+            font-family: inherit; background: transparent;
         }
         .dd-copy-btn { border: 1px solid var(--pur); color: #c4a8ff; }
         .dd-copy-btn:hover { background: var(--pur-dim); transform: translateY(-1px); }
@@ -552,36 +321,18 @@
         /* ── DOWNLOAD CARDS ── */
         .dl-section { padding: 0 24px 40px; max-width: 1000px; margin: 0 auto; }
         .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-
         .dl-card {
-            background: var(--card);
-            border: 1px solid var(--gb);
-            border-radius: 16px;
-            padding: 20px;
-            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(12px) saturate(150%);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 20px;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(12px) saturate(150%);
+            display: flex; flex-direction: column; position: relative; overflow: hidden;
         }
         .dl-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--pur), #64b2f5);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .4s ease;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, var(--pur), #64b2f5); transform: scaleX(0);
+            transform-origin: left; transition: transform .4s ease;
         }
-        .dl-card:hover {
-            border-color: rgba(125, 82, 222, 0.4);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 24px rgba(0,0,0,0.35);
-        }
+        .dl-card:hover { border-color: rgba(125, 82, 222, 0.4); transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
         .dl-card:hover::after { transform: scaleX(1); }
-
         .dl-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .dl-title { font-size: 15px; font-weight: 700; color: #fff; }
         .dl-ico { font-size: 20px; color: #aaa; }
@@ -590,20 +341,11 @@
         .dl-tag { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: rgba(255, 255, 255, .05); border: 1px solid var(--gb); color: #aaa; font-weight: 500; }
 
         .dl-btn {
-            width: 100%; padding: 12px; border-radius: 10px;
-            font-size: 13px; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: all .25s; text-decoration: none;
-            position: relative; overflow: hidden; font-family: inherit;
-            background: transparent;
-            border: 1px solid var(--pur); 
-            color: #c4a8ff;
+            width: 100%; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .25s; text-decoration: none;
+            font-family: inherit; background: transparent; border: 1px solid var(--pur); color: #c4a8ff;
         }
-        .dl-btn:hover {
-            background: var(--pur-dim); 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2);
-        }
+        .dl-btn:hover { background: var(--pur-dim); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2); }
         .dl-btn.blu { border-color: var(--blu); color: #90c8f8; }
         .dl-btn.blu:hover { background: var(--blu-dim); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
         .dl-btn.grn { border-color: var(--grn); color: #7fdfaa; }
@@ -611,91 +353,37 @@
 
         /* ── FLOATING MUSIC PLAYER PANEL ── */
         .music-player {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 300px;
-            background: rgba(12, 12, 20, 0.85);
-            border: 1px solid var(--pur-border);
-            border-radius: 16px;
-            backdrop-filter: blur(16px) saturate(150%);
-            z-index: 1000;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            overflow: hidden;
-            transition: all 0.3s ease;
+            position: fixed; bottom: 20px; left: 20px; width: 300px;
+            background: rgba(12, 12, 20, 0.85); border: 1px solid var(--pur-border); border-radius: 16px;
+            backdrop-filter: blur(16px) saturate(150%); z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            overflow: hidden; transition: all 0.3s ease;
         }
-        .mp-header {
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--gb);
-            cursor: pointer;
-        }
+        .mp-header { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--gb); cursor: pointer; }
         .mp-title { font-size: 13px; font-weight: 700; color: #c4a8ff; display: flex; align-items: center; gap: 8px; }
         .mp-body { padding: 12px 16px; }
         .mp-track-name { font-size: 12px; color: #fff; font-weight: 600; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        .mp-progress {
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 8px;
-        }
-        .mp-fill {
-            height: 100%;
-            background: var(--pur);
-            border-radius: 4px;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
+        .mp-progress { height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; margin-bottom: 8px; }
+        .mp-fill { height: 100%; background: var(--pur); border-radius: 4px; width: 0%; transition: width 0.1s linear; }
         .mp-time { display: flex; justify-content: space-between; font-size: 10px; color: #888; margin-bottom: 12px; }
-        
         .mp-controls { display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .mp-btn {
-            background: transparent;
-            border: none;
-            color: #ccc;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            padding: 5px;
-        }
+        .mp-btn { background: transparent; border: none; color: #ccc; font-size: 14px; cursor: pointer; transition: all 0.2s; padding: 5px; }
         .mp-btn:hover { color: #fff; transform: scale(1.1); }
-        .mp-btn.play { 
-            background: var(--pur); 
-            color: #fff; 
-            width: 36px; 
-            height: 36px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 16px;
-        }
+        .mp-btn.play { background: var(--pur); color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
         .mp-btn.play:hover { background: #8b62e8; transform: scale(1.05); }
 
         /* ── TOAST ── */
         .toast {
-            position: fixed; bottom: 30px; right: 30px;
-            background: #1a1a2e; border: 1px solid var(--pur-border);
-            color: #c4a8ff; font-size: 14px; padding: 14px 24px; border-radius: 12px;
-            opacity: 0; transform: translateY(20px);
-            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none; z-index: 999;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            backdrop-filter: blur(12px); font-weight: 600;
+            position: fixed; bottom: 30px; right: 30px; background: #1a1a2e; border: 1px solid var(--pur-border);
+            color: #c4a8ff; font-size: 14px; padding: 14px 24px; border-radius: 12px; opacity: 0; transform: translateY(20px);
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; z-index: 999;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5); backdrop-filter: blur(12px); font-weight: 600;
         }
         .toast.show { opacity: 1; transform: translateY(0); }
 
         /* ── FOOTER ── */
         .footer {
-            background: var(--nav);
-            border-top: 1px solid var(--gb);
-            padding: 24px 24px;
-            display: flex; align-items: center; justify-content: space-between;
-            flex-wrap: wrap; gap: 12px; margin-top: 20px;
+            background: var(--nav); border-top: 1px solid var(--gb); padding: 24px 24px;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 20px;
             backdrop-filter: blur(16px) saturate(180%);
         }
         .footer-brand { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
@@ -707,20 +395,20 @@
         .tsb-wrap { text-align: center; margin-bottom: 40px; animation: fadeUp 1s ease-out; }
         .tsb-label { font-size: 12px; color: #777; }
         .tsb-code {
-            font-size: 14px; color: #c4a8ff; background: transparent;
-            border: 1px solid var(--pur); padding: 6px 14px; border-radius: 8px;
-            cursor: pointer; transition: all .2s; font-weight: 700; margin-left: 6px;
+            font-size: 14px; color: #c4a8ff; background: transparent; border: 1px solid var(--pur);
+            padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: all .2s; font-weight: 700; margin-left: 6px;
         }
         .tsb-code:hover { background: var(--pur-dim); transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-    <!-- Video Background (supports mp4) -->
+    <!-- Background Video / Image Fallback -->
     <video autoplay loop muted playsinline class="bg-video">
         <source src="background.mp4" type="video/mp4">
     </video>
 
+    <!-- NAV -->
     <div class="nav">
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
             <div class="nav-brand">
@@ -745,6 +433,7 @@
         </div>
     </div>
 
+    <!-- HERO -->
     <div class="hero">
         <div class="hero-badge">Script Execution Platform</div>
         <h1>Welcome to <em>Purium</em></h1>
@@ -757,6 +446,7 @@
         </div>
     </div>
 
+    <!-- FEATURE CARDS -->
     <div class="cards-g">
         <div class="fcard red">
             <div class="fcard-ico"><img src="TryHard_files/icon-red.png" alt="Powerful"></div>
@@ -782,58 +472,49 @@
 
     <hr class="sdiv">
 
-    <!-- ════════ REWORKED SELECTOR SECTION ════════ -->
+    <!-- ════════ REWORKED SIDE-BY-SIDE SELECTOR SECTION ════════ -->
     <div class="selector-wrap">
 
-        <!-- SCRIPTS CARD -->
+        <!-- SCRIPTS PANEL (Visible List) -->
         <div class="selector-card">
-            <div class="sec-title">
-                <i class="fa-solid fa-code"></i> Scripts
+            <div class="sec-title"><i class="fa-solid fa-code"></i> Scripts</div>
+            <div class="field-label">Available Scripts</div>
+            
+            <div class="list-container" id="dd-scripts-opts">
+                <!-- Scripts list injected here via JS -->
             </div>
-            <div class="field-label">Select a script</div>
-            <div class="dd-trigger" id="dd-scripts-trigger" onclick="ddToggle('scripts')">
-                <div class="dd-tl">
-                    <span class="dd-icon" id="dd-scripts-si"><i class="fa-regular fa-file-lines"></i></span>
-                    <div class="dd-text">
-                        <span class="dd-name placeholder" id="dd-scripts-sn">Choose a script...</span>
-                    </div>
-                    <span class="badge b-stable" id="dd-scripts-sb" style="display:none"></span>
-                </div>
-                <span class="dd-arrow" id="dd-scripts-arrow">▾</span>
-            </div>
-            <div class="dd-menu" id="dd-scripts-menu">
-                <div class="dd-search">
-                    <input type="text" placeholder="Search scripts..." oninput="ddFilter('scripts',this.value)">
-                </div>
-                <div class="dd-opts" id="dd-scripts-opts"></div>
-                <div class="dd-action">
-                    <button class="dd-copy-btn" onclick="ddCopy('scripts')">📋 Copy loadstring</button>
-                    <button class="dd-open-btn" onclick="ddOpenLink('scripts')">🔗 Open raw</button>
-                </div>
+            
+            <div class="dd-action">
+                <button class="dd-copy-btn" onclick="ddCopy('scripts')">📋 Copy loadstring</button>
+                <button class="dd-open-btn" onclick="ddOpenLink('scripts')">🔗 Open raw</button>
             </div>
         </div>
 
-        <!-- MUSIC & VIBES CARD -->
+        <!-- MUSIC & VIBES PANEL (Dropdown) -->
         <div class="selector-card music">
-            <div class="sec-title">
-                <i class="fa-solid fa-music"></i> Music &amp; Vibes
-            </div>
+            <div class="sec-title"><i class="fa-solid fa-music"></i> Music &amp; Vibes</div>
             <div class="field-label">Pick a track</div>
+            
             <div class="dd-trigger" id="dd-music-trigger" onclick="ddToggle('music')">
                 <div class="dd-tl">
-                    <span class="dd-icon" id="dd-music-si"><i class="fa-solid fa-music"></i></span>
-                    <div class="dd-text">
+                    <span class="dd-icon"><i class="fa-solid fa-music"></i></span>
+                    <div class="item-info">
                         <span class="dd-name placeholder" id="dd-music-sn">Choose a track...</span>
                     </div>
                     <span class="badge b-link" id="dd-music-sb" style="display:none"></span>
                 </div>
                 <span class="dd-arrow" id="dd-music-arrow">▾</span>
             </div>
+            
             <div class="dd-menu" id="dd-music-menu">
                 <div class="dd-opts" id="dd-music-opts"></div>
-                <div class="dd-action">
-                    <button class="dd-open-btn" onclick="ddOpenLink('music')" style="flex:1">▶ Open on YouTube</button>
-                </div>
+            </div>
+
+            <!-- Spacer to push button to bottom -->
+            <div style="flex-grow:1"></div>
+
+            <div class="dd-action">
+                <button class="dd-open-btn" onclick="ddOpenLink('music')" style="flex:1">▶ Open on YouTube</button>
             </div>
         </div>
 
@@ -841,6 +522,7 @@
 
     <hr class="sdiv" style="margin-top:28px">
 
+    <!-- DOWNLOAD CARDS -->
     <div class="slabel">Quick Downloads</div>
     <div class="dl-section">
         <div class="dl-grid">
@@ -995,6 +677,7 @@
         <code id="tsb-id" class="tsb-code" onclick="copyText('10449761463',this,'Copied!')">10449761463</code>
     </div>
 
+    <!-- FOOTER -->
     <div class="footer">
         <div>
             <div class="footer-brand">Purium<span>.</span></div>
@@ -1009,7 +692,7 @@
         </div>
     </div>
 
-    <!-- ════════ FLOATING CHILL MUSIC PLAYER ════════ -->
+    <!-- FLOATING CHILL MUSIC PLAYER -->
     <div class="music-player">
         <div class="mp-header" onclick="togglePlayerBody()">
             <div class="mp-title"><i class="fa-solid fa-headphones"></i> Chill & Cute Vibes</div>
@@ -1033,8 +716,10 @@
         </div>
     </div>
 
+    <!-- TOAST NOTIFICATION -->
     <div class="toast" id="toast"></div>
 
+    <!-- JAVASCRIPT -->
     <script>
         const DROPDOWNS = {
             scripts: {
@@ -1043,8 +728,7 @@
                         icon: '<i class="fa-solid fa-check"></i>',
                         name: 'SBSD-Wind (Working)',
                         desc: 'Main working script — use this one',
-                        badge: 'Working',
-                        badgeClass: 'b-stable',
+                        badge: 'Working', badgeClass: 'b-stable',
                         url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/SBSD-Wind.lua',
                         script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/SBSD-Wind.lua"))()'
                     },
@@ -1052,8 +736,7 @@
                         icon: '<i class="fa-solid fa-triangle-exclamation"></i>',
                         name: 'Silent Assassin (Outdated)',
                         desc: 'Old script — may not work',
-                        badge: 'Outdated',
-                        badgeClass: 'b-outdated',
+                        badge: 'Outdated', badgeClass: 'b-outdated',
                         url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/slient.lua',
                         script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/slient.lua"))()'
                     },
@@ -1061,8 +744,7 @@
                         icon: '<i class="fa-solid fa-triangle-exclamation"></i>',
                         name: 'Chain (Outdated)',
                         desc: 'Old chain script',
-                        badge: 'Outdated',
-                        badgeClass: 'b-outdated',
+                        badge: 'Outdated', badgeClass: 'b-outdated',
                         url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Chain.lua',
                         script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Chain.lua"))()'
                     },
@@ -1070,8 +752,7 @@
                         icon: '<i class="fa-solid fa-flask"></i>',
                         name: 'Test / Bruh',
                         desc: 'Experimental test script',
-                        badge: 'Beta',
-                        badgeClass: 'b-beta',
+                        badge: 'Beta', badgeClass: 'b-beta',
                         url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/test.lua',
                         script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/test.lua"))()'
                     },
@@ -1079,8 +760,7 @@
                         icon: '<i class="fa-regular fa-file-lines"></i>',
                         name: 'Secret Security (all scripts)',
                         desc: 'Full raw file with all scripts listed',
-                        badge: 'Raw',
-                        badgeClass: 'b-link',
+                        badge: 'Raw', badgeClass: 'b-link',
                         url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security',
                         script: ''
                     }
@@ -1089,43 +769,28 @@
             music: {
                 items: [
                     {
-                        icon: '<i class="fa-solid fa-violin"></i>',
-                        name: 'Giao hưởng phùng thank độ',
-                        desc: 'Vietnamese classical vibes',
-                        badge: 'YouTube',
-                        badgeClass: 'b-link',
+                        icon: '<i class="fa-solid fa-violin"></i>', name: 'Giao hưởng phùng thank độ',
+                        desc: 'Vietnamese classical vibes', badge: 'YouTube', badgeClass: 'b-link',
                         url: 'https://youtu.be/ohz9EXtmVY8?si=0ZGpsVETDS4n3AeJ'
                     },
                     {
-                        icon: '<i class="fa-solid fa-music"></i>',
-                        name: 'Mozart Phonk?',
-                        desc: 'The original page track',
-                        badge: 'YouTube',
-                        badgeClass: 'b-link',
+                        icon: '<i class="fa-solid fa-music"></i>', name: 'Mozart Phonk?',
+                        desc: 'The original page track', badge: 'YouTube', badgeClass: 'b-link',
                         url: 'https://youtu.be/hwrt5O9IWlw?si=OPTEU7GeV6xxWAqu'
                     },
                     {
-                        icon: '<i class="fa-solid fa-fire"></i>',
-                        name: 'Montagem Hongbao',
-                        desc: 'Montagem track',
-                        badge: 'YouTube',
-                        badgeClass: 'b-link',
+                        icon: '<i class="fa-solid fa-fire"></i>', name: 'Montagem Hongbao',
+                        desc: 'Montagem track', badge: 'YouTube', badgeClass: 'b-link',
                         url: 'https://youtu.be/8wUo-htFZCY?si=E6AFUtzq5P_7avMQ'
                     },
                     {
-                        icon: '<i class="fa-solid fa-headphones"></i>',
-                        name: 'Gogogaga Funk',
-                        desc: 'Funk banger',
-                        badge: 'YouTube',
-                        badgeClass: 'b-link',
+                        icon: '<i class="fa-solid fa-headphones"></i>', name: 'Gogogaga Funk',
+                        desc: 'Funk banger', badge: 'YouTube', badgeClass: 'b-link',
                         url: 'https://youtu.be/J8yUuMWOLnY?si=o_m92SpGzc8F5NZg'
                     },
                     {
-                        icon: '<i class="fa-solid fa-gem"></i>',
-                        name: 'Cry For Me × Jackpot',
-                        desc: 'Latest track',
-                        badge: 'YouTube',
-                        badgeClass: 'b-link',
+                        icon: '<i class="fa-solid fa-gem"></i>', name: 'Cry For Me × Jackpot',
+                        desc: 'Latest track', badge: 'YouTube', badgeClass: 'b-link',
                         url: 'https://youtu.be/J7DOpglDWMk?si=6hJQMkpJbxnCRpq_'
                     }
                 ]
@@ -1144,14 +809,21 @@
                 if (filterText && !item.name.toLowerCase().includes(filterText) && !(item.desc && item.desc.toLowerCase().includes(filterText))) return;
 
                 const div = document.createElement('div');
-                div.className = 'dd-opt';
+                // Use 'list-item' for scripts (visible list) and 'dd-opt' for music (dropdown)
+                div.className = id === 'scripts' ? 'list-item' : 'dd-opt';
+                
+                // Highlight if already selected
+                if (currentSel[id] && currentSel[id].name === item.name) {
+                    div.classList.add('selected');
+                }
+
                 div.onclick = () => selectItem(id, index);
 
                 div.innerHTML = `
-                    <div class="dd-opt-icon">${item.icon}</div>
-                    <div class="dd-opt-info">
-                        <div class="dd-opt-name">${item.name}</div>
-                        <div class="dd-opt-desc">${item.desc}</div>
+                    <div class="item-icon">${item.icon}</div>
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-desc">${item.desc}</div>
                     </div>
                     ${item.badge ? `<span class="badge ${item.badgeClass}">${item.badge}</span>` : ''}
                 `;
@@ -1163,21 +835,25 @@
             const item = DROPDOWNS[id].items[index];
             currentSel[id] = item;
 
-            document.getElementById(`dd-${id}-si`).innerHTML = item.icon;
-            const nameEl = document.getElementById(`dd-${id}-sn`);
-            nameEl.innerText = item.name;
-            nameEl.classList.remove('placeholder');
+            // If it's music, update the trigger display
+            if (id === 'music') {
+                const nameEl = document.getElementById(`dd-${id}-sn`);
+                nameEl.innerText = item.name;
+                nameEl.classList.remove('placeholder');
 
-            const badgeEl = document.getElementById(`dd-${id}-sb`);
-            if (item.badge) {
-                badgeEl.style.display = 'inline-block';
-                badgeEl.className = `badge ${item.badgeClass}`;
-                badgeEl.innerText = item.badge;
+                const badgeEl = document.getElementById(`dd-${id}-sb`);
+                if (item.badge) {
+                    badgeEl.style.display = 'inline-block';
+                    badgeEl.className = `badge ${item.badgeClass}`;
+                    badgeEl.innerText = item.badge;
+                } else {
+                    badgeEl.style.display = 'none';
+                }
+                ddToggle(id);
             } else {
-                badgeEl.style.display = 'none';
+                // If it's scripts, just update the highlight in the list
+                renderDropdown(id);
             }
-
-            ddToggle(id);
         }
 
         function ddToggle(id) {
@@ -1185,8 +861,6 @@
             document.getElementById(`dd-${id}-menu`).classList.toggle('open');
             document.getElementById(`dd-${id}-arrow`).classList.toggle('open');
         }
-
-        function ddFilter(id, val) { renderDropdown(id, val.toLowerCase()); }
 
         function ddCopy(id) {
             const item = currentSel[id];
@@ -1217,7 +891,7 @@
             window.open(url, '_blank');
         }
 
-        /* ════════ MUSIC PLAYER LOGIC ════════ */
+        /* ════════ FLOATING MUSIC PLAYER LOGIC ════════ */
         const PLAYLIST = [
             { name: "Chill Cute Lofi", url: "https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" },
             { name: "Relaxing Morning", url: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" },
@@ -1240,10 +914,7 @@
             mpFill.style.width = '0%';
             mpCurrent.innerText = '0:00';
             mpDuration.innerText = '0:00';
-            
-            if (isPlaying) {
-                audio.play().catch(e => console.log("Autoplay blocked"));
-            }
+            if (isPlaying) audio.play().catch(e => console.log("Autoplay blocked"));
         }
 
         function togglePlay() {
@@ -1259,23 +930,14 @@
             }
         }
 
-        function nextTrack() {
-            currentTrack = (currentTrack + 1) % PLAYLIST.length;
-            loadTrack(currentTrack);
-        }
-
-        function prevTrack() {
-            currentTrack = (currentTrack - 1 + PLAYLIST.length) % PLAYLIST.length;
-            loadTrack(currentTrack);
-        }
+        function nextTrack() { loadTrack((currentTrack + 1) % PLAYLIST.length); }
+        function prevTrack() { loadTrack((currentTrack - 1 + PLAYLIST.length) % PLAYLIST.length); }
 
         function seekTrack(event) {
             const rect = event.currentTarget.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
             const percent = clickX / rect.width;
-            if (audio.duration) {
-                audio.currentTime = audio.duration * percent;
-            }
+            if (audio.duration) audio.currentTime = audio.duration * percent;
         }
 
         function togglePlayerBody() {
@@ -1290,7 +952,6 @@
             }
         }
 
-        // Update progress bar and time
         audio.addEventListener('timeupdate', () => {
             if (audio.duration) {
                 const percent = (audio.currentTime / audio.duration) * 100;
@@ -1300,10 +961,7 @@
             }
         });
 
-        // Auto-play next track when current finishes
-        audio.addEventListener('ended', () => {
-            nextTrack();
-        });
+        audio.addEventListener('ended', () => { nextTrack(); });
 
         function formatTime(sec) {
             const m = Math.floor(sec / 60);
@@ -1314,7 +972,7 @@
         window.onload = () => {
             renderDropdown('scripts');
             renderDropdown('music');
-            loadTrack(0); // Load the first song without playing
+            loadTrack(0); 
         };
     </script>
 </body>
