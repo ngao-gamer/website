@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purium - Script Execution Platform</title>
+    <title>Purium - Multiply Platform</title>
+    
+    <!-- Website Title Icon (Favicon) -->
+    <link rel="icon" href="moon.png" type="image/png">
+    
     <!-- Imported Inter Font & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +48,6 @@
         }
 
         /* ── BACKGROUND IMAGE + OVERLAY ── */
-        /* Uses background.jpg from the same folder as index.html in your GitHub repo */
         body {
             background-image: url('background.jpg');
             background-size: cover;
@@ -54,7 +57,6 @@
             position: relative;
         }
 
-        /* Dark overlay gradient to make text readable over the image */
         body::before {
             content: '';
             position: fixed;
@@ -141,13 +143,14 @@
             transform: translateY(-2px);
         }
 
+        /* Nav Special Button (Transparent inside, solid rim) */
         .nbtn.sp {
-            border-color: var(--pur-border);
-            background: var(--pur-dim);
+            border-color: var(--pur);
+            background: transparent;
             color: #c8aaff;
         }
         .nbtn.sp:hover {
-            background: rgba(125, 82, 222, 0.3);
+            background: var(--pur-dim);
             box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2);
         }
 
@@ -248,6 +251,7 @@
             margin-bottom: 40px;
         }
 
+        /* FIXED: Hollow buttons (Transparent inside, solid colored rim) */
         .hbtn {
             display: inline-flex;
             align-items: center;
@@ -256,27 +260,25 @@
             border-radius: 10px;
             font-size: 13px;
             font-weight: 600;
-            border: 1px solid var(--gb);
-            background: rgba(20, 20, 30, 0.6);
-            color: #ccc;
+            border: 1px solid #ffffff; /* White rim */
+            background: transparent; /* Transparent inside */
+            color: #ffffff;
             cursor: pointer;
             transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            backdrop-filter: blur(8px);
         }
         .hbtn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
+            background: rgba(255, 255, 255, 0.1); /* Slight white tint on hover */
+            border-color: #ffffff;
             transform: translateY(-3px);
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
-        .hbtn.pur { border-color: var(--pur-border); background: var(--pur-dim); color: #c4a8ff; }
-        .hbtn.pur:hover { background: rgba(125, 82, 222, 0.3); box-shadow: 0 6px 16px rgba(125, 82, 222, 0.2); }
-        .hbtn.blu { border-color: var(--blu-border); background: var(--blu-dim); color: #90c8f8; }
-        .hbtn.blu:hover { background: rgba(30, 124, 205, 0.3); box-shadow: 0 6px 16px rgba(30, 124, 205, 0.2); }
-        .hbtn.grn { border-color: var(--grn-border); background: var(--grn-dim); color: #7fdfaa; }
-        .hbtn.grn:hover { background: rgba(46, 200, 113, 0.3); box-shadow: 0 6px 16px rgba(46, 200, 113, 0.2); }
+        .hbtn.pur { border-color: var(--pur); color: #c4a8ff; }
+        .hbtn.pur:hover { background: var(--pur-dim); box-shadow: 0 6px 16px rgba(125, 82, 222, 0.2); }
+        .hbtn.blu { border-color: var(--blu); color: #90c8f8; }
+        .hbtn.blu:hover { background: var(--blu-dim); box-shadow: 0 6px 16px rgba(30, 124, 205, 0.2); }
+        .hbtn.grn { border-color: var(--grn); color: #7fdfaa; }
+        .hbtn.grn:hover { background: var(--grn-dim); box-shadow: 0 6px 16px rgba(46, 200, 113, 0.2); }
 
         /* ── FEATURE CARDS ── */
         .cards-g {
@@ -348,11 +350,7 @@
         .sdiv { border: none; border-top: 1px solid var(--gb); margin: 10px 24px 24px; }
         .slabel { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #666; margin-bottom: 16px; font-weight: 600; }
 
-        /* ════════════════════════════════════════════════════════
-           REWORKED SELECTOR SECTION (matches attached reference)
-           Two clean centered cards: SCRIPTS / MUSIC & VIBES
-           with internal labels "SELECT A SCRIPT" / "PICK A TRACK"
-        ════════════════════════════════════════════════════════ */
+        /* ── REWORKED SELECTOR SECTION ── */
         .selector-wrap {
             max-width: 880px;
             margin: 0 auto 40px;
@@ -393,12 +391,9 @@
         }
         .selector-card:hover::after { transform: scaleX(1); }
 
-        .selector-card.music::after {
-            background: linear-gradient(90deg, var(--blu), #64b2f5);
-        }
+        .selector-card.music::after { background: linear-gradient(90deg, var(--blu), #64b2f5); }
         .selector-card.music:hover { border-color: rgba(30, 124, 205, 0.4); }
 
-        /* Section title (SCRIPTS / MUSIC & VIBES) */
         .sec-title {
             font-size: 13px;
             font-weight: 800;
@@ -413,7 +408,6 @@
         .sec-title i { font-size: 14px; }
         .selector-card.music .sec-title { color: #90c8f8; }
 
-        /* Inner label (SELECT A SCRIPT / PICK A TRACK) */
         .field-label {
             font-size: 10px;
             font-weight: 700;
@@ -423,7 +417,6 @@
             margin-bottom: 8px;
         }
 
-        /* Dropdown trigger (the box showing "Choose a script...") */
         .dd-trigger {
             width: 100%;
             background: rgba(8, 8, 14, 0.55);
@@ -452,39 +445,23 @@
 
         .dd-tl { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
         .dd-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 6px;
-            background: var(--pur-dim);
-            border: 1px solid var(--pur-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            color: #c4a8ff;
-            flex-shrink: 0;
+            width: 26px; height: 26px; border-radius: 6px;
+            background: var(--pur-dim); border: 1px solid var(--pur-border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; color: #c4a8ff; flex-shrink: 0;
         }
-        .selector-card.music .dd-icon {
-            background: var(--blu-dim);
-            border-color: var(--blu-border);
-            color: #90c8f8;
-        }
+        .selector-card.music .dd-icon { background: var(--blu-dim); border-color: var(--blu-border); color: #90c8f8; }
 
         .dd-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
         .dd-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e0e0ef;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 14px; font-weight: 600; color: #e0e0ef;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .dd-name.placeholder { color: #666; font-weight: 500; }
 
         .dd-arrow { transition: transform .3s; color: #888; font-size: 14px; flex-shrink: 0; margin-left: 8px; }
         .dd-arrow.open { transform: rotate(180deg); }
 
-        /* Dropdown menu */
         .dd-menu {
             width: 100%;
             background: rgba(12, 12, 20, 0.96);
@@ -532,23 +509,13 @@
         }
         .dd-opt:last-child { border-bottom: none; }
         .dd-opt:hover, .dd-opt.sel { background: var(--pur-dim); }
-        .selector-card.music .dd-opt:hover,
-        .selector-card.music .dd-opt.sel { background: var(--blu-dim); }
+        .selector-card.music .dd-opt:hover, .selector-card.music .dd-opt.sel { background: var(--blu-dim); }
 
-        .dd-opt-icon {
-            font-size: 16px;
-            width: 30px;
-            text-align: center;
-            flex-shrink: 0;
-        }
+        .dd-opt-icon { font-size: 16px; width: 30px; text-align: center; flex-shrink: 0; }
         .dd-opt-info { flex: 1; min-width: 0; }
         .dd-opt-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #ddd;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 13px; font-weight: 600; color: #ddd;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .dd-opt-desc { font-size: 11px; color: #666; margin-top: 2px; }
 
@@ -558,28 +525,21 @@
         .b-outdated { background: rgba(150, 150, 150, .12); color: #888; border: 1px solid rgba(150, 150, 150, .28); }
         .b-link { background: var(--blu-dim); color: #90c8f8; border: 1px solid var(--blu-border); }
 
+        /* Dropdown Action Buttons (Transparent inside, solid rim) */
         .dd-action { padding: 12px 16px; display: flex; gap: 10px; background: rgba(0, 0, 0, .3); }
         .dd-copy-btn, .dd-open-btn {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1px solid;
-            transition: all .25s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-family: inherit;
+            flex: 1; padding: 10px; border-radius: 8px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: all .25s; display: flex; align-items: center; justify-content: center;
+            gap: 6px; font-family: inherit;
+            background: transparent; 
         }
-        .dd-copy-btn { background: var(--pur-dim); border-color: var(--pur-border); color: #c4a8ff; }
-        .dd-copy-btn:hover { background: rgba(125, 82, 222, .3); transform: translateY(-1px); }
-        .dd-open-btn { background: var(--blu-dim); border-color: var(--blu-border); color: #90c8f8; }
-        .dd-open-btn:hover { background: rgba(30, 124, 205, .3); transform: translateY(-1px); }
+        .dd-copy-btn { border: 1px solid var(--pur); color: #c4a8ff; }
+        .dd-copy-btn:hover { background: var(--pur-dim); transform: translateY(-1px); }
+        .dd-open-btn { border: 1px solid var(--blu); color: #90c8f8; }
+        .dd-open-btn:hover { background: var(--blu-dim); transform: translateY(-1px); }
 
-        /* ── DOWNLOAD CARDS ── */
+        /* ── REWORKED DOWNLOAD CARDS (No fake progress bar) ── */
         .dl-section { padding: 0 24px 40px; max-width: 1000px; margin: 0 auto; }
         .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
 
@@ -619,70 +579,37 @@
         .dl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
         .dl-tag { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: rgba(255, 255, 255, .05); border: 1px solid var(--gb); color: #aaa; font-weight: 500; }
 
+        /* Download Buttons (Transparent inside, solid rim) */
         .dl-btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            background: var(--pur-dim);
-            border: 1px solid var(--pur-border);
+            width: 100%; padding: 12px; border-radius: 10px;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all .25s; text-decoration: none;
+            position: relative; overflow: hidden; font-family: inherit;
+            background: transparent;
+            border: 1px solid var(--pur); /* Solid Purple Rim */
             color: #c4a8ff;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all .25s;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            font-family: inherit;
-        }
-        .dl-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left .5s ease;
         }
         .dl-btn:hover {
-            background: rgba(125, 82, 222, .3);
+            background: var(--pur-dim); /* Transparent Purple fill on hover */
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2);
         }
-        .dl-btn:hover::before { left: 100%; }
-        .dl-btn.blu { background: var(--blu-dim); border-color: var(--blu-border); color: #90c8f8; }
-        .dl-btn.blu:hover { background: rgba(30, 124, 205, .3); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
-        .dl-btn.grn { background: var(--grn-dim); border-color: var(--grn-border); color: #7fdfaa; }
-        .dl-btn.grn:hover { background: rgba(46, 200, 113, .3); box-shadow: 0 4px 12px rgba(46, 200, 113, 0.2); }
-
-        .dl-prog { margin-top: 10px; }
-        .dl-bar { height: 3px; background: rgba(255, 255, 255, .05); border-radius: 3px; overflow: hidden; }
-        .dl-fill { height: 100%; background: linear-gradient(90deg, var(--pur), #64b2f5); border-radius: 3px; width: 0; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .dl-btn.blu { border-color: var(--blu); color: #90c8f8; }
+        .dl-btn.blu:hover { background: var(--blu-dim); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
+        .dl-btn.grn { border-color: var(--grn); color: #7fdfaa; }
+        .dl-btn.grn:hover { background: var(--grn-dim); box-shadow: 0 4px 12px rgba(46, 200, 113, 0.2); }
 
         /* ── TOAST ── */
         .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #1a1a2e;
-            border: 1px solid var(--pur-border);
-            color: #c4a8ff;
-            font-size: 14px;
-            padding: 14px 24px;
-            border-radius: 12px;
-            opacity: 0;
-            transform: translateY(20px);
+            position: fixed; bottom: 30px; right: 30px;
+            background: #1a1a2e; border: 1px solid var(--pur-border);
+            color: #c4a8ff; font-size: 14px; padding: 14px 24px; border-radius: 12px;
+            opacity: 0; transform: translateY(20px);
             transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-            z-index: 999;
+            pointer-events: none; z-index: 999;
             box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            backdrop-filter: blur(12px);
-            font-weight: 600;
+            backdrop-filter: blur(12px); font-weight: 600;
         }
         .toast.show { opacity: 1; transform: translateY(0); }
 
@@ -691,12 +618,8 @@
             background: var(--nav);
             border-top: 1px solid var(--gb);
             padding: 24px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 12px; margin-top: 20px;
             backdrop-filter: blur(16px) saturate(180%);
         }
         .footer-brand { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
@@ -707,8 +630,12 @@
 
         .tsb-wrap { text-align: center; margin-bottom: 40px; animation: fadeUp 1s ease-out; }
         .tsb-label { font-size: 12px; color: #777; }
-        .tsb-code { font-size: 14px; color: #c4a8ff; background: var(--pur-dim); border: 1px solid var(--pur-border); padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: all .2s; font-weight: 700; }
-        .tsb-code:hover { background: rgba(125, 82, 222, 0.3); transform: scale(1.05); }
+        .tsb-code {
+            font-size: 14px; color: #c4a8ff; background: transparent;
+            border: 1px solid var(--pur); padding: 6px 14px; border-radius: 8px;
+            cursor: pointer; transition: all .2s; font-weight: 700; margin-left: 6px;
+        }
+        .tsb-code:hover { background: var(--pur-dim); transform: scale(1.05); }
     </style>
 </head>
 <body>
@@ -848,7 +775,6 @@
                     <span class="dl-tag">Raw</span>
                 </div>
                 <button class="dl-btn" onclick="dlGo(this,'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security')">📥 View Raw Script</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -862,7 +788,6 @@
                     <span class="dl-tag">Max Graphics</span>
                 </div>
                 <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/quality_fflag.json')">📥 Download JSON</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -876,7 +801,6 @@
                     <span class="dl-tag">GitHub</span>
                 </div>
                 <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/bituq/Roshade/releases/latest')">🔗 Get Latest Release</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -890,7 +814,6 @@
                     <span class="dl-tag">GitHub</span>
                 </div>
                 <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/Extravi/Bloxshade/releases/latest')">🔗 Get Latest Release</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -904,7 +827,6 @@
                     <span class="dl-tag">GitHub</span>
                 </div>
                 <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/catb0x/Roblox-Shaders-Guide')">🔗 Open GitHub</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -918,7 +840,6 @@
                     <span class="dl-tag">Minecraft</span>
                 </div>
                 <button class="dl-btn blu" onclick="dlGo(this,'https://www.dropbox.com/scl/fi/betbjt1ig3ydf4umzt552/guide-pvp.text?rlkey=lvxemw59d8p3cpa9w224uy7k4&st=m2p8ujlc&dl=1')">📥 Download Guide</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -932,7 +853,6 @@
                     <span class="dl-tag">FFlag</span>
                 </div>
                 <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/fflag.json')">📥 Download JSON</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -946,7 +866,6 @@
                     <span class="dl-tag">Custom</span>
                 </div>
                 <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/Best-fflags.json')">📥 Download JSON</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -960,7 +879,6 @@
                     <span class="dl-tag">v1.1.0.5</span>
                 </div>
                 <button class="dl-btn" onclick="dlGo(this,'https://github.com/voidstrap/Voidstrap/releases/tag/v1.1.0.5')">📥 GitHub Release</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -974,7 +892,6 @@
                     <span class="dl-tag">OptiFine</span>
                 </div>
                 <button class="dl-btn" onclick="dlGo(this,'https://www.curseforge.com/minecraft/shaders/solas-shader')">🔗 CurseForge</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
 
             <div class="dl-card">
@@ -988,13 +905,12 @@
                     <span class="dl-tag">Free</span>
                 </div>
                 <button class="dl-btn grn" onclick="dlGo(this,'https://blur009.vercel.app/projects/blur-autoclicker')">🔗 Open Tool</button>
-                <div class="dl-prog"><div class="dl-bar"><div class="dl-fill"></div></div></div>
             </div>
         </div>
     </div>
 
     <div class="tsb-wrap">
-        <span class="tsb-label">TSB Place ID: </span>
+        <span class="tsb-label">TSB Place ID:</span>
         <code id="tsb-id" class="tsb-code" onclick="copyText('10449761463',this,'Copied!')">10449761463</code>
     </div>
 
@@ -1192,13 +1108,9 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
+        // Cleaned up function: No fake progress bar, just opens the link directly
         function dlGo(btn, url) {
-            const fill = btn.parentElement.querySelector('.dl-fill');
-            if (fill) fill.style.width = '100%';
-            setTimeout(() => {
-                window.open(url, '_blank');
-                if (fill) setTimeout(() => fill.style.width = '0', 400);
-            }, 500);
+            window.open(url, '_blank');
         }
 
         window.onload = () => {
