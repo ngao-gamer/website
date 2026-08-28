@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Purium - Script Execution Platform</title>
+    <title>Purium - Multiply Platform</title>
     
-    <!-- Favicon & Apple Touch Icon (Cache busted to force update) -->
-    <link rel="icon" href="moon.png?v=2" type="image/png">
-    <link rel="apple-touch-icon" href="moon.png?v=2">
+    <!-- Favicon & Apple Touch Icon -->
+    <link rel="icon" href="moon.png" type="image/png">
+    <link rel="apple-touch-icon" href="moon.png">
     
     <!-- Preconnect for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -172,6 +172,9 @@
         .selector-card:hover::after { transform: scaleX(1); }
         .selector-card.music::after { background: linear-gradient(90deg, var(--blu), #64b2f5); }
         .selector-card.music:hover { border-color: rgba(30, 124, 205, 0.6); }
+        .selector-card.hub { grid-column: 1 / -1; min-height: auto; }
+        .selector-card.hub::after { background: linear-gradient(90deg, var(--grn), #64b2f5); }
+        .selector-card.hub:hover { border-color: rgba(46, 200, 113, 0.6); }
 
         .sec-title { font-size: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         .field-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #eee; margin-bottom: 12px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
@@ -205,60 +208,55 @@
         .dd-open-btn { border: 1px solid var(--blu); color: #90c8f8; }
         .dd-open-btn:hover { background: var(--blu-dim); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
 
-        /* ── REDESIGNED DOWNLOAD CARDS ── */
-        .dl-section { padding: 0 24px 40px; max-width: 1200px; margin: 0 auto; }
-        .dl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-        .dl-card { 
-            background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 24px; 
-            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); 
-            backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);
-            display: flex; flex-direction: column; position: relative; overflow: hidden; 
-        }
-        .dl-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pur), #64b2f5); transform: scaleX(0); transform-origin: left; transition: transform .4s ease; }
-        .dl-card:hover { border-color: rgba(125, 82, 222, 0.6); transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.35); }
-        .dl-card:hover::after { transform: scaleX(1); }
+        /* ── OPTIMIZATION HUB ── */
+        .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        @media (max-width: 768px) { .hub-grid { grid-template-columns: 1fr; } }
         
-        .dl-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-        .dl-ico-box { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--gb); font-size: 16px; color: #fff; }
-        .dl-title { font-size: 16px; font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .dl-meta { font-size: 13px; color: #ddd; margin-bottom: 20px; line-height: 1.5; flex-grow: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-        .dl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-        .dl-tag { font-size: 10px; padding: 4px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--gb); color: #eee; font-weight: 500; }
+        .place-id-list { display: flex; flex-direction: column; gap: 8px; }
+        .place-id-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(0,0,0,0.2); border-radius: 6px; border: 1px solid var(--gb); font-size: 12px; color: #ddd; }
+        .place-id-copy { background: transparent; border: none; color: var(--pur); cursor: pointer; font-size: 12px; }
 
-        .dl-btn { width: 100%; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .25s; text-decoration: none; font-family: inherit; background: transparent; border: 1px solid var(--pur); color: #c4a8ff; text-transform: uppercase; letter-spacing: 0.5px; }
-        .dl-btn:hover { background: var(--pur-dim); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2); }
-        .dl-btn.blu { border-color: var(--blu); color: #90c8f8; }
-        .dl-btn.blu:hover { background: var(--blu-dim); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
-        .dl-btn.grn { border-color: var(--grn); color: #7fdfaa; }
-        .dl-btn.grn:hover { background: var(--grn-dim); box-shadow: 0 4px 12px rgba(46, 200, 113, 0.2); }
+        .code-block { background: rgba(0,0,0,0.4); border: 1px solid var(--gb); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+        .code-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--gb); font-size: 12px; font-weight: 600; color: #fff; }
+        .code-copy-btn { background: transparent; border: 1px solid var(--pur); color: #c4a8ff; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+        .code-copy-btn:hover { background: var(--pur-dim); }
+        .code-content { padding: 12px; font-family: 'Courier New', monospace; font-size: 11px; color: #aaa; white-space: pre-wrap; max-height: 200px; overflow-y: auto; }
+        .code-content::-webkit-scrollbar { width: 4px; }
+        .code-content::-webkit-scrollbar-thumb { background: #fff; border-radius: 4px; }
 
-        /* ── GLASS MUSIC PLAYER PANEL ── */
+        .hub-btn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        .hub-btn { padding: 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all .25s; text-decoration: none; font-family: inherit; background: transparent; border: 1px solid var(--pur); color: #c4a8ff; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .hub-btn:hover { background: var(--pur-dim); transform: translateY(-2px); }
+
+        /* ── GLASS MUSIC PLAYER PANEL (Transparent) ── */
         .music-player {
             position: fixed; top: 20px; right: 20px; width: 340px;
-            background: rgba(16, 16, 24, 0.45); border: 1px solid var(--pur-border); border-radius: 16px;
-            backdrop-filter: blur(14px) saturate(180%); -webkit-backdrop-filter: blur(14px) saturate(180%);
-            z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px;
+            backdrop-filter: blur(14px) saturate(150%); -webkit-backdrop-filter: blur(14px) saturate(150%);
+            z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
             overflow: hidden; transition: all 0.3s ease;
         }
         .music-player.dragging { box-shadow: 0 16px 40px rgba(0,0,0,0.8); cursor: grabbing; transition: none; }
         
-        .mp-header { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--gb); cursor: grab; user-select: none; }
+        .mp-header { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: grab; user-select: none; }
         .mp-header:active { cursor: grabbing; }
-        .mp-title { font-size: 12px; font-weight: 700; color: #c4a8ff; display: flex; align-items: center; gap: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mp-title { font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .mp-title span { color: #fff; overflow: hidden; text-overflow: ellipsis; }
-        .mp-min-btn { background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 12px; padding: 4px; }
+        .mp-min-btn { background: transparent; border: none; color: #fff; cursor: pointer; font-size: 12px; padding: 4px; }
         
         .mp-body { padding: 14px 16px; }
         .mp-track-info { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
-        .mp-thumb { width: 50px; height: 50px; border-radius: 8px; background: rgba(0,0,0,0.3); object-fit: cover; border: 1px solid var(--gb); }
+        .mp-thumb { width: 50px; height: 50px; border-radius: 8px; background: rgba(0,0,0,0.3); object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
         .mp-meta { flex: 1; min-width: 0; }
         .mp-track-name { font-size: 14px; color: #fff; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); margin-bottom: 2px; }
-        .mp-artist { font-size: 11px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .mp-artist { font-size: 11px; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
         /* Better Slider */
         .mp-progress { height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; margin-bottom: 8px; overflow: hidden; position: relative; transition: height 0.2s; }
-        .mp-progress:hover { height: 8px; }
-        .mp-fill { height: 100%; background: var(--pur); border-radius: 4px; width: 0%; transition: width 0.1s linear; }
+        .mp-progress:hover { height: 10px; }
+        .mp-fill { height: 100%; background: var(--pur); border-radius: 4px; width: 0%; transition: width 0.1s linear; position: relative; }
+        .mp-fill::after { content: ''; position: absolute; right: 0; top: 50%; transform: translate(50%, -50%); width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px var(--pur); opacity: 0; transition: opacity 0.2s; }
+        .mp-progress:hover .mp-fill::after { opacity: 1; }
         .mp-time { display: flex; justify-content: space-between; font-size: 10px; color: #ddd; margin-bottom: 12px; }
         
         .mp-controls { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 12px; position: relative; }
@@ -271,7 +269,7 @@
         .mp-btn::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-5px); background: #1a1a2e; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 10px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10; border: 1px solid var(--gb); }
         .mp-btn:hover::after { opacity: 1; }
 
-        .mp-playlist { max-height: 150px; overflow-y: auto; border-top: 1px solid var(--gb); padding-top: 8px; margin-top: 8px; }
+        .mp-playlist { max-height: 150px; overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; margin-top: 8px; }
         .mp-playlist::-webkit-scrollbar { width: 4px; }
         .mp-playlist::-webkit-scrollbar-thumb { background: #fff; border-radius: 4px; }
         .mp-playlist-item { display: flex; align-items: center; gap: 8px; padding: 8px 4px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
@@ -322,7 +320,7 @@
         <source src="background.mp4" type="video/mp4">
     </video>
 
-    <!-- RESTORED DESKTOP NAV -->
+    <!-- NAV -->
     <div class="nav">
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
             <div class="nav-brand">
@@ -349,7 +347,7 @@
 
     <!-- HERO -->
     <div class="hero">
-        <div class="hero-badge">Script Execution Platform</div>
+        <div class="hero-badge">Multiply Platform</div>
         <h1>Welcome to <em>Purium</em></h1>
         <p class="hero-sub">The classic solution to script execution — powerful, lightweight, and completely private.</p>
         <div class="btn-row">
@@ -370,6 +368,7 @@
     <hr class="sdiv">
 
     <div class="selector-wrap">
+        <!-- SCRIPTS PANEL -->
         <div class="selector-card">
             <div class="sec-title"><i class="fa-solid fa-code"></i> Scripts</div>
             <div class="field-label">Select a script</div>
@@ -379,6 +378,8 @@
                 <button class="dd-open-btn" onclick="ddOpenLink('scripts')">🔗 Open raw</button>
             </div>
         </div>
+        
+        <!-- MUSIC & VIBES PANEL -->
         <div class="selector-card music">
             <div class="sec-title"><i class="fa-solid fa-music"></i> Music &amp; Vibes</div>
             <div class="field-label">Pick a track</div>
@@ -387,11 +388,118 @@
                 <button class="dd-open-btn" onclick="ddOpenLink('music')" style="flex:1">▶ Open Source</button>
             </div>
         </div>
+
+        <!-- OPTIMIZATION HUB PANEL -->
+        <div class="selector-card hub">
+            <div class="sec-title"><i class="fa-solid fa-shield-halved"></i> Optimization Hub</div>
+            
+            <div class="hub-grid">
+                <div>
+                    <div class="field-label">Place IDs</div>
+                    <div class="place-id-list">
+                        <div class="place-id-item">93201812284737 <button class="place-id-copy" onclick="copyText('93201812284737', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">126383803497590 <button class="place-id-copy" onclick="copyText('126383803497590', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">77928697319918 <button class="place-id-copy" onclick="copyText('77928697319918', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">129798943968794 <button class="place-id-copy" onclick="copyText('129798943968794', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">101292267271626 <button class="place-id-copy" onclick="copyText('101292267271626', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">108478110930816 <button class="place-id-copy" onclick="copyText('108478110930816', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">122019960757732 <button class="place-id-copy" onclick="copyText('122019960757732', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">131352161368521 <button class="place-id-copy" onclick="copyText('131352161368521', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">89697426987219 <button class="place-id-copy" onclick="copyText('89697426987219', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">99913624572213 <button class="place-id-copy" onclick="copyText('99913624572213', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                        <div class="place-id-item">113528014845531 <button class="place-id-copy" onclick="copyText('113528014845531', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="field-label">TSB Place ID</div>
+                    <div class="place-id-list">
+                        <div class="place-id-item">10449761463 <button class="place-id-copy" onclick="copyText('10449761463', this, 'Copied!')"><i class="fa-solid fa-copy"></i></button></div>
+                    </div>
+                    
+                    <div class="field-label" style="margin-top:16px;">FFlag Downloads</div>
+                    <div class="hub-btn-grid">
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Best.fflags.json')">Best FFlags</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/blade.json')">Blade FFlags</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/broken.json')">Broken FFlags</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/CustomFFLAGS.-.Copy.json')">Custom FFlags</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/FFLAG.FAST.DASH.json')">Fast Dash</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/fflag.json')">Base FFlag</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Instant.Twisted.Dash.json')">Instant Twisted Dash</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Perf.json')">Performance FFlags</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/quality.fflag.json')">Quality FFlag</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/The.Strongest.Of.Today.json')">TSB FFlag</button>
+                        <button class="hub-btn" onclick="dlGo(this,'https://github.com/voidstrap/Voidstrap/releases/tag/v1.1.0.5')">Voidstrap</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-label">Optimization Scripts (Copy & Paste)</div>
+            
+            <div class="code-block">
+                <div class="code-header">Roblox FFlags (Updated JSON) <button class="code-copy-btn" onclick="copyText(document.getElementById('code-json').innerText, this, 'Copied!')">Copy</button></div>
+                <div class="code-content" id="code-json">{
+    "DFIntTaskSchedulerTargetFps": 9999,
+    "FFlagDebugGraphicsPreferD3D11": "true",
+    "FFlagDisablePostProcessing": "true",
+    "FIntDebugForceMSAASamples": 1,
+    "FIntRenderShadowIntensity": 0,
+    "FIntRenderLocalLightUpdatesPerFrame": 0,
+    "FFlagDisablePlayerBackgroundLoading": "true",
+    "FFlagDisableTelemetry": "true",
+    "FFlagHandleAltEnterFullscreenManually": "true",
+    "FFlagEnableInputLatencyMitigation": "true",
+    "FFlagEnableInputPassthrough": "true",
+    "FFlagDebugTaskSchedulerLimitConcurrentGroups": "true"
+}</div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">CMD 1 (Need Restart PC) <button class="code-copy-btn" onclick="copyText(document.getElementById('code-cmd1').innerText, this, 'Copied!')">Copy</button></div>
+                <div class="code-content" id="code-cmd1">netsh winsock reset
+netsh int ip reset
+ipconfig /flushdns
+sc stop "SysMain" & sc config "SysMain" start= disabled
+sc stop "DiagTrack" & sc config "DiagTrack" start= disabled
+sc stop DoSvc & sc config DoSvc start= disabled
+sc stop WSearch & sc config WSearch start= disabled
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds" /v EnableFeeds /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BingSearchEnabled /t REG_DWORD /d 0 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v CortanaConsent /t REG_DWORD /d 0 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" /v HwSchMode /t REG_DWORD /d 2 /f
+reg add "HKCU\System\GameConfigStore" /v GameDVR_Enabled /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /v AllowGameDVR /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v NetworkThrottlingIndex /t REG_DWORD /d 0xffffffff /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v SystemResponsiveness /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" /v "GPU Priority" /t REG_DWORD /d 8 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" /v "Priority" /t REG_DWORD /d 6 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" /v "Scheduling Category" /t REG_SZ /d "High" /f
+powercfg /hibernate off
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling" /v PowerThrottlingOff /t REG_DWORD /d 1 /f</div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">CMD 2 (NO Restart needed) <button class="code-copy-btn" onclick="copyText(document.getElementById('code-cmd2').innerText, this, 'Copied!')">Copy</button></div>
+                <div class="code-content" id="code-cmd2">powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
+powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61
+powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR CPMINCORES 100
+powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN 100
+powercfg /setactive SCHEME_CURRENT
+for /f "tokens=*" %i in ('reg query "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces" 2^>nul') do (reg add "%i" /v TcpAckFrequency /t REG_DWORD /d 1 /f & reg add "%i" /v TCPNoDelay /t REG_DWORD /d 1 /f)
+reg add "HKCU\Control Panel\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f
+reg add "HKCU\Control Panel\Mouse" /v MouseThreshold1 /t REG_SZ /d 0 /f
+reg add "HKCU\Control Panel\Mouse" /v MouseThreshold2 /t REG_SZ /d 0 /f
+reg add "HKCU\Control Panel\Keyboard" /v KeyboardDelay /t REG_SZ /d 0 /f
+reg add "HKCU\Control Panel\Keyboard" /v KeyboardSpeed /t REG_SZ /d 31 /f
+reg add "HKCU\Control Panel\Accessibility\Keyboard" /v FilterKeysFlags /t REG_DWORD /d 0 /f</div>
+            </div>
+        </div>
     </div>
 
     <hr class="sdiv" style="margin-top:28px">
 
-    <!-- REDESIGNED DOWNLOAD SECTION -->
+    <!-- QUICK DOWNLOADS -->
     <div class="slabel">Quick Downloads</div>
     <div class="dl-section">
         <div class="dl-grid">
@@ -400,12 +508,6 @@
                 <div class="dl-meta">All Purium scripts in one raw file. Copy & run in your executor.</div>
                 <div class="dl-tags"><span class="dl-tag">Lua</span><span class="dl-tag">v0.0.0.3</span><span class="dl-tag">Raw</span></div>
                 <button class="dl-btn" onclick="dlGo(this,'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security')">View Raw Script</button>
-            </div>
-            <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-star"></i></div><div class="dl-title">Quality FFlag</div></div>
-                <div class="dl-meta">Extreme graphics, max shadows, and render distance.</div>
-                <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">Max Graphics</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/quality_fflag.json')">Download JSON</button>
             </div>
             <div class="dl-card">
                 <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-palette"></i></div><div class="dl-title">Roshade Presets</div></div>
@@ -432,24 +534,6 @@
                 <button class="dl-btn blu" onclick="dlGo(this,'https://www.dropbox.com/scl/fi/betbjt1ig3ydf4umzt552/guide-pvp.text?rlkey=lvxemw59d8p3cpa9w224uy7k4&st=m2p8ujlc&dl=1')">Download Guide</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-bolt"></i></div><div class="dl-title">FFlags (FPS+Fling)</div></div>
-                <div class="dl-meta">Helps FPS & makes fling bugs easier. Paste into ClientAppSettings.</div>
-                <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/fflag.json')">Download JSON</button>
-            </div>
-            <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-wrench"></i></div><div class="dl-title">Custom FFlags 1</div></div>
-                <div class="dl-meta">Performance and techs focused fflags — recommended for pefo.</div>
-                <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">Custom</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://raw.githubusercontent.com/USERNAME/REPO/main/Best-fflags.json')">Download JSON</button>
-            </div>
-            <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-rocket"></i></div><div class="dl-title">Voidstrap</div></div>
-                <div class="dl-meta">Recommended Roblox bootstrapper for FFlag injection.</div>
-                <div class="dl-tags"><span class="dl-tag">GitHub</span><span class="dl-tag">v1.1.0.5</span></div>
-                <button class="dl-btn" onclick="dlGo(this,'https://github.com/voidstrap/Voidstrap/releases/tag/v1.1.0.5')">GitHub Release</button>
-            </div>
-            <div class="dl-card">
                 <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-sun"></i></div><div class="dl-title">Solas Shader</div></div>
                 <div class="dl-meta">Solas Shader for Minecraft via OptiFine. Best visuals.</div>
                 <div class="dl-tags"><span class="dl-tag">Shader</span><span class="dl-tag">OptiFine</span></div>
@@ -462,11 +546,6 @@
                 <button class="dl-btn grn" onclick="dlGo(this,'https://blur009.vercel.app/projects/blur-autoclicker')">Open Tool</button>
             </div>
         </div>
-    </div>
-
-    <div class="tsb-wrap">
-        <span class="tsb-label">TSB Place ID:</span>
-        <code id="tsb-id" class="tsb-code" onclick="copyText('10449761463',this,'Copied!')">10449761463</code>
     </div>
 
     <div class="footer">
@@ -515,7 +594,7 @@
                 <button class="mp-btn" data-tooltip="Previous" onclick="prevTrack()"><i class="fa-solid fa-backward-step"></i></button>
                 <button class="mp-btn play" id="mp-play-btn" data-tooltip="Play/Pause" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
                 <button class="mp-btn" data-tooltip="Next" onclick="nextTrack()"><i class="fa-solid fa-forward-step"></i></button>
-                <button class="mp-btn" id="mp-repeat" data-tooltip="Repeat" onclick="toggleRepeat()"><i class="fa-solid fa-repeat"></i></button>
+                <button class="mp-btn" id="mp-repeat" data-tooltip="Loop Current" onclick="toggleRepeat()"><i class="fa-solid fa-repeat"></i></button>
             </div>
             <div class="mp-playlist" id="mp-playlist"></div>
             <div class="mp-add-song">
@@ -530,17 +609,17 @@
     <script>
         const DROPDOWNS = {
             scripts: { items: [
-                { icon: '<i class="fa-solid fa-check"></i>', name: 'SBSD-Wind (Working)', desc: 'Main working script — use this one', badge: 'Working', badgeClass: 'b-stable', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/SBSD-Wind.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/SBSD-Wind.lua"))()' },
                 { icon: '<i class="fa-solid fa-triangle-exclamation"></i>', name: 'Silent Assassin (Outdated)', desc: 'Old script — may not work', badge: 'Outdated', badgeClass: 'b-outdated', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/slient.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/slient.lua"))()' },
                 { icon: '<i class="fa-solid fa-triangle-exclamation"></i>', name: 'Chain (Outdated)', desc: 'Old chain script', badge: 'Outdated', badgeClass: 'b-outdated', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Chain.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Chain.lua"))()' },
-                { icon: '<i class="fa-solid fa-flask"></i>', name: 'Test / Bruh', desc: 'Experimental test script', badge: 'Beta', badgeClass: 'b-beta', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/test.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/test.lua"))()' },
-                { icon: '<i class="fa-regular fa-file-lines"></i>', name: 'Secret Security (all scripts)', desc: 'Full raw file with all scripts listed', badge: 'Raw', badgeClass: 'b-link', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security', script: '' }
+                { icon: '<i class="fa-solid fa-triangle-exclamation"></i>', name: 'SBSD (Outdated)', desc: 'Wind script — outdated', badge: 'Outdated', badgeClass: 'b-outdated', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/SBSD-Wind.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/SBSD-Wind.lua"))()' },
+                { icon: '<i class="fa-solid fa-flask"></i>', name: 'Bruh', desc: 'Experimental test script', badge: 'Beta', badgeClass: 'b-beta', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/test.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/test.lua"))()' }
             ]},
             music: { items: [
                 { icon: '<i class="fa-brands fa-youtube"></i>', name: 'Giao hưởng phùng thank độ', desc: 'Vietnamese classical vibes', badge: 'YouTube', badgeClass: 'b-link', url: 'https://youtu.be/ohz9EXtmVY8?si=0ZGpsVETDS4n3AeJ' },
                 { icon: '<i class="fa-brands fa-youtube"></i>', name: 'Mozart Phonk?', desc: 'The original page track', badge: 'YouTube', badgeClass: 'b-link', url: 'https://youtu.be/hwrt5O9IWlw?si=OPTEU7GeV6xxWAqu' },
                 { icon: '<i class="fa-brands fa-youtube"></i>', name: 'Montagem Hongbao', desc: 'Montagem track', badge: 'YouTube', badgeClass: 'b-link', url: 'https://youtu.be/8wUo-htFZCY?si=E6AFUtzq5P_7avMQ' },
-                { icon: '<i class="fa-solid fa-radio"></i>', name: 'Chillhop Radio', desc: 'Live lofi stream', badge: 'Radio', badgeClass: 'b-link', url: 'https://stream.zeno.fm/0r0xa792kwzuv' }
+                { icon: '<i class="fa-brands fa-youtube"></i>', name: 'Gogogaga Funk', desc: 'Funk banger', badge: 'YouTube', badgeClass: 'b-link', url: 'https://youtu.be/J8yUuMWOLnY?si=o_m92SpGzc8F5NZg' },
+                { icon: '<i class="fa-brands fa-youtube"></i>', name: 'Cry For Me X Jackpot', desc: 'Latest track', badge: 'YouTube', badgeClass: 'b-link', url: 'https://youtu.be/J7DOpglDWMk?si=6hJQMkpJbxnCRpq_' }
             ]}
         };
 
@@ -607,7 +686,7 @@
                 try { const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`); const data = await res.json(); const meta = { title: data.title || 'SoundCloud Track', artist: data.author_name || 'SoundCloud', thumbnail: data.thumbnail_url || '' }; metaCache[url] = meta; return meta; } catch { return { title: 'SoundCloud Track', artist: 'Unknown', thumbnail: '' }; }
             }
             static loadPlayer(url) {
-                loadSoundCloudAPI(); // Lazy load SC API
+                loadSoundCloudAPI();
                 document.getElementById('sc-player').src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=true&visual=false`;
             }
             static play() { if (scWidget) scWidget.play(); }
@@ -633,20 +712,10 @@
             static getDuration() { return audio.duration; }
         }
 
-        class SpotifyMetadataProvider extends MusicProvider {
-            static detect(url) { return url.includes('spotify.com'); }
-            static async getMetadata(url) {
-                if (metaCache[url]) return metaCache[url];
-                try { const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`); const data = await res.json(); const meta = { title: data.title || 'Spotify Track', artist: data.author_name || 'Spotify', thumbnail: data.thumbnail_url || '' }; metaCache[url] = meta; return meta; } catch { return { title: 'Spotify Track', artist: 'Unknown', thumbnail: '' }; }
-            }
-            static loadPlayer(url) { showToast('Spotify playback requires external app. Opening link...'); window.open(url, '_blank'); setTimeout(() => nextTrack(), 1000); }
-        }
-
         const ProviderRouter = {
             getProvider(url) {
                 if (YouTubeProvider.detect(url)) return YouTubeProvider;
                 if (SoundCloudProvider.detect(url)) return SoundCloudProvider;
-                if (SpotifyMetadataProvider.detect(url)) return SpotifyMetadataProvider;
                 return MP3Provider;
             }
         };
@@ -655,7 +724,7 @@
             { url: "https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" },
             { url: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" }
         ];
-        let currentTrack = 0; let isPlaying = false; let shuffle = false; let repeat = 'none';
+        let currentTrack = 0; let isPlaying = false; let shuffle = false; let repeat = 'none'; // 'none' or 'one'
 
         const audio = document.getElementById('audio-player');
         const playBtn = document.getElementById('mp-play-btn');
@@ -688,7 +757,7 @@
         function startTimeLoop() {
             clearInterval(timeUpdateLoop);
             timeUpdateLoop = setInterval(() => {
-                if (isDraggingProgress) return; // Don't update while dragging
+                if (isDraggingProgress) return;
                 const track = PLAYLIST[currentTrack];
                 if (!track || !isPlaying) return;
                 const provider = ProviderRouter.getProvider(track.url);
@@ -730,22 +799,27 @@
             else { provider.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; isPlaying = true; }
         }
 
+        // Loop Logic: If repeat is 'one', it loops the current song. If 'none', it plays the next.
         function nextTrack() {
             if (repeat === 'one') { loadTrack(currentTrack); return; }
             if (shuffle) { let newIdx = currentTrack; while (newIdx === currentTrack && PLAYLIST.length > 1) newIdx = Math.floor(Math.random() * PLAYLIST.length); loadTrack(newIdx); return; }
             let next = currentTrack + 1;
-            if (next >= PLAYLIST.length) { if (repeat === 'all') next = 0; else { stopAllPlayers(); isPlaying = false; playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; return; } }
+            if (next >= PLAYLIST.length) next = 0; // Always go to next, loop playlist
             loadTrack(next);
         }
 
         function prevTrack() {
-            if (currentTrack === 0 && repeat !== 'all') return;
             let prev = currentTrack - 1; if (prev < 0) prev = PLAYLIST.length - 1;
             loadTrack(prev);
         }
 
         function toggleShuffle() { shuffle = !shuffle; document.getElementById('mp-shuffle').classList.toggle('active', shuffle); }
-        function toggleRepeat() { const states = ['none', 'all', 'one']; const currentState = states.indexOf(repeat); repeat = states[(currentState + 1) % states.length]; document.getElementById('mp-repeat').classList.toggle('active', repeat !== 'none'); }
+        function toggleRepeat() { 
+            repeat = (repeat === 'none') ? 'one' : 'none'; 
+            const btn = document.getElementById('mp-repeat');
+            btn.classList.toggle('active', repeat === 'one');
+            btn.setAttribute('data-tooltip', repeat === 'one' ? 'Looping Current' : 'Loop Current');
+        }
 
         let isDraggingProgress = false;
         function seekTrack(event) {
@@ -757,7 +831,6 @@
             const provider = ProviderRouter.getProvider(track.url); provider.seek(percent);
         }
         
-        // Drag logic for slider
         mpProgress.addEventListener('mousedown', (e) => { isDraggingProgress = true; seekTrack(e); });
         document.addEventListener('mousemove', (e) => { if (isDraggingProgress) seekTrack(e); });
         document.addEventListener('mouseup', () => isDraggingProgress = false);
@@ -815,7 +888,15 @@
             document.addEventListener('mouseup', () => { isDragging = false; player.classList.remove('dragging'); });
         }
 
-        audio.addEventListener('ended', () => nextTrack());
+        // MP3 Auto-next logic
+        audio.addEventListener('ended', () => {
+            if (repeat === 'one') {
+                audio.currentTime = 0;
+                audio.play();
+            } else {
+                nextTrack();
+            }
+        });
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
@@ -825,7 +906,15 @@
                     'onStateChange': (event) => {
                         if (event.data == YT.PlayerState.PLAYING) { isPlaying = true; playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
                         else if (event.data == YT.PlayerState.PAUSED) { isPlaying = false; playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; }
-                        else if (event.data == YT.PlayerState.ENDED) { nextTrack(); }
+                        else if (event.data == YT.PlayerState.ENDED) {
+                            // YouTube Auto-next logic
+                            if (repeat === 'one') {
+                                ytPlayer.seekTo(0);
+                                ytPlayer.playVideo();
+                            } else {
+                                nextTrack();
+                            }
+                        }
                     }
                 }
             });
