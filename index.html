@@ -319,11 +319,15 @@
         .mp-min-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
         
         .mp-body { padding: 14px 16px; }
-        .mp-track-info { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; position: relative; }
+        .mp-track-info { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
         .mp-thumb-wrap { position: relative; width: 50px; height: 50px; flex-shrink: 0; }
-        .mp-thumb { width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.3); object-fit: cover; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; position: relative; z-index: 2; }
-        .mp-thumb.dynamic { box-shadow: 0 0 12px rgba(125, 82, 222, 0.6); animation: glow 2s infinite ease-in-out; }
-        #mp-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
+        .mp-thumb { width: 50px; height: 50px; border-radius: 8px; background: rgba(0,0,0,0.3); object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* YouTube Video Wrapper */
+        #yt-video-wrap { display: none; width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--gb); background: #000; }
+        #yt-video-wrap.active { display: block; }
+        #yt-player { width: 100%; height: 100%; }
+
         .mp-meta { flex: 1; min-width: 0; }
         .mp-track-name { font-size: 14px; color: var(--text-main); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
         .mp-artist { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
@@ -391,7 +395,7 @@
         .tsb-code { font-size: 14px; color: #c4a8ff; background: transparent; border: 1px solid var(--pur); padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: all .2s; font-weight: 700; margin-left: 6px; }
         .tsb-code:hover { background: var(--pur-dim); transform: scale(1.05); }
 
-        #yt-player, #sc-player { display: none; }
+        #sc-player { display: none; }
 
         @media (max-width: 1024px) { .selector-wrap { grid-template-columns: 1fr; max-width: 600px; } }
         @media (max-width: 768px) {
@@ -621,8 +625,8 @@
     <div class="custom-modal" id="custom-modal">
         <div class="custom-modal-content">
             <div class="custom-modal-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="custom-modal-title">Enable Dynamic Visualizer?</div>
-            <div class="custom-modal-text">Enabling this feature may slightly increase CPU usage to render real-time audio tracking. Do you still want to enable it?</div>
+            <div class="custom-modal-title">Enable Video Mode?</div>
+            <div class="custom-modal-text">Enabling this feature will display the full music video, which may significantly increase memory and network usage. Do you still want to enable it?</div>
             <label class="custom-modal-toggle">
                 <input type="checkbox" id="remember-choice">
                 Remember my choice (don't ask again)
@@ -645,9 +649,11 @@
             </div>
         </div>
         <div class="mp-body" id="mp-body">
+            <div id="yt-video-wrap">
+                <div id="yt-player"></div>
+            </div>
             <div class="mp-track-info">
                 <div class="mp-thumb-wrap">
-                    <canvas id="mp-canvas" width="50" height="50"></canvas>
                     <img src="" alt="thumb" class="mp-thumb" id="mp-thumb" style="display:none;">
                 </div>
                 <div class="mp-meta">
@@ -658,14 +664,13 @@
             
             <!-- Settings Row -->
             <div class="mp-settings">
-                <div class="mp-setting-label"><i class="fa-solid fa-wave-square"></i> Dynamic Visualizer</div>
+                <div class="mp-setting-label"><i class="fa-solid fa-video"></i> Video Mode</div>
                 <label class="switch">
                     <input type="checkbox" id="dynamic-toggle" onchange="toggleDynamicVisuals()">
                     <span class="slider"></span>
                 </label>
             </div>
 
-            <div id="yt-player"></div>
             <iframe id="sc-player" allow="autoplay" style="display:none;"></iframe>
             <audio id="audio-player" preload="metadata"></audio>
             
@@ -976,24 +981,9 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         const mpPlaylistEl = document.getElementById('mp-playlist');
         const mpProgress = document.getElementById('mp-progress');
         const dynamicToggle = document.getElementById('dynamic-toggle');
-        const canvas = document.getElementById('mp-canvas');
-        const ctx = canvas.getContext('2d');
+        const ytVideoWrap = document.getElementById('yt-video-wrap');
 
         let ytPlayer = null; let ytReady = false; let scWidget = null; let scApiLoaded = false;
-        let audioCtx, analyser, source, dataArray;
-
-        function setupAudioContext() {
-            if (audioCtx) return;
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                source = audioCtx.createMediaElementSource(audio);
-                analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 32; // Very low for memory saving
-                source.connect(analyser);
-                analyser.connect(audioCtx.destination);
-                dataArray = new Uint8Array(analyser.frequencyBinCount);
-            } catch(e) { console.log("Audio context blocked", e); }
-        }
 
         function loadSoundCloudAPI() {
             if (scApiLoaded) return;
@@ -1029,53 +1019,9 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                         mpDuration.innerText = formatTime(dur);
                     }
                 }
-                if (dynamicVisuals && isPlaying) {
-                    drawVisualizer();
-                }
                 timeUpdateLoop = requestAnimationFrame(update);
             }
             update();
-        }
-
-        // Real-time Audio Visualizer
-        function drawVisualizer() {
-            const width = canvas.width;
-            const height = canvas.height;
-            ctx.clearRect(0, 0, width, height);
-            
-            let data = dataArray;
-            let useRealData = false;
-            if (analyser && audio.src && !audio.paused) {
-                analyser.getByteFrequencyData(data);
-                useRealData = true;
-            } else {
-                // Synthetic data for YouTube/SoundCloud (can't access their audio stream directly)
-                data = new Uint8Array(16);
-                for(let i=0; i<16; i++) {
-                    data[i] = Math.floor(Math.sin(Date.now() * 0.005 + i) * 30 + 80);
-                }
-            }
-            
-            const centerX = width / 2;
-            const centerY = height / 2;
-            const radius = 8;
-            const bars = data.length;
-            
-            for(let i = 0; i < bars; i++) {
-                const barHeight = (data[i] / 255) * (height / 2);
-                const angle = (i / bars) * Math.PI * 2;
-                const x1 = centerX + Math.cos(angle) * radius;
-                const y1 = centerY + Math.sin(angle) * radius;
-                const x2 = centerX + Math.cos(angle) * (radius + barHeight);
-                const y2 = centerY + Math.sin(angle) * (radius + barHeight);
-                
-                ctx.strokeStyle = useRealData ? `rgba(125, 82, 222, ${data[i]/255})` : `rgba(125, 82, 222, 0.5)`;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-            }
         }
 
         function stopAllPlayers() {
@@ -1110,7 +1056,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                 isPlaying = true; playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; 
             }
             renderPlaylist(); startTimeLoop();
-            applyDynamicVisuals();
+            applyDynamicVisuals(); // Update video visibility based on new track
         }
 
         function togglePlay() {
@@ -1200,6 +1146,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         function formatTime(sec) { if (isNaN(sec) || sec === Infinity) return '0:00'; const m = Math.floor(sec / 60); const s = Math.floor(sec % 60); return `${m}:${s < 10 ? '0' + s : s}`; }
 
+        // Dynamic Visuals Toggle & Custom Notification
         function toggleDynamicVisuals() {
             if (dynamicToggle.checked) {
                 if (rememberDynamic) {
@@ -1236,14 +1183,26 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         };
 
         function applyDynamicVisuals() {
-            if (dynamicVisuals) {
-                trackThumb.classList.add('dynamic');
-                canvas.style.display = 'block';
-                setupAudioContext();
-                drawVisualizer();
+            const track = PLAYLIST[currentTrack];
+            const isYT = track ? YouTubeProvider.detect(track.url) : false;
+            
+            if (dynamicVisuals && isYT) {
+                ytVideoWrap.classList.add('active');
+                trackThumb.style.display = 'none'; // Hide thumbnail when video is playing
             } else {
-                trackThumb.classList.remove('dynamic');
-                canvas.style.display = 'none';
+                ytVideoWrap.classList.remove('active');
+                // Restore thumbnail if exists
+                const meta = localMetaCache[track?.url];
+                if (meta && meta.thumbnail) trackThumb.style.display = 'block';
+            }
+            
+            // Resize YT player to ensure it fits properly
+            if (ytPlayer && ytPlayer.setSize) {
+                try {
+                    const width = ytVideoWrap.offsetWidth;
+                    const height = width * 9 / 16;
+                    ytPlayer.setSize(width, height);
+                } catch(e) {}
             }
         }
 
@@ -1280,9 +1239,12 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
-                height: '0', width: '0',
+                width: '100%', height: '100%',
                 events: {
-                    'onReady': () => { ytReady = true; },
+                    'onReady': () => { 
+                        ytReady = true; 
+                        applyDynamicVisuals(); // Apply correct sizing on load
+                    },
                     'onStateChange': (event) => {
                         if (event.data == YT.PlayerState.PLAYING) { 
                             isPlaying = true; playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; 
