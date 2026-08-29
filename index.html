@@ -315,9 +315,8 @@
         .mp-title { font-size: 12px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
         .mp-title span { color: var(--text-main); overflow: hidden; text-overflow: ellipsis; }
         .mp-header-actions { display: flex; gap: 4px; }
-        .mp-min-btn, .mp-visual-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 12px; padding: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: all 0.2s; }
-        .mp-min-btn:hover, .mp-visual-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
-        .mp-visual-btn.active { color: var(--pur); text-shadow: 0 0 8px var(--pur); }
+        .mp-min-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 12px; padding: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: all 0.2s; }
+        .mp-min-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
         
         .mp-body { padding: 14px 16px; }
         .mp-track-info { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
@@ -326,6 +325,17 @@
         .mp-meta { flex: 1; min-width: 0; }
         .mp-track-name { font-size: 14px; color: var(--text-main); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
         .mp-artist { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+
+        /* Settings Toggle */
+        .mp-settings { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .mp-setting-label { font-size: 11px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .mp-setting-label i { color: var(--pur); }
+        .switch { position: relative; display: inline-block; width: 36px; height: 18px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.1); transition: .4s; border-radius: 18px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background: var(--pur); }
+        input:checked + .slider:before { transform: translateX(18px); }
 
         /* Smart Lyrics */
         .mp-lyrics { height: 60px; overflow: hidden; margin-bottom: 12px; position: relative; mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent); }
@@ -603,7 +613,7 @@
             <div class="footer-brand">Purium<span>.</span></div>
             <div class="footer-copy">
                 © 2025 Purium by hlck49really. All rights reserved.<br>
-                <a href="https://www.flaticon.com/free-icons/moon" title="moon icons" target="_blank">We make everything for stable and performance</a>
+                <a href="https://www.flaticon.com/free-icons/moon" title="moon icons" target="_blank">Moon icons created by Icongeek26 - Flaticon</a>
             </div>
         </div>
         <div class="nav-links" style="display:flex;flex-wrap:wrap;gap:8px;">
@@ -636,7 +646,6 @@
                 <i class="fa-solid fa-grip-vertical" style="display:none;" id="mp-grip"></i> Song Lists: <span id="mp-track-header-name">Loading...</span>
             </div>
             <div class="mp-header-actions">
-                <button class="mp-visual-btn" id="mp-visual-btn" data-tooltip="Dynamic Visuals" onclick="toggleDynamicVisuals()"><i class="fa-solid fa-sparkles"></i></button>
                 <button class="mp-min-btn" onclick="togglePlayerBody()"><i class="fa-solid fa-minus"></i></button>
             </div>
         </div>
@@ -649,9 +658,20 @@
                 </div>
             </div>
             
+            <!-- Settings Row -->
+            <div class="mp-settings">
+                <div class="mp-setting-label"><i class="fa-solid fa-image"></i> Dynamic Thumbnail</div>
+                <label class="switch">
+                    <input type="checkbox" id="dynamic-toggle" onchange="toggleDynamicVisuals()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
             <!-- Smart Lyrics -->
             <div class="mp-lyrics" id="mp-lyrics">
-                <div class="mp-lyrics-track" id="mp-lyrics-track"></div>
+                <div class="mp-lyrics-track" id="mp-lyrics-track">
+                    <div class="mp-lyrics-line">No lyrics available for this track.</div>
+                </div>
             </div>
 
             <div id="yt-player"></div>
@@ -968,7 +988,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         const mpProgress = document.getElementById('mp-progress');
         const mpLyrics = document.getElementById('mp-lyrics');
         const mpLyricsTrack = document.getElementById('mp-lyrics-track');
-        const visualBtn = document.getElementById('mp-visual-btn');
+        const dynamicToggle = document.getElementById('dynamic-toggle');
 
         let ytPlayer = null; let ytReady = false; let scWidget = null; let scApiLoaded = false;
 
@@ -1071,11 +1091,13 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         function renderLyrics(lyrics) {
             mpLyricsTrack.innerHTML = '';
-            if (lyrics.length === 0) {
-                mpLyrics.style.display = 'none';
+            if (!lyrics || lyrics.length === 0) {
+                const div = document.createElement('div');
+                div.className = 'mp-lyrics-line';
+                div.innerText = 'No lyrics available for this track.';
+                mpLyricsTrack.appendChild(div);
                 return;
             }
-            mpLyrics.style.display = 'block';
             lyrics.forEach(line => {
                 const div = document.createElement('div');
                 div.className = 'mp-lyrics-line';
@@ -1176,27 +1198,26 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         // Dynamic Visuals Toggle & Custom Notification
         function toggleDynamicVisuals() {
-            if (dynamicVisuals) {
-                dynamicVisuals = false;
-                localStorage.setItem('purium_dynamic_visuals', 'false');
-                visualBtn.classList.remove('active');
-                applyDynamicVisuals();
-            } else {
+            if (dynamicToggle.checked) {
                 if (rememberDynamic) {
                     dynamicVisuals = true;
                     localStorage.setItem('purium_dynamic_visuals', 'true');
-                    visualBtn.classList.add('active');
                     applyDynamicVisuals();
                 } else {
+                    dynamicToggle.checked = false; // Uncheck until confirmed
                     document.getElementById('custom-modal').classList.add('active');
                 }
+            } else {
+                dynamicVisuals = false;
+                localStorage.setItem('purium_dynamic_visuals', 'false');
+                applyDynamicVisuals();
             }
         }
 
         document.getElementById('modal-confirm').onclick = () => {
             dynamicVisuals = true;
+            dynamicToggle.checked = true;
             localStorage.setItem('purium_dynamic_visuals', 'true');
-            visualBtn.classList.add('active');
             applyDynamicVisuals();
             
             if (document.getElementById('remember-choice').checked) {
@@ -1207,6 +1228,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         };
 
         document.getElementById('modal-cancel').onclick = () => {
+            dynamicToggle.checked = false;
             document.getElementById('custom-modal').classList.remove('active');
         };
 
@@ -1227,7 +1249,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         if (window.innerWidth > 768) {
             grip.style.display = 'inline-block';
             header.addEventListener('mousedown', (e) => {
-                if (e.target.closest('.mp-min-btn') || e.target.closest('.mp-visual-btn')) return;
+                if (e.target.closest('.mp-min-btn') || e.target.closest('.switch')) return;
                 isDragging = true; player.classList.add('dragging');
                 const rect = player.getBoundingClientRect(); offsetX = e.clientX - rect.left; offsetY = e.clientY - rect.top;
             });
@@ -1281,7 +1303,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         window.onload = () => {
             renderList('scripts'); renderList('music'); renderPlaylist(); loadTrack(0);
             playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; isPlaying = false;
-            if (dynamicVisuals) visualBtn.classList.add('active');
+            if (dynamicVisuals) dynamicToggle.checked = true;
             applyDynamicVisuals();
         };
     </script>
