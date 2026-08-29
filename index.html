@@ -12,6 +12,7 @@
     <!-- Preconnect for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://img.youtube.com">
     <link rel="preconnect" href="https://www.youtube.com">
     <link rel="preconnect" href="https://w.soundcloud.com">
     
@@ -68,6 +69,7 @@
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes glow { 0% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); } 50% { box-shadow: 0 0 15px rgba(125, 82, 222, 0.5); } 100% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* ── NAV ── */
         .nav {
@@ -205,32 +207,74 @@
         .dd-open-btn { border: 1px solid var(--blu); color: #90c8f8; }
         .dd-open-btn:hover { background: var(--blu-dim); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
 
-        /* ── RESTORED OLD DOWNLOAD CARDS DESIGN ── */
+        /* ── REWORKED DOWNLOAD CARDS DESIGN ── */
         .dl-section { padding: 0 24px 40px; max-width: 1200px; margin: 0 auto; }
-        .dl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .dl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         .dl-card { 
-            background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 20px; 
-            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); 
-            backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; 
+            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1); 
+            backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
             display: flex; flex-direction: column; position: relative; overflow: hidden; 
         }
-        .dl-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--pur), #64b2f5); transform: scaleX(0); transform-origin: left; transition: transform .4s ease; }
-        .dl-card:hover { border-color: rgba(125, 82, 222, 0.6); transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.35); }
-        .dl-card:hover::after { transform: scaleX(1); }
+        .dl-card::before { 
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; 
+            background: linear-gradient(90deg, var(--pur), #64b2f5); 
+            transform: scaleX(0); transform-origin: left; transition: transform .4s ease; 
+        }
+        .dl-card:hover { 
+            transform: translateY(-8px); 
+            background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            border-color: rgba(125, 82, 222, 0.4); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+        }
+        .dl-card:hover::before { transform: scaleX(1); }
         
-        .dl-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .dl-title { font-size: 15px; font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .dl-ico { font-size: 20px; color: #aaa; }
-        .dl-meta { font-size: 12px; color: #ddd; margin-bottom: 14px; line-height: 1.5; flex-grow: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-        .dl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-        .dl-tag { font-size: 10px; padding: 4px 8px; border-radius: 6px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--gb); color: #eee; font-weight: 500; }
+        .dl-hdr { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+        .dl-ico-box { 
+            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; 
+            border-radius: 12px; background: rgba(125, 82, 222, 0.15); border: 1px solid rgba(125, 82, 222, 0.3); 
+            font-size: 20px; color: #c4a8ff; box-shadow: 0 4px 12px rgba(125, 82, 222, 0.1); 
+        }
+        .dl-title { font-size: 17px; font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .dl-meta { font-size: 13px; color: #ccc; margin-bottom: 20px; line-height: 1.6; flex-grow: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .dl-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+        .dl-tag { font-size: 10px; padding: 5px 12px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #eee; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .dl-btn { width: 100%; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .25s; text-decoration: none; font-family: inherit; background: transparent; border: 1px solid var(--pur); color: #c4a8ff; }
-        .dl-btn:hover { background: var(--pur-dim); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(125, 82, 222, 0.2); }
+        .dl-btn { 
+            width: 100%; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .3s ease; 
+            text-decoration: none; font-family: inherit; background: transparent; border: 1px solid var(--pur); 
+            color: #c4a8ff; text-transform: uppercase; letter-spacing: 1px; 
+        }
+        .dl-btn:hover { background: var(--pur); color: #fff; box-shadow: 0 8px 20px rgba(125, 82, 222, 0.3); }
         .dl-btn.blu { border-color: var(--blu); color: #90c8f8; }
-        .dl-btn.blu:hover { background: var(--blu-dim); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
+        .dl-btn.blu:hover { background: var(--blu); color: #fff; box-shadow: 0 8px 20px rgba(30, 124, 205, 0.3); }
         .dl-btn.grn { border-color: var(--grn); color: #7fdfaa; }
-        .dl-btn.grn:hover { background: var(--grn-dim); box-shadow: 0 4px 12px rgba(46, 200, 113, 0.2); }
+        .dl-btn.grn:hover { background: var(--grn); color: #fff; box-shadow: 0 8px 20px rgba(46, 200, 113, 0.3); }
+
+        /* ── CUSTOM SCRIPT VIEWER MODAL ── */
+        .raw-modal {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+            z-index: 9998; display: none; align-items: center; justify-content: center; padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .raw-modal.active { display: flex; }
+        .raw-modal-content {
+            background: rgba(20, 20, 30, 0.9); border: 1px solid var(--gb); border-radius: 16px;
+            width: 100%; max-width: 800px; max-height: 80vh; display: flex; flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .raw-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--gb); }
+        .raw-modal-title { font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .raw-modal-close { background: transparent; border: none; color: #aaa; font-size: 18px; cursor: pointer; transition: color 0.2s; }
+        .raw-modal-close:hover { color: #fff; }
+        .raw-modal-body { padding: 24px; overflow-y: auto; }
+        .raw-code-block { padding: 20px; background: rgba(0,0,0,0.5); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px; color: #aaffff; white-space: pre-wrap; word-break: break-all; }
+        .raw-modal-footer { padding: 16px 24px; border-top: 1px solid var(--gb); display: flex; justify-content: flex-end; }
+        .raw-modal-copy { padding: 10px 20px; border-radius: 8px; background: var(--pur); border: 1px solid var(--pur); color: #fff; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .raw-modal-copy:hover { background: #8b62e8; }
 
         /* ── GLASS MUSIC PLAYER PANEL ── */
         .music-player {
@@ -255,7 +299,6 @@
         .mp-track-name { font-size: 14px; color: #fff; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); margin-bottom: 2px; }
         .mp-artist { font-size: 11px; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
-        /* Better Slider */
         .mp-progress { height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; margin-bottom: 8px; overflow: hidden; position: relative; transition: height 0.2s; }
         .mp-progress:hover { height: 10px; }
         .mp-fill { height: 100%; background: var(--pur); border-radius: 4px; width: 0%; transition: width 0.1s linear; position: relative; }
@@ -372,14 +415,14 @@
     <hr class="sdiv">
 
     <div class="selector-wrap">
-        <!-- SCRIPTS PANEL (Renamed to All Scripts) -->
+        <!-- SCRIPTS PANEL -->
         <div class="selector-card">
             <div class="sec-title"><i class="fa-solid fa-code"></i> All Scripts</div>
             <div class="field-label">Select a script</div>
             <div class="list-container" id="dd-scripts-opts"></div>
             <div class="dd-action">
                 <button class="dd-copy-btn" onclick="ddCopy('scripts')">📋 Copy loadstring</button>
-                <button class="dd-open-btn" onclick="ddOpenLink('scripts')">🔗 Open raw</button>
+                <button class="dd-open-btn" onclick="ddOpenLink('scripts')">🔗 View Raw</button>
             </div>
         </div>
         
@@ -396,119 +439,119 @@
 
     <hr class="sdiv" style="margin-top:28px">
 
-    <!-- QUICK DOWNLOADS (Restored Old Design) -->
+    <!-- REWORKED QUICK DOWNLOADS -->
     <div class="slabel">Quick Downloads</div>
     <div class="dl-section">
         <div class="dl-grid">
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Main Script</div><i class="fa-solid fa-scroll dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-scroll"></i></div><div class="dl-title">Main Script</div></div>
                 <div class="dl-meta">All Purium scripts in one raw file. Copy & run in your executor.</div>
                 <div class="dl-tags"><span class="dl-tag">Lua</span><span class="dl-tag">v0.0.0.3</span><span class="dl-tag">Raw</span></div>
-                <button class="dl-btn" onclick="dlGo(this,'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security')">📥 View Raw Script</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Secret%20Security')">View Raw Script</button>
             </div>
             
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Best FFlags</div><i class="fa-solid fa-star dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-star"></i></div><div class="dl-title">Best FFlags</div></div>
                 <div class="dl-meta">Comprehensive FFlags setup for overall best balance and performance.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">GitHub</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Best.fflags.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Best.fflags.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Blade FFlags</div><i class="fa-solid fa-shield-halved dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-shield-halved"></i></div><div class="dl-title">Blade FFlags</div></div>
                 <div class="dl-meta">Specialized FFlags for blade combat and physics optimizations.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">GitHub</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/blade.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/blade.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Broken FFlags</div><i class="fa-solid fa-triangle-exclamation dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="dl-title">Broken FFlags</div></div>
                 <div class="dl-meta">Experimental FFlags. May cause physics glitches or unusual mechanics.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">Experimental</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/broken.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/broken.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Custom FFlags</div><i class="fa-solid fa-sliders dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-sliders"></i></div><div class="dl-title">Custom FFlags</div></div>
                 <div class="dl-meta">Custom tweaked FFlags for a unique gameplay experience.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">Custom</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/CustomFFLAGS.-.Copy.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/CustomFFLAGS.-.Copy.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Fast Dash FFlag</div><i class="fa-solid fa-bolt dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-bolt"></i></div><div class="dl-title">Fast Dash FFlag</div></div>
                 <div class="dl-meta">Removes dash delay and optimizes movement inputs significantly.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">Movement</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/FFLAG.FAST.DASH.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/FFLAG.FAST.DASH.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Base FFlag</div><i class="fa-solid fa-file-code dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-file-code"></i></div><div class="dl-title">Base FFlag</div></div>
                 <div class="dl-meta">Standard, stable FFlags for general Roblox execution.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">Base</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/fflag.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/fflag.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Instant Twisted Dash</div><i class="fa-solid fa-wind dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-wind"></i></div><div class="dl-title">Instant Twisted Dash</div></div>
                 <div class="dl-meta">Optimizes twisted dash mechanics for instant execution.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">TSB</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Instant.Twisted.Dash.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Instant.Twisted.Dash.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Performance FFlags</div><i class="fa-solid fa-gauge-high dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-gauge-high"></i></div><div class="dl-title">Performance FFlags</div></div>
                 <div class="dl-meta">Maximizes FPS and reduces input lag drastically.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">FPS</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Perf.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/Perf.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Quality FFlag</div><i class="fa-solid fa-image dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-image"></i></div><div class="dl-title">Quality FFlag</div></div>
                 <div class="dl-meta">Extreme graphics, max shadows, and render distance.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">Graphics</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/quality.fflag.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/quality.fflag.json')">Download JSON</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">TSB FFlag</div><i class="fa-solid fa-trophy dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-trophy"></i></div><div class="dl-title">TSB FFlag</div></div>
                 <div class="dl-meta">Optimized specifically for The Strongest Battlegrounds.</div>
                 <div class="dl-tags"><span class="dl-tag">.json</span><span class="dl-tag">FFlag</span><span class="dl-tag">TSB</span></div>
-                <button class="dl-btn pur" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/The.Strongest.Of.Today.json')">📥 Download JSON</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/Leviafish/website/releases/download/Upload/The.Strongest.Of.Today.json')">Download JSON</button>
             </div>
 
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Roshade Presets</div><i class="fa-solid fa-palette dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-palette"></i></div><div class="dl-title">Roshade Presets</div></div>
                 <div class="dl-meta">Zealot's Presets - Low to Ultra/Glossy configurations.</div>
                 <div class="dl-tags"><span class="dl-tag">Shader</span><span class="dl-tag">GitHub</span></div>
-                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/bituq/Roshade/releases/latest')">🔗 Get Latest Release</button>
+                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/bituq/Roshade/releases/latest')">Get Latest Release</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Bloxshade Presets</div><i class="fa-solid fa-palette dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-palette"></i></div><div class="dl-title">Bloxshade Presets</div></div>
                 <div class="dl-meta">Extravi's Presets - Highly optimized for bootstrappers.</div>
                 <div class="dl-tags"><span class="dl-tag">Shader</span><span class="dl-tag">GitHub</span></div>
-                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/Extravi/Bloxshade/releases/latest')">🔗 Get Latest Release</button>
+                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/Extravi/Bloxshade/releases/latest')">Get Latest Release</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Shaders Guide</div><i class="fa-solid fa-book-open dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-book-open"></i></div><div class="dl-title">Shaders Guide</div></div>
                 <div class="dl-meta">Deep configuration presets (NVIDIA users recommended).</div>
                 <div class="dl-tags"><span class="dl-tag">Shader</span><span class="dl-tag">GitHub</span></div>
-                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/catb0x/Roblox-Shaders-Guide')">🔗 Open GitHub</button>
+                <button class="dl-btn blu" onclick="dlGo(this,'https://github.com/catb0x/Roblox-Shaders-Guide')">Open GitHub</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">PvP Guide</div><i class="fa-solid fa-khanda dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-khanda"></i></div><div class="dl-title">PvP Guide</div></div>
                 <div class="dl-meta">Full Minecraft PvP guide — combos, timing, strats.</div>
                 <div class="dl-tags"><span class="dl-tag">.txt</span><span class="dl-tag">Minecraft</span></div>
-                <button class="dl-btn blu" onclick="dlGo(this,'https://www.dropbox.com/scl/fi/betbjt1ig3ydf4umzt552/guide-pvp.text?rlkey=lvxemw59d8p3cpa9w224uy7k4&st=m2p8ujlc&dl=1')">📥 Download Guide</button>
+                <button class="dl-btn blu" onclick="dlGo(this,'https://www.dropbox.com/scl/fi/betbjt1ig3ydf4umzt552/guide-pvp.text?rlkey=lvxemw59d8p3cpa9w224uy7k4&st=m2p8ujlc&dl=1')">Download Guide</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Voidstrap</div><i class="fa-solid fa-rocket dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-rocket"></i></div><div class="dl-title">Voidstrap</div></div>
                 <div class="dl-meta">Recommended Roblox bootstrapper for FFlag injection.</div>
                 <div class="dl-tags"><span class="dl-tag">GitHub</span><span class="dl-tag">v1.1.0.5</span></div>
-                <button class="dl-btn" onclick="dlGo(this,'https://github.com/voidstrap/Voidstrap/releases/tag/v1.1.0.5')">📥 GitHub Release</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://github.com/voidstrap/Voidstrap/releases/tag/v1.1.0.5')">GitHub Release</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Solas Shader</div><i class="fa-solid fa-sun dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-sun"></i></div><div class="dl-title">Solas Shader</div></div>
                 <div class="dl-meta">Solas Shader for Minecraft via OptiFine. Best visuals.</div>
                 <div class="dl-tags"><span class="dl-tag">Shader</span><span class="dl-tag">OptiFine</span></div>
-                <button class="dl-btn" onclick="dlGo(this,'https://www.curseforge.com/minecraft/shaders/solas-shader')">🔗 CurseForge</button>
+                <button class="dl-btn" onclick="dlGo(this,'https://www.curseforge.com/minecraft/shaders/solas-shader')">CurseForge</button>
             </div>
             <div class="dl-card">
-                <div class="dl-hdr"><div class="dl-title">Auto Clicker</div><i class="fa-solid fa-computer-mouse dl-ico"></i></div>
+                <div class="dl-hdr"><div class="dl-ico-box"><i class="fa-solid fa-computer-mouse"></i></div><div class="dl-title">Auto Clicker</div></div>
                 <div class="dl-meta">Best auto clicker — blur009 project. Free web tool.</div>
                 <div class="dl-tags"><span class="dl-tag">Web</span><span class="dl-tag">Free</span></div>
-                <button class="dl-btn grn" onclick="dlGo(this,'https://blur009.vercel.app/projects/blur-autoclicker')">🔗 Open Tool</button>
+                <button class="dl-btn grn" onclick="dlGo(this,'https://blur009.vercel.app/projects/blur-autoclicker')">Open Tool</button>
             </div>
         </div>
     </div>
@@ -529,6 +572,22 @@
         <div class="nav-links" style="display:flex;flex-wrap:wrap;gap:8px;">
             <a class="nbtn sp" href="https://discord.gg/kSpXgcVhVU" target="_blank"><img src="TryHard_files/discord.png" class="nav-ico" alt=""> Discord</a>
             <a class="nbtn" href="#">🚀 Coming soon</a>
+        </div>
+    </div>
+
+    <!-- CUSTOM SCRIPT VIEWER MODAL -->
+    <div class="raw-modal" id="raw-viewer-modal">
+        <div class="raw-modal-content">
+            <div class="raw-modal-header">
+                <div class="raw-modal-title"><i class="fa-solid fa-code"></i> <span id="raw-modal-name">Script Viewer</span></div>
+                <button class="raw-modal-close" onclick="closeRawModal()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="raw-modal-body">
+                <pre><code id="raw-modal-code" class="raw-code-block">Loading script...</code></pre>
+            </div>
+            <div class="raw-modal-footer">
+                <button class="raw-modal-copy" onclick="copyText(document.getElementById('raw-modal-code').innerText, this, 'Copied Code!')">📋 Copy Code</button>
+            </div>
         </div>
     </div>
 
@@ -669,13 +728,49 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
 
         function selectItem(id, index) { currentSel[id] = DROPDOWNS[id].items[index]; renderList(id); }
         function ddCopy(id) { const item = currentSel[id]; if (!item || !item.script) return showToast('Please select a script that supports copy!'); copyToClipboard(item.script, 'Copied loadstring!'); }
-        function ddOpenLink(id) { const item = currentSel[id]; if (!item || !item.url || item.url === '#') return showToast('Raw link not available for this item!'); window.open(item.url, '_blank'); }
+        
+        // Intercept open link to open Custom Raw Viewer for scripts
+        async function ddOpenLink(id) {
+            const item = currentSel[id];
+            if (!item || !item.url || item.url === '#') return showToast('Raw link not available for this item!');
+            
+            if (id === 'scripts') {
+                // Open Custom Panel for scripts
+                document.getElementById('raw-modal-name').innerText = item.name;
+                document.getElementById('raw-modal-code').innerText = 'Fetching script...';
+                document.getElementById('raw-viewer-modal').classList.add('active');
+                
+                try {
+                    // Fetch directly first
+                    const response = await fetch(item.url);
+                    const text = await response.text();
+                    document.getElementById('raw-modal-code').innerText = text;
+                } catch (e) {
+                    try {
+                        // Fallback to CORS proxy if direct fetch fails
+                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(item.url)}`;
+                        const response = await fetch(proxyUrl);
+                        const text = await response.text();
+                        document.getElementById('raw-modal-code').innerText = text;
+                    } catch (err) {
+                        document.getElementById('raw-modal-code').innerText = 'Failed to fetch script due to CORS restrictions. Please copy the loadstring instead.';
+                    }
+                }
+            } else {
+                // Open new tab for music
+                window.open(item.url, '_blank');
+            }
+        }
+
+        function closeRawModal() { document.getElementById('raw-viewer-modal').classList.remove('active'); }
         function copyText(text, el, msg) { copyToClipboard(text, msg); }
         function copyToClipboard(text, msg) { navigator.clipboard.writeText(text).then(() => showToast(msg)).catch(() => showToast('Error copying!')); }
         function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
         function dlGo(btn, url) { window.open(url, '_blank'); }
 
-        const metaCache = {};
+        // Music Provider System with LocalStorage Caching
+        const localMetaCache = JSON.parse(localStorage.getItem('purium_meta_cache') || '{}');
+
         class MusicProvider {
             static detect(url) { return false; }
             static async getMetadata(url) { return { title: 'Unknown', artist: 'Unknown', thumbnail: '' }; }
@@ -692,8 +787,17 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
             static detect(url) { return url.includes('youtube.com') || url.includes('youtu.be'); }
             static getID(url) { const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; const match = url.match(regExp); return (match && match[2].length == 11) ? match[2] : null; }
             static async getMetadata(url) {
-                if (metaCache[url]) return metaCache[url];
-                try { const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`); const data = await res.json(); const meta = { title: data.title || 'YouTube Track', artist: data.author_name || 'YouTube', thumbnail: data.thumbnail_url || '' }; metaCache[url] = meta; return meta; } catch { return { title: 'YouTube Track', artist: 'Unknown', thumbnail: '' }; }
+                if (localMetaCache[url]) return localMetaCache[url];
+                const id = this.getID(url);
+                // Use high quality thumbnail for better image quality
+                const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
+                try { 
+                    const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`); 
+                    const data = await res.json(); 
+                    const meta = { title: data.title || 'YouTube Track', artist: data.author_name || 'YouTube', thumbnail: thumb }; 
+                    localMetaCache[url] = meta; localStorage.setItem('purium_meta_cache', JSON.stringify(localMetaCache));
+                    return meta; 
+                } catch { return { title: 'YouTube Track', artist: 'Unknown', thumbnail: thumb }; }
             }
             static loadPlayer(url) { const id = this.getID(url); if (id && ytPlayer && ytPlayer.loadVideoById) ytPlayer.loadVideoById(id); }
             static play() { if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo(); }
@@ -707,8 +811,8 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
         class SoundCloudProvider extends MusicProvider {
             static detect(url) { return url.includes('soundcloud.com'); }
             static async getMetadata(url) {
-                if (metaCache[url]) return metaCache[url];
-                try { const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`); const data = await res.json(); const meta = { title: data.title || 'SoundCloud Track', artist: data.author_name || 'SoundCloud', thumbnail: data.thumbnail_url || '' }; metaCache[url] = meta; return meta; } catch { return { title: 'SoundCloud Track', artist: 'Unknown', thumbnail: '' }; }
+                if (localMetaCache[url]) return localMetaCache[url];
+                try { const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`); const data = await res.json(); const meta = { title: data.title || 'SoundCloud Track', artist: data.author_name || 'SoundCloud', thumbnail: data.thumbnail_url || '' }; localMetaCache[url] = meta; localStorage.setItem('purium_meta_cache', JSON.stringify(localMetaCache)); return meta; } catch { return { title: 'SoundCloud Track', artist: 'Unknown', thumbnail: '' }; }
             }
             static loadPlayer(url) {
                 loadSoundCloudAPI();
@@ -725,8 +829,8 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
         class MP3Provider extends MusicProvider {
             static detect(url) { return url.endsWith('.mp3') || url.includes('stream') || url.includes('radio') || url.endsWith('.wav'); }
             static async getMetadata(url) {
-                if (metaCache[url]) return metaCache[url];
-                try { const urlObj = new URL(url); const path = urlObj.pathname.split('/').pop(); let name = decodeURIComponent(path.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ")); if (name.length < 3 || !/\s/.test(name)) name = "Direct MP3 Stream"; const meta = { title: name, artist: 'Purium Network', thumbnail: '' }; metaCache[url] = meta; return meta; } catch { return { title: 'Direct Stream', artist: 'Purium Network', thumbnail: '' }; }
+                if (localMetaCache[url]) return localMetaCache[url];
+                try { const urlObj = new URL(url); const path = urlObj.pathname.split('/').pop(); let name = decodeURIComponent(path.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ")); if (name.length < 3 || !/\s/.test(name)) name = "Direct MP3 Stream"; const meta = { title: name, artist: 'Purium Network', thumbnail: '' }; localMetaCache[url] = meta; localStorage.setItem('purium_meta_cache', JSON.stringify(localMetaCache)); return meta; } catch { return { title: 'Direct Stream', artist: 'Purium Network', thumbnail: '' }; }
             }
             static loadPlayer(url) { audio.src = url; audio.play().catch(e => console.log("Audio play blocked", e)); }
             static play() { audio.play(); }
@@ -749,7 +853,7 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
             { url: "https://cdn.pixabay.com/audio/2022/10/30/audio_347111d654.mp3" },
             { url: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3" }
         ];
-        let currentTrack = 0; let isPlaying = false; let shuffle = false; let repeat = 'none'; // 'none' or 'one'
+        let currentTrack = 0; let isPlaying = false; let shuffle = false; let repeat = 'none';
 
         const audio = document.getElementById('audio-player');
         const playBtn = document.getElementById('mp-play-btn');
@@ -808,9 +912,20 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
             currentTrack = index; const track = PLAYLIST[index]; if (!track) return;
             stopAllPlayers();
             const provider = ProviderRouter.getProvider(track.url);
+            
+            // Display cached metadata instantly while fetching if not cached
+            const cachedMeta = localMetaCache[track.url];
+            if (cachedMeta) {
+                trackName.innerText = cachedMeta.title; headerTrackName.innerText = cachedMeta.title; trackArtist.innerText = cachedMeta.artist;
+                if (cachedMeta.thumbnail) { trackThumb.src = cachedMeta.thumbnail; trackThumb.style.display = 'block'; } else { trackThumb.style.display = 'none'; }
+            } else {
+                trackName.innerText = 'Loading...'; headerTrackName.innerText = 'Loading...';
+            }
+
             const meta = await provider.getMetadata(track.url);
             trackName.innerText = meta.title; headerTrackName.innerText = meta.title; trackArtist.innerText = meta.artist;
             if (meta.thumbnail) { trackThumb.src = meta.thumbnail; trackThumb.style.display = 'block'; } else { trackThumb.style.display = 'none'; }
+            
             mpFill.style.width = '0%'; mpCurrent.innerText = '0:00'; mpDuration.innerText = '0:00';
             provider.loadPlayer(track.url);
             if (provider === MP3Provider) { isPlaying = true; playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; }
@@ -880,11 +995,11 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
                 const div = document.createElement('div');
                 div.className = 'mp-playlist-item' + (index === currentTrack ? ' active' : '');
                 div.onclick = () => loadTrack(index);
-                const meta = metaCache[track.url] || { title: 'Loading...', thumbnail: '' };
+                const meta = localMetaCache[track.url] || { title: 'Loading...', thumbnail: '' };
                 div.innerHTML = `${meta.thumbnail ? `<img src="${meta.thumbnail}" class="mp-pl-thumb">` : ''}<div class="mp-pl-info"><div class="mp-pl-title">${meta.title || track.url}</div></div><button class="mp-pl-remove" onclick="event.stopPropagation(); removeTrack(${index})"><i class="fa-solid fa-times"></i></button>`;
                 mpPlaylistEl.appendChild(div);
             });
-            PLAYLIST.forEach(async (track, index) => { if (!metaCache[track.url]) { const provider = ProviderRouter.getProvider(track.url); await provider.getMetadata(track.url); if (index < PLAYLIST.length) renderPlaylist(); } });
+            PLAYLIST.forEach(async (track, index) => { if (!localMetaCache[track.url]) { const provider = ProviderRouter.getProvider(track.url); await provider.getMetadata(track.url); if (index < PLAYLIST.length) renderPlaylist(); } });
         }
 
         function formatTime(sec) { if (isNaN(sec) || sec === Infinity) return '0:00'; const m = Math.floor(sec / 60); const s = Math.floor(sec % 60); return `${m}:${s < 10 ? '0' + s : s}`; }
