@@ -319,9 +319,11 @@
         .mp-min-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
         
         .mp-body { padding: 14px 16px; }
-        .mp-track-info { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
-        .mp-thumb { width: 50px; height: 50px; border-radius: 8px; background: rgba(0,0,0,0.3); object-fit: cover; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
+        .mp-track-info { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; position: relative; }
+        .mp-thumb-wrap { position: relative; width: 50px; height: 50px; flex-shrink: 0; }
+        .mp-thumb { width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.3); object-fit: cover; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; position: relative; z-index: 2; }
         .mp-thumb.dynamic { box-shadow: 0 0 12px rgba(125, 82, 222, 0.6); animation: glow 2s infinite ease-in-out; }
+        #mp-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
         .mp-meta { flex: 1; min-width: 0; }
         .mp-track-name { font-size: 14px; color: var(--text-main); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
         .mp-artist { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
@@ -336,13 +338,6 @@
         .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background: var(--pur); }
         input:checked + .slider:before { transform: translateX(18px); }
-
-        /* Smart Lyrics */
-        .mp-lyrics { height: 60px; overflow: hidden; margin-bottom: 12px; position: relative; mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent); }
-        .mp-lyrics-track { transition: transform 0.5s ease; }
-        .mp-lyrics-line { font-size: 12px; color: var(--text-muted); text-align: center; padding: 4px 0; transition: color 0.3s; }
-        .mp-lyrics-line.active { color: var(--pur); font-weight: 700; }
-        .mp-lyrics.paused .mp-lyrics-track { animation-play-state: paused; }
 
         .mp-progress { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; margin-bottom: 8px; overflow: visible; position: relative; }
         .mp-fill { height: 100%; background: var(--pur); border-radius: 4px; width: 0%; position: relative; }
@@ -626,8 +621,8 @@
     <div class="custom-modal" id="custom-modal">
         <div class="custom-modal-content">
             <div class="custom-modal-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="custom-modal-title">Enable Dynamic Thumbnail?</div>
-            <div class="custom-modal-text">Enabling this feature may significantly increase memory usage. Do you still want to enable it?</div>
+            <div class="custom-modal-title">Enable Dynamic Visualizer?</div>
+            <div class="custom-modal-text">Enabling this feature may slightly increase CPU usage to render real-time audio tracking. Do you still want to enable it?</div>
             <label class="custom-modal-toggle">
                 <input type="checkbox" id="remember-choice">
                 Remember my choice (don't ask again)
@@ -651,7 +646,10 @@
         </div>
         <div class="mp-body" id="mp-body">
             <div class="mp-track-info">
-                <img src="" alt="thumb" class="mp-thumb" id="mp-thumb" style="display:none;">
+                <div class="mp-thumb-wrap">
+                    <canvas id="mp-canvas" width="50" height="50"></canvas>
+                    <img src="" alt="thumb" class="mp-thumb" id="mp-thumb" style="display:none;">
+                </div>
                 <div class="mp-meta">
                     <div class="mp-track-name" id="mp-track-name">Initializing...</div>
                     <div class="mp-artist" id="mp-artist">Purium Player</div>
@@ -660,18 +658,11 @@
             
             <!-- Settings Row -->
             <div class="mp-settings">
-                <div class="mp-setting-label"><i class="fa-solid fa-image"></i> Dynamic Thumbnail</div>
+                <div class="mp-setting-label"><i class="fa-solid fa-wave-square"></i> Dynamic Visualizer</div>
                 <label class="switch">
                     <input type="checkbox" id="dynamic-toggle" onchange="toggleDynamicVisuals()">
                     <span class="slider"></span>
                 </label>
-            </div>
-
-            <!-- Smart Lyrics -->
-            <div class="mp-lyrics" id="mp-lyrics">
-                <div class="mp-lyrics-track" id="mp-lyrics-track">
-                    <div class="mp-lyrics-line">No lyrics available for this track.</div>
-                </div>
             </div>
 
             <div id="yt-player"></div>
@@ -871,7 +862,6 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         function cleanCache() {
             const keys = Object.keys(localMetaCache);
             if (keys.length > MAX_CACHE) {
-                // Remove oldest items (simple approach)
                 for(let i = 0; i < keys.length - MAX_CACHE; i++) {
                     delete localMetaCache[keys[i]];
                 }
@@ -883,7 +873,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         class MusicProvider {
             static detect(url) { return false; }
-            static async getMetadata(url) { return { title: 'Unknown', artist: 'Unknown', thumbnail: '', lyrics: [] }; }
+            static async getMetadata(url) { return { title: 'Unknown', artist: 'Unknown', thumbnail: '' }; }
             static loadPlayer(url) {}
             static play() {}
             static pause() {}
@@ -901,7 +891,6 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                 const id = this.getID(url);
                 const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
                 
-                // Abort previous fetch if rapid switching
                 if (activeFetchController) activeFetchController.abort();
                 activeFetchController = new AbortController();
                 const signal = activeFetchController.signal;
@@ -909,10 +898,10 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                 try { 
                     const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`, { signal }); 
                     const data = await res.json(); 
-                    const meta = { title: data.title || 'YouTube Track', artist: data.author_name || 'YouTube', thumbnail: thumb, lyrics: [] }; 
+                    const meta = { title: data.title || 'YouTube Track', artist: data.author_name || 'YouTube', thumbnail: thumb }; 
                     localMetaCache[url] = meta; cleanCache(); localStorage.setItem('purium_meta_cache', JSON.stringify(localMetaCache));
                     return meta; 
-                } catch { return { title: 'YouTube Track', artist: 'Unknown', thumbnail: thumb, lyrics: [] }; }
+                } catch { return { title: 'YouTube Track', artist: 'Unknown', thumbnail: thumb }; }
             }
             static loadPlayer(url) { const id = this.getID(url); if (id && ytPlayer && ytPlayer.loadVideoById) ytPlayer.loadVideoById(id); }
             static play() { if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo(); }
@@ -930,7 +919,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                 if (activeFetchController) activeFetchController.abort();
                 activeFetchController = new AbortController();
                 const signal = activeFetchController.signal;
-                try { const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`, { signal }); const data = await res.json(); const meta = { title: data.title || 'SoundCloud Track', artist: data.author_name || 'SoundCloud', thumbnail: data.thumbnail_url || '', lyrics: [] }; localMetaCache[url] = meta; cleanCache(); localStorage.setItem('purium_meta_cache', JSON.stringify(localMetaCache)); return meta; } catch { return { title: 'SoundCloud Track', artist: 'Unknown', thumbnail: '', lyrics: [] }; }
+                try { const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`, { signal }); const data = await res.json(); const meta = { title: data.title || 'SoundCloud Track', artist: data.author_name || 'SoundCloud', thumbnail: data.thumbnail_url || '' }; localMetaCache[url] = meta; cleanCache(); localStorage.setItem('purium_meta_cache', JSON.stringify(localMetaCache)); return meta; } catch { return { title: 'SoundCloud Track', artist: 'Unknown', thumbnail: '' }; }
             }
             static loadPlayer(url) {
                 loadSoundCloudAPI();
@@ -948,7 +937,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             static detect(url) { return url.endsWith('.mp3') || url.includes('stream') || url.includes('radio') || url.endsWith('.wav'); }
             static async getMetadata(url) {
                 if (localMetaCache[url]) return localMetaCache[url];
-                try { const urlObj = new URL(url); const path = urlObj.pathname.split('/').pop(); let name = decodeURIComponent(path.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ")); if (name.length < 3 || !/\s/.test(name)) name = "Direct MP3 Stream"; const meta = { title: name, artist: 'Purium Network', thumbnail: '', lyrics: [] }; localMetaCache[url] = meta; cleanCache(); localStorage.setItem('purium_meta_cache', JSON.stringify(localMetaCache)); return meta; } catch { return { title: 'Direct Stream', artist: 'Purium Network', thumbnail: '', lyrics: [] }; }
+                try { const urlObj = new URL(url); const path = urlObj.pathname.split('/').pop(); let name = decodeURIComponent(path.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ")); if (name.length < 3 || !/\s/.test(name)) name = "Direct MP3 Stream"; const meta = { title: name, artist: 'Purium Network', thumbnail: '' }; localMetaCache[url] = meta; cleanCache(); localStorage.setItem('purium_meta_cache', JSON.stringify(localMetaCache)); return meta; } catch { return { title: 'Direct Stream', artist: 'Purium Network', thumbnail: '' }; }
             }
             static loadPlayer(url) { audio.src = url; audio.play().catch(e => console.log("Audio play blocked", e)); }
             static play() { audio.play(); }
@@ -986,11 +975,25 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         const mpDuration = document.getElementById('mp-duration');
         const mpPlaylistEl = document.getElementById('mp-playlist');
         const mpProgress = document.getElementById('mp-progress');
-        const mpLyrics = document.getElementById('mp-lyrics');
-        const mpLyricsTrack = document.getElementById('mp-lyrics-track');
         const dynamicToggle = document.getElementById('dynamic-toggle');
+        const canvas = document.getElementById('mp-canvas');
+        const ctx = canvas.getContext('2d');
 
         let ytPlayer = null; let ytReady = false; let scWidget = null; let scApiLoaded = false;
+        let audioCtx, analyser, source, dataArray;
+
+        function setupAudioContext() {
+            if (audioCtx) return;
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                source = audioCtx.createMediaElementSource(audio);
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 32; // Very low for memory saving
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+            } catch(e) { console.log("Audio context blocked", e); }
+        }
 
         function loadSoundCloudAPI() {
             if (scApiLoaded) return;
@@ -1024,28 +1027,54 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                         mpFill.style.width = percent + '%';
                         mpCurrent.innerText = formatTime(cur);
                         mpDuration.innerText = formatTime(dur);
-                        updateLyrics(cur, dur);
                     }
+                }
+                if (dynamicVisuals && isPlaying) {
+                    drawVisualizer();
                 }
                 timeUpdateLoop = requestAnimationFrame(update);
             }
             update();
         }
 
-        // Smart Lyrics Scroller
-        function updateLyrics(cur, dur) {
-            const lines = mpLyricsTrack.children;
-            if (lines.length === 0) return;
-            const progress = cur / dur;
-            const activeIndex = Math.floor(progress * lines.length);
+        // Real-time Audio Visualizer
+        function drawVisualizer() {
+            const width = canvas.width;
+            const height = canvas.height;
+            ctx.clearRect(0, 0, width, height);
             
-            for(let i = 0; i < lines.length; i++) {
-                lines[i].classList.remove('active');
+            let data = dataArray;
+            let useRealData = false;
+            if (analyser && audio.src && !audio.paused) {
+                analyser.getByteFrequencyData(data);
+                useRealData = true;
+            } else {
+                // Synthetic data for YouTube/SoundCloud (can't access their audio stream directly)
+                data = new Uint8Array(16);
+                for(let i=0; i<16; i++) {
+                    data[i] = Math.floor(Math.sin(Date.now() * 0.005 + i) * 30 + 80);
+                }
             }
-            if (lines[activeIndex]) {
-                lines[activeIndex].classList.add('active');
-                const offset = activeIndex * 24 - 30; // 24px line height, center at 30px
-                mpLyricsTrack.style.transform = `translateY(${-offset}px)`;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = 8;
+            const bars = data.length;
+            
+            for(let i = 0; i < bars; i++) {
+                const barHeight = (data[i] / 255) * (height / 2);
+                const angle = (i / bars) * Math.PI * 2;
+                const x1 = centerX + Math.cos(angle) * radius;
+                const y1 = centerY + Math.sin(angle) * radius;
+                const x2 = centerX + Math.cos(angle) * (radius + barHeight);
+                const y2 = centerY + Math.sin(angle) * (radius + barHeight);
+                
+                ctx.strokeStyle = useRealData ? `rgba(125, 82, 222, ${data[i]/255})` : `rgba(125, 82, 222, 0.5)`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
             }
         }
 
@@ -1062,48 +1091,26 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             stopAllPlayers();
             const provider = ProviderRouter.getProvider(track.url);
             
-            // Instant UI update from cache
             const cachedMeta = localMetaCache[track.url];
             if (cachedMeta) {
                 trackName.innerText = cachedMeta.title; headerTrackName.innerText = cachedMeta.title; trackArtist.innerText = cachedMeta.artist;
                 if (cachedMeta.thumbnail) { trackThumb.src = cachedMeta.thumbnail; trackThumb.style.display = 'block'; } else { trackThumb.style.display = 'none'; }
-                renderLyrics(cachedMeta.lyrics || []);
             } else {
                 trackName.innerText = 'Loading...'; headerTrackName.innerText = 'Loading...';
-                renderLyrics([]);
             }
 
             const meta = await provider.getMetadata(track.url);
             trackName.innerText = meta.title; headerTrackName.innerText = meta.title; trackArtist.innerText = meta.artist;
             if (meta.thumbnail) { trackThumb.src = meta.thumbnail; trackThumb.style.display = 'block'; } else { trackThumb.style.display = 'none'; }
-            renderLyrics(meta.lyrics || []);
             
             mpFill.style.width = '0%'; mpCurrent.innerText = '0:00'; mpDuration.innerText = '0:00';
             provider.loadPlayer(track.url);
             
             if (provider === MP3Provider) { 
                 isPlaying = true; playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; 
-                mpLyrics.classList.remove('paused');
             }
             renderPlaylist(); startTimeLoop();
             applyDynamicVisuals();
-        }
-
-        function renderLyrics(lyrics) {
-            mpLyricsTrack.innerHTML = '';
-            if (!lyrics || lyrics.length === 0) {
-                const div = document.createElement('div');
-                div.className = 'mp-lyrics-line';
-                div.innerText = 'No lyrics available for this track.';
-                mpLyricsTrack.appendChild(div);
-                return;
-            }
-            lyrics.forEach(line => {
-                const div = document.createElement('div');
-                div.className = 'mp-lyrics-line';
-                div.innerText = line;
-                mpLyricsTrack.appendChild(div);
-            });
         }
 
         function togglePlay() {
@@ -1111,10 +1118,8 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             const provider = ProviderRouter.getProvider(track.url);
             if (isPlaying) { 
                 provider.pause(); playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; isPlaying = false; 
-                mpLyrics.classList.add('paused'); // Pause lyrics animation
             } else { 
                 provider.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; isPlaying = true; 
-                mpLyrics.classList.remove('paused'); // Resume lyrics animation
             }
         }
 
@@ -1139,7 +1144,6 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             btn.setAttribute('data-tooltip', repeat === 'one' ? 'Looping Current' : 'Loop Current');
         }
 
-        // ── ULTRA-STABLE SLIDER DRAG LOGIC ──
         let isDraggingProgress = false;
         function seekTrack(event) {
             const rect = mpProgress.getBoundingClientRect();
@@ -1196,7 +1200,6 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         function formatTime(sec) { if (isNaN(sec) || sec === Infinity) return '0:00'; const m = Math.floor(sec / 60); const s = Math.floor(sec % 60); return `${m}:${s < 10 ? '0' + s : s}`; }
 
-        // Dynamic Visuals Toggle & Custom Notification
         function toggleDynamicVisuals() {
             if (dynamicToggle.checked) {
                 if (rememberDynamic) {
@@ -1204,7 +1207,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                     localStorage.setItem('purium_dynamic_visuals', 'true');
                     applyDynamicVisuals();
                 } else {
-                    dynamicToggle.checked = false; // Uncheck until confirmed
+                    dynamicToggle.checked = false;
                     document.getElementById('custom-modal').classList.add('active');
                 }
             } else {
@@ -1235,12 +1238,15 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         function applyDynamicVisuals() {
             if (dynamicVisuals) {
                 trackThumb.classList.add('dynamic');
+                canvas.style.display = 'block';
+                setupAudioContext();
+                drawVisualizer();
             } else {
                 trackThumb.classList.remove('dynamic');
+                canvas.style.display = 'none';
             }
         }
 
-        // Dragging Logic
         const player = document.getElementById('music-player');
         const header = document.getElementById('mp-header');
         const grip = document.getElementById('mp-grip');
@@ -1280,12 +1286,10 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                     'onStateChange': (event) => {
                         if (event.data == YT.PlayerState.PLAYING) { 
                             isPlaying = true; playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; 
-                            mpLyrics.classList.remove('paused');
                             renderPlaylist();
                         }
                         else if (event.data == YT.PlayerState.PAUSED) { 
                             isPlaying = false; playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; 
-                            mpLyrics.classList.add('paused');
                             renderPlaylist();
                         }
                         else if (event.data == YT.PlayerState.ENDED) {
