@@ -207,42 +207,42 @@
         .dd-open-btn { border: 1px solid var(--blu); color: #90c8f8; }
         .dd-open-btn:hover { background: var(--blu-dim); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.2); }
 
-        /* ── REWORKED DOWNLOAD CARDS DESIGN ── */
-        .dl-section { padding: 0 24px 40px; max-width: 1200px; margin: 0 auto; }
-        .dl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        /* ── ENTIRELY REWORKED DOWNLOAD CARDS DESIGN ── */
+        .dl-section { padding: 0 24px 60px; max-width: 1200px; margin: 0 auto; }
+        .dl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
         .dl-card { 
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); 
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; 
-            transition: all .4s cubic-bezier(0.4, 0, 0.2, 1); 
-            backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 28px; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
             display: flex; flex-direction: column; position: relative; overflow: hidden; 
         }
         .dl-card::before { 
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; 
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; 
             background: linear-gradient(90deg, var(--pur), #64b2f5); 
-            transform: scaleX(0); transform-origin: left; transition: transform .4s ease; 
+            opacity: 0; transition: opacity 0.4s ease; 
         }
         .dl-card:hover { 
             transform: translateY(-8px); 
-            background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-            border-color: rgba(125, 82, 222, 0.4); 
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03));
+            border-color: rgba(125, 82, 222, 0.5); 
             box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
         }
-        .dl-card:hover::before { transform: scaleX(1); }
+        .dl-card:hover::before { opacity: 1; }
         
         .dl-hdr { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
         .dl-ico-box { 
-            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; 
-            border-radius: 12px; background: rgba(125, 82, 222, 0.15); border: 1px solid rgba(125, 82, 222, 0.3); 
-            font-size: 20px; color: #c4a8ff; box-shadow: 0 4px 12px rgba(125, 82, 222, 0.1); 
+            width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; 
+            border-radius: 14px; background: rgba(125, 82, 222, 0.15); border: 1px solid rgba(125, 82, 222, 0.3); 
+            font-size: 24px; color: #c4a8ff; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); 
         }
-        .dl-title { font-size: 17px; font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .dl-meta { font-size: 13px; color: #ccc; margin-bottom: 20px; line-height: 1.6; flex-grow: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .dl-title { font-size: 18px; font-weight: 800; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .dl-meta { font-size: 13px; color: #ccc; margin-bottom: 24px; line-height: 1.6; flex-grow: 1; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
         .dl-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-        .dl-tag { font-size: 10px; padding: 5px 12px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #eee; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dl-tag { font-size: 10px; padding: 6px 12px; border-radius: 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #eee; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .dl-btn { 
-            width: 100%; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; 
+            width: 100%; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; 
             display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .3s ease; 
             text-decoration: none; font-family: inherit; background: transparent; border: 1px solid var(--pur); 
             color: #c4a8ff; text-transform: uppercase; letter-spacing: 1px; 
@@ -636,63 +636,111 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // CMD Scripts Added Directly To All Scripts Panel
-        const CMD1_SCRIPT = `netsh winsock reset
+        // Updated CMD & FFlag Scripts
+        const CMD_NO_RESTART = `ipconfig /flushdns
+ipconfig /release
+ipconfig /renew
+arp -d *
+nbtstat -R
+nbtstat -RR
+powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
+powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61
+powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR CPMINCORES 100
+powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN 100
+powercfg /setactive SCHEME_CURRENT
+reg add "HKCU\\Control Panel\\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f
+reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold1 /t REG_SZ /d 0 /f
+reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold2 /t REG_SZ /d 0 /f
+reg add "HKCU\\Control Panel\\Keyboard" /v KeyboardDelay /t REG_SZ /d 0 /f
+reg add "HKCU\\Control Panel\\Keyboard" /v KeyboardSpeed /t REG_SZ /d 31 /f
+reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG_DWORD /d 0 /f
+reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 2 /f`;
+
+        const CMD_NEED_RESTART = `netsh winsock reset
 netsh int ip reset
 ipconfig /flushdns
+netsh int tcp set global rss=enabled
+netsh int tcp set global rsc=disabled
+netsh int tcp set global autotuninglevel=normal
+netsh int tcp set heuristics disabled
+for /f "tokens=*" %i in ('reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces" 2^>nul') do (reg add "%i" /v TcpAckFrequency /t REG_DWORD /d 1 /f >nul 2>&1 & reg add "%i" /v TCPNoDelay /t REG_DWORD /d 1 /f >nul 2>&1)
+sc stop wuauserv & sc config wuauserv start= disabled
+sc stop UsoSvc & sc config UsoSvc start= disabled
+sc stop DoSvc & sc config DoSvc start= disabled
+reg add "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsStore\\WindowsUpdate" /v AutoDownload /t REG_DWORD /d 2 /f >nul 2>&1
+netsh advfirewall firewall add rule name="Block MS Telemetry" dir=out action=block remoteip="13.107.4.50,13.107.4.52,23.99.10.11,65.52.108.234,65.52.138.233,204.79.197.200" enable=yes >nul 2>&1
 sc stop "SysMain" & sc config "SysMain" start= disabled
 sc stop "DiagTrack" & sc config "DiagTrack" start= disabled
-sc stop DoSvc & sc config DoSvc start= disabled
 sc stop WSearch & sc config WSearch start= disabled
-reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Feeds" /v EnableFeeds /t REG_DWORD /d 0 /f
-reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f
-reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search" /v BingSearchEnabled /t REG_DWORD /d 0 /f
-reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search" /v CortanaConsent /t REG_DWORD /d 0 /f
+reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Feeds" /v EnableFeeds /t REG_DWORD /d 0 /f >nul 2>&1
+reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f >nul 2>&1
+reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search" /v BingSearchEnabled /t REG_DWORD /d 0 /f >nul 2>&1
+reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f >nul 2>&1
+reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v HwSchMode /t REG_DWORD /d 2 /f >nul 2>&1
+reg add "HKCU\\System\\GameConfigStore" /v GameDVR_Enabled /t REG_DWORD /d 0 /f >nul 2>&1
+reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR" /v AllowGameDVR /t REG_DWORD /d 0 /f >nul 2>&1
+reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile" /v NetworkThrottlingIndex /t REG_DWORD /d 0xffffffff /f >nul 2>&1
+reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile" /v SystemResponsiveness /t REG_DWORD /d 0 /f >nul 2>&1
+reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "GPU Priority" /t REG_DWORD /d 8 /f >nul 2>&1
+reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "Priority" /t REG_DWORD /d 6 /f >nul 2>&1
+reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "Scheduling Category" /t REG_SZ /d "High" /f >nul 2>&1
+reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "Clock Rate" /t REG_DWORD /d 10000 /f >nul 2>&1
+powercfg /hibernate off
+reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling" /v PowerThrottlingOff /t REG_DWORD /d 1 /f >nul 2>&1`;
+
+        const CMD_LOW_END = `sc stop "SysMain" & sc config "SysMain" start= disabled
+sc stop WSearch & sc config WSearch start= disabled
 reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f
-reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v HwSchMode /t REG_DWORD /d 2 /f
+reg add "HKCU\\Software\\Microsoft\\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 1 /f
+reg add "HKCU\\Software\\Microsoft\\GameBar" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f
+del /q /f /s "%TEMP%\\*"
+del /q /f /s "C:\\Windows\\Temp\\*"`;
+
+        const CMD_MED_HIGH = `reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v HwSchMode /t REG_DWORD /d 2 /f
 reg add "HKCU\\System\\GameConfigStore" /v GameDVR_Enabled /t REG_DWORD /d 0 /f
 reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR" /v AllowGameDVR /t REG_DWORD /d 0 /f
 reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile" /v NetworkThrottlingIndex /t REG_DWORD /d 0xffffffff /f
 reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile" /v SystemResponsiveness /t REG_DWORD /d 0 /f
 reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "GPU Priority" /t REG_DWORD /d 8 /f
 reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "Priority" /t REG_DWORD /d 6 /f
-reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "Scheduling Category" /t REG_SZ /d "High" /f
-powercfg /hibernate off
-reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling" /v PowerThrottlingOff /t REG_DWORD /d 1 /f`;
+reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "Scheduling Category" /t REG_SZ /d "High" /f`;
 
-        const CMD2_SCRIPT = `powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
-powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61
-powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR CPMINCORES 100
-powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN 100
-powercfg /setactive SCHEME_CURRENT
-for /f "tokens=*" %i in ('reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces" 2^>nul') do (reg add "%i" /v TcpAckFrequency /t REG_DWORD /d 1 /f & reg add "%i" /v TCPNoDelay /t REG_DWORD /d 1 /f)
-reg add "HKCU\\Control Panel\\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f
-reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold1 /t REG_SZ /d 0 /f
-reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold2 /t REG_SZ /d 0 /f
-reg add "HKCU\\Control Panel\\Keyboard" /v KeyboardDelay /t REG_SZ /d 0 /f
-reg add "HKCU\\Control Panel\\Keyboard" /v KeyboardSpeed /t REG_SZ /d 31 /f
-reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG_DWORD /d 0 /f`;
-
-        const JSON_FFLAGS = `{
+        const FFLAGS_LOW_END = `{
     "DFIntTaskSchedulerTargetFps": 9999,
     "FFlagDebugGraphicsPreferD3D11": "true",
+    "FFlagDisablePlayerBackgroundLoading": "true",
+    "FFlagDisableTelemetry": "true",
+    "FFlagEnableInputLatencyMitigation": "true",
+    "FFlagEnableInputPassthrough": "true",
+    "FFlagHandleAltEnterFullscreenManually": "true",
     "FFlagDisablePostProcessing": "true",
     "FIntDebugForceMSAASamples": 1,
     "FIntRenderShadowIntensity": 0,
     "FIntRenderLocalLightUpdatesPerFrame": 0,
+    "FFlagDebugTaskSchedulerLimitConcurrentGroups": "true"
+}`;
+
+        const FFLAGS_MED_HIGH = `{
+    "DFIntTaskSchedulerTargetFps": 9999,
+    "FFlagDebugGraphicsPreferD3D11": "true",
+    "FFlagDisablePostProcessing": "true",
+    "FIntDebugForceMSAASamples": 4,
     "FFlagDisablePlayerBackgroundLoading": "true",
     "FFlagDisableTelemetry": "true",
-    "FFlagHandleAltEnterFullscreenManually": "true",
     "FFlagEnableInputLatencyMitigation": "true",
     "FFlagEnableInputPassthrough": "true",
+    "FFlagHandleAltEnterFullscreenManually": "true",
     "FFlagDebugTaskSchedulerLimitConcurrentGroups": "true"
 }`;
 
         const DROPDOWNS = {
             scripts: { items: [
-                { icon: '<i class="fa-solid fa-terminal"></i>', name: 'Network Optimize CMD 1', desc: 'Need Restart PC', badge: 'CMD', badgeClass: 'b-beta', url: '#', script: CMD1_SCRIPT },
-                { icon: '<i class="fa-solid fa-terminal"></i>', name: 'Network Optimize CMD 2', desc: 'NO Restart needed', badge: 'CMD', badgeClass: 'b-beta', url: '#', script: CMD2_SCRIPT },
-                { icon: '<i class="fa-solid fa-file-code"></i>', name: 'Roblox FFlags (JSON)', desc: 'Updated Optimization Config', badge: 'JSON', badgeClass: 'b-link', url: '#', script: JSON_FFLAGS },
+                { icon: '<i class="fa-solid fa-terminal"></i>', name: 'CMD: No Restart', desc: 'Network & Input optimization', badge: 'CMD', badgeClass: 'b-beta', url: '#', script: CMD_NO_RESTART },
+                { icon: '<i class="fa-solid fa-power-off"></i>', name: 'CMD: Need Restart', desc: 'Deep network reset & gaming', badge: 'CMD', badgeClass: 'b-beta', url: '#', script: CMD_NEED_RESTART },
+                { icon: '<i class="fa-solid fa-microchip"></i>', name: 'CMD: Low End PC', desc: 'Disable services & clear temp', badge: 'CMD', badgeClass: 'b-beta', url: '#', script: CMD_LOW_END },
+                { icon: '<i class="fa-solid fa-gamepad"></i>', name: 'CMD: Medium/High PC', desc: 'GPU priority & Game DVR', badge: 'CMD', badgeClass: 'b-beta', url: '#', script: CMD_MED_HIGH },
+                { icon: '<i class="fa-solid fa-file-code"></i>', name: 'FFlags: Low End', desc: 'Max FPS, no shadows', badge: 'JSON', badgeClass: 'b-link', url: '#', script: FFLAGS_LOW_END },
+                { icon: '<i class="fa-solid fa-file-code"></i>', name: 'FFlags: Medium/High', desc: 'Balanced FPS & Graphics', badge: 'JSON', badgeClass: 'b-link', url: '#', script: FFLAGS_MED_HIGH },
                 { icon: '<i class="fa-solid fa-triangle-exclamation"></i>', name: 'Silent Assassin (Outdated)', desc: 'Old script — may not work', badge: 'Outdated', badgeClass: 'b-outdated', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/slient.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/slient.lua"))()' },
                 { icon: '<i class="fa-solid fa-triangle-exclamation"></i>', name: 'Chain (Outdated)', desc: 'Old chain script', badge: 'Outdated', badgeClass: 'b-outdated', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Chain.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/Chain.lua"))()' },
                 { icon: '<i class="fa-solid fa-triangle-exclamation"></i>', name: 'SBSD (Outdated)', desc: 'Wind script — outdated', badge: 'Outdated', badgeClass: 'b-outdated', url: 'https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/SBSD-Wind.lua', script: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/PuriumHuB/Purium/refs/heads/main/SBSD-Wind.lua"))()' },
@@ -732,22 +780,30 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
         // Intercept open link to open Custom Raw Viewer for scripts
         async function ddOpenLink(id) {
             const item = currentSel[id];
-            if (!item || !item.url || item.url === '#') return showToast('Raw link not available for this item!');
+            if (!item || !item.url || item.url === '#') {
+                // For local CMD/FFlag scripts, just open the modal directly
+                if (item && item.script) {
+                    document.getElementById('raw-modal-name').innerText = item.name;
+                    document.getElementById('raw-modal-code').innerText = item.script;
+                    document.getElementById('raw-viewer-modal').classList.add('active');
+                } else {
+                    showToast('Raw link not available for this item!');
+                }
+                return;
+            }
             
             if (id === 'scripts') {
-                // Open Custom Panel for scripts
+                // Open Custom Panel for remote scripts
                 document.getElementById('raw-modal-name').innerText = item.name;
                 document.getElementById('raw-modal-code').innerText = 'Fetching script...';
                 document.getElementById('raw-viewer-modal').classList.add('active');
                 
                 try {
-                    // Fetch directly first
                     const response = await fetch(item.url);
                     const text = await response.text();
                     document.getElementById('raw-modal-code').innerText = text;
                 } catch (e) {
                     try {
-                        // Fallback to CORS proxy if direct fetch fails
                         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(item.url)}`;
                         const response = await fetch(proxyUrl);
                         const text = await response.text();
@@ -789,7 +845,6 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
             static async getMetadata(url) {
                 if (localMetaCache[url]) return localMetaCache[url];
                 const id = this.getID(url);
-                // Use high quality thumbnail for better image quality
                 const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
                 try { 
                     const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`); 
@@ -913,7 +968,6 @@ reg add "HKCU\\Control Panel\\Accessibility\\Keyboard" /v FilterKeysFlags /t REG
             stopAllPlayers();
             const provider = ProviderRouter.getProvider(track.url);
             
-            // Display cached metadata instantly while fetching if not cached
             const cachedMeta = localMetaCache[track.url];
             if (cachedMeta) {
                 trackName.innerText = cachedMeta.title; headerTrackName.innerText = cachedMeta.title; trackArtist.innerText = cachedMeta.artist;
