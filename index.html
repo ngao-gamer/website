@@ -75,12 +75,12 @@
         @keyframes glow { 0% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); } 50% { box-shadow: 0 0 15px rgba(125, 82, 222, 0.5); } 100% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); } }
         @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 14px; } }
 
-        /* ── NAV ── */
+        /* ── NAV ── (Increased Blur 10%) ── */
         .nav {
             background: var(--nav); border-bottom: 1px solid var(--gb); padding: 12px 24px;
             display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
             position: sticky; top: 0; z-index: 100;
-            backdrop-filter: blur(6px) saturate(120%); -webkit-backdrop-filter: blur(6px) saturate(120%);
+            backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
             animation: fadeUp 0.5s ease-out;
         }
         .nav-brand { font-size: 18px; font-weight: 700; letter-spacing: -.5px; display: flex; align-items: center; gap: 10px; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
@@ -118,7 +118,7 @@
             display: inline-block; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
             color: var(--text-main); border: 1px solid var(--pur-border); background: var(--pur-dim);
             border-radius: 20px; padding: 6px 16px; margin-bottom: 20px;
-            backdrop-filter: blur(4px); box-shadow: 0 0 15px rgba(125, 82, 222, 0.3);
+            backdrop-filter: blur(14px); box-shadow: 0 0 15px rgba(125, 82, 222, 0.3);
         }
         .hero h1 { 
             font-size: clamp(2.2rem, 7vw, 4rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 16px; 
@@ -145,12 +145,12 @@
         .hbtn.grn { border-color: var(--grn); color: #7fdfaa; }
         .hbtn.grn:hover { background: var(--grn-dim); box-shadow: 0 6px 16px rgba(46, 200, 113, 0.2); }
 
-        /* ── FEATURE CARDS ── */
+        /* ── FEATURE CARDS ── (Increased Blur 10%) ── */
         .cards-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; padding: 0 24px 32px; max-width: 1000px; margin: 0 auto; }
         .fcard {
             background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 24px;
             position: relative; overflow: hidden; transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(4px) saturate(120%); -webkit-backdrop-filter: blur(4px) saturate(120%);
+            backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
             animation: fadeUp 0.8s ease-out backwards;
         }
         .fcard:nth-child(1) { animation-delay: 0.1s; } .fcard:nth-child(2) { animation-delay: 0.2s; }
@@ -170,11 +170,11 @@
         .sdiv { border: none; border-top: 1px solid var(--gb); margin: 10px 24px 24px; }
         .slabel { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-main); margin-bottom: 16px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
-        /* ── PREMIUM SELECTOR PANELS ── */
+        /* ── PREMIUM SELECTOR PANELS ── (Increased Blur 10%) ── */
         .selector-wrap { max-width: 1000px; margin: 0 auto 40px; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; animation: fadeUp 0.8s ease-out; }
         .selector-card { 
             background: var(--card); border: 1px solid var(--gb); border-radius: 20px; padding: 24px; 
-            backdrop-filter: blur(6px) saturate(120%); -webkit-backdrop-filter: blur(6px) saturate(120%); 
+            backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); 
             transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; 
             display: flex; flex-direction: column; min-height: 420px; 
         }
@@ -233,13 +233,13 @@
         .dd-open-btn { border: 1px solid var(--blu); color: #90c8f8; }
         .dd-open-btn:hover { background: var(--blu); color: var(--text-main); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.3); }
 
-        /* ── REWORKED DOWNLOAD CARDS DESIGN ── */
+        /* ── REWORKED DOWNLOAD CARDS DESIGN ── (Increased Blur 10%) ── */
         .dl-section { padding: 0 24px 60px; max-width: 1200px; margin: 0 auto; }
         .dl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
         .dl-card { 
             background: var(--card); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 28px; 
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            backdrop-filter: blur(6px) saturate(120%); -webkit-backdrop-filter: blur(6px) saturate(120%);
+            backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
             display: flex; flex-direction: column; position: relative; overflow: hidden; 
         }
         .dl-card::before { 
@@ -278,33 +278,11 @@
         .dl-btn.grn { border-color: var(--grn); color: #7fdfaa; }
         .dl-btn.grn:hover { background: var(--grn); color: var(--text-main); box-shadow: 0 8px 20px rgba(46, 200, 113, 0.3); }
 
-        /* ── CUSTOM NOTIFICATION MODAL ── */
-        .custom-modal {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
-            z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px;
-        }
-        .custom-modal.active { display: flex; }
-        .custom-modal-content {
-            background: rgba(20, 20, 30, 0.95); border: 1px solid var(--gb); border-radius: 20px;
-            width: 100%; max-width: 420px; padding: 32px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        .custom-modal-icon { width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: var(--amb-dim); border: 1px solid var(--amb-border); display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--amb); }
-        .custom-modal-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
-        .custom-modal-text { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
-        .custom-modal-toggle { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 24px; font-size: 12px; color: var(--text-main); cursor: pointer; }
-        .custom-modal-toggle input { width: 16px; height: 16px; accent-color: var(--pur); cursor: pointer; }
-        .custom-modal-actions { display: flex; gap: 12px; }
-        .custom-modal-btn { flex: 1; padding: 14px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid var(--gb); background: transparent; color: var(--text-main); transition: all 0.2s; }
-        .custom-modal-btn:hover { background: var(--glass); }
-        .custom-modal-btn.primary { background: var(--pur); border-color: var(--pur); color: var(--text-main); }
-        .custom-modal-btn.primary:hover { background: #8b62e8; }
-
-        /* ── GLASS MUSIC PLAYER PANEL ── */
+        /* ── GLASS MUSIC PLAYER PANEL ── (Increased Blur 10%) ── */
         .music-player {
             position: fixed; top: 20px; right: 20px; width: 340px;
             background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px;
-            backdrop-filter: blur(8px) saturate(150%); -webkit-backdrop-filter: blur(8px) saturate(150%);
+            backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
             z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
             overflow: hidden; transition: all 0.3s ease;
         }
@@ -320,28 +298,34 @@
         
         .mp-body { padding: 14px 16px; }
         .mp-track-info { display: flex; gap: 12px; margin-bottom: 12px; align-items: center; }
-        .mp-thumb-wrap { position: relative; width: 50px; height: 50px; flex-shrink: 0; }
-        .mp-thumb { width: 50px; height: 50px; border-radius: 8px; background: rgba(0,0,0,0.3); object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
         
-        /* YouTube Video Wrapper */
-        #yt-video-wrap { display: none; width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--gb); background: #000; }
-        #yt-video-wrap.active { display: block; }
-        #yt-player { width: 100%; height: 100%; }
+        /* Custom Thumbnail Video Wrapper */
+        .mp-thumb-wrap { 
+            position: relative; width: 50px; height: 50px; flex-shrink: 0; 
+            border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .mp-thumb { 
+            width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; 
+            background: rgba(0,0,0,0.3);
+        }
+        /* YouTube iFrame replaces div#yt-player, so we style the iframe directly */
+        #yt-player { 
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%); 
+            width: 89px; height: 50px; z-index: 2; display: none; pointer-events: none;
+        }
+        #yt-player.active { display: block; }
 
         .mp-meta { flex: 1; min-width: 0; }
         .mp-track-name { font-size: 14px; color: var(--text-main); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
         .mp-artist { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
-        /* Settings Toggle */
-        .mp-settings { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .mp-setting-label { font-size: 11px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .mp-setting-label i { color: var(--pur); }
-        .switch { position: relative; display: inline-block; width: 36px; height: 18px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.1); transition: .4s; border-radius: 18px; }
-        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background: var(--pur); }
-        input:checked + .slider:before { transform: translateX(18px); }
+        /* Volume Changer */
+        .mp-volume-wrap { display: flex; align-items: center; gap: 10px; padding: 0 4px; margin-bottom: 12px; }
+        .mp-volume-icon { color: var(--text-muted); font-size: 12px; width: 16px; text-align: center; cursor: pointer; transition: color 0.2s; }
+        .mp-volume-icon:hover { color: var(--text-main); }
+        .mp-volume-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; cursor: pointer; }
+        .mp-volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--pur); cursor: pointer; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+        .mp-volume-slider::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--pur); cursor: pointer; border: none; }
 
         .mp-progress { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; margin-bottom: 8px; overflow: visible; position: relative; }
         .mp-fill { height: 100%; background: var(--pur); border-radius: 4px; width: 0%; position: relative; }
@@ -381,10 +365,10 @@
         .mp-add-btn { background: var(--pur); border: none; color: var(--text-main); border-radius: 6px; padding: 0 12px; cursor: pointer; font-size: 12px; font-weight: 700; transition: background 0.2s; }
         .mp-add-btn:hover { background: #8b62e8; }
 
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(26, 26, 46, 0.9); border: 1px solid var(--pur-border); color: #c4a8ff; font-size: 14px; padding: 14px 24px; border-radius: 12px; opacity: 0; transition: all .4s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; z-index: 9999; box-shadow: 0 8px 20px rgba(0,0,0,0.5); backdrop-filter: blur(12px); font-weight: 600; }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(26, 26, 46, 0.9); border: 1px solid var(--pur-border); color: #c4a8ff; font-size: 14px; padding: 14px 24px; border-radius: 12px; opacity: 0; transition: all .4s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; z-index: 9999; box-shadow: 0 8px 20px rgba(0,0,0,0.5); backdrop-filter: blur(22px); font-weight: 600; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        .footer { background: var(--nav); border-top: 1px solid var(--gb); padding: 24px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 20px; backdrop-filter: blur(8px) saturate(150%); }
+        .footer { background: var(--nav); border-top: 1px solid var(--gb); padding: 24px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 20px; backdrop-filter: blur(16px) saturate(140%); }
         .footer-brand { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; color: var(--text-main); }
         .footer-brand span { color: var(--pur); }
         .footer-copy { font-size: 11px; color: #eee; margin-top: 4px; }
@@ -621,23 +605,6 @@
         </div>
     </div>
 
-    <!-- CUSTOM NOTIFICATION MODAL -->
-    <div class="custom-modal" id="custom-modal">
-        <div class="custom-modal-content">
-            <div class="custom-modal-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="custom-modal-title">Enable Video Mode?</div>
-            <div class="custom-modal-text">Enabling this feature will display the full music video, which may significantly increase memory and network usage. Do you still want to enable it?</div>
-            <label class="custom-modal-toggle">
-                <input type="checkbox" id="remember-choice">
-                Remember my choice (don't ask again)
-            </label>
-            <div class="custom-modal-actions">
-                <button class="custom-modal-btn" id="modal-cancel">Cancel</button>
-                <button class="custom-modal-btn primary" id="modal-confirm">Enable</button>
-            </div>
-        </div>
-    </div>
-
     <!-- MUSIC PLAYER -->
     <div class="music-player" id="music-player">
         <div class="mp-header" id="mp-header">
@@ -649,26 +616,26 @@
             </div>
         </div>
         <div class="mp-body" id="mp-body">
-            <div id="yt-video-wrap">
-                <div id="yt-player"></div>
-            </div>
             <div class="mp-track-info">
                 <div class="mp-thumb-wrap">
-                    <img src="" alt="thumb" class="mp-thumb" id="mp-thumb" style="display:none;">
+                    <img src="" alt="thumb" class="mp-thumb" id="mp-thumb">
+                    <div id="yt-player"></div> <!-- Custom YT thumbnail video -->
                 </div>
                 <div class="mp-meta">
                     <div class="mp-track-name" id="mp-track-name">Initializing...</div>
                     <div class="mp-artist" id="mp-artist">Purium Player</div>
                 </div>
+                <!-- Settings Toggle (Video Mode) -->
+                <label class="switch" title="Toggle Video Thumbnail">
+                    <input type="checkbox" id="dynamic-toggle" onchange="toggleDynamicVisuals()">
+                    <span class="slider" style="width: 36px; height: 18px; border-radius: 18px;"></span>
+                </label>
             </div>
             
-            <!-- Settings Row -->
-            <div class="mp-settings">
-                <div class="mp-setting-label"><i class="fa-solid fa-video"></i> Video Mode</div>
-                <label class="switch">
-                    <input type="checkbox" id="dynamic-toggle" onchange="toggleDynamicVisuals()">
-                    <span class="slider"></span>
-                </label>
+            <!-- Volume Control -->
+            <div class="mp-volume-wrap">
+                <i class="fa-solid fa-volume-high mp-volume-icon" id="mp-vol-icon" onclick="toggleMute()"></i>
+                <input type="range" class="mp-volume-slider" id="mp-vol-slider" min="0" max="100" value="80" oninput="setVolume(this.value)">
             </div>
 
             <iframe id="sc-player" allow="autoplay" style="display:none;"></iframe>
@@ -859,7 +826,6 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         function dlGo(btn, url) { window.open(url, '_blank'); }
 
         // ── OPTIMIZED MUSIC PROVIDER & CACHE SYSTEM ──
-        // LRU Cache Logic (Limit 30 items to prevent memory bloat)
         const MAX_CACHE = 30;
         let localMetaCache = {};
         try { localMetaCache = JSON.parse(localStorage.getItem('purium_meta_cache') || '{}'); } catch(e) { localMetaCache = {}; }
@@ -873,7 +839,6 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             }
         }
 
-        // AbortController for fetches to prevent network spikes
         let activeFetchController = null;
 
         class MusicProvider {
@@ -895,11 +860,9 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                 if (localMetaCache[url]) return localMetaCache[url];
                 const id = this.getID(url);
                 const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
-                
                 if (activeFetchController) activeFetchController.abort();
                 activeFetchController = new AbortController();
                 const signal = activeFetchController.signal;
-
                 try { 
                     const res = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`, { signal }); 
                     const data = await res.json(); 
@@ -967,7 +930,8 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         ];
         let currentTrack = 0; let isPlaying = false; let shuffle = false; let repeat = 'none';
         let dynamicVisuals = localStorage.getItem('purium_dynamic_visuals') === 'true';
-        let rememberDynamic = localStorage.getItem('purium_remember_dynamic') === 'true';
+        let currentVolume = 80;
+        let isMuted = false;
 
         const audio = document.getElementById('audio-player');
         const playBtn = document.getElementById('mp-play-btn');
@@ -981,7 +945,8 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         const mpPlaylistEl = document.getElementById('mp-playlist');
         const mpProgress = document.getElementById('mp-progress');
         const dynamicToggle = document.getElementById('dynamic-toggle');
-        const ytVideoWrap = document.getElementById('yt-video-wrap');
+        const volSlider = document.getElementById('mp-vol-slider');
+        const volIcon = document.getElementById('mp-vol-icon');
 
         let ytPlayer = null; let ytReady = false; let scWidget = null; let scApiLoaded = false;
 
@@ -992,13 +957,12 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             script.onload = () => {
                 scApiLoaded = true;
                 scWidget = SC.Widget(document.getElementById('sc-player'));
-                scWidget.bind(SC.Widget.Events.READY, () => console.log('SC Ready'));
+                scWidget.bind(SC.Widget.Events.READY, () => { console.log('SC Ready'); scWidget.setVolume(currentVolume); });
                 scWidget.bind(SC.Widget.Events.FINISH, () => nextTrack());
             };
             document.body.appendChild(script);
         }
 
-        // ── OPTIMIZED TIME LOOP (requestAnimationFrame) ──
         let timeUpdateLoop = null;
         function startTimeLoop() {
             cancelAnimationFrame(timeUpdateLoop);
@@ -1056,7 +1020,8 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                 isPlaying = true; playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; 
             }
             renderPlaylist(); startTimeLoop();
-            applyDynamicVisuals(); // Update video visibility based on new track
+            applyDynamicVisuals();
+            setVolume(currentVolume); // Ensure volume is applied to new track
         }
 
         function togglePlay() {
@@ -1146,63 +1111,48 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         function formatTime(sec) { if (isNaN(sec) || sec === Infinity) return '0:00'; const m = Math.floor(sec / 60); const s = Math.floor(sec % 60); return `${m}:${s < 10 ? '0' + s : s}`; }
 
-        // Dynamic Visuals Toggle & Custom Notification
-        function toggleDynamicVisuals() {
-            if (dynamicToggle.checked) {
-                if (rememberDynamic) {
-                    dynamicVisuals = true;
-                    localStorage.setItem('purium_dynamic_visuals', 'true');
-                    applyDynamicVisuals();
-                } else {
-                    dynamicToggle.checked = false;
-                    document.getElementById('custom-modal').classList.add('active');
-                }
+        // Volume Logic
+        function setVolume(val) {
+            currentVolume = val;
+            isMuted = (val == 0);
+            audio.volume = val / 100;
+            if (ytPlayer && ytPlayer.setVolume) ytPlayer.setVolume(val);
+            if (scWidget) scWidget.setVolume(val);
+            updateVolIcon();
+        }
+
+        function toggleMute() {
+            if (isMuted) {
+                setVolume(currentVolume > 0 ? currentVolume : 80);
             } else {
-                dynamicVisuals = false;
-                localStorage.setItem('purium_dynamic_visuals', 'false');
-                applyDynamicVisuals();
+                setVolume(0);
             }
         }
 
-        document.getElementById('modal-confirm').onclick = () => {
-            dynamicVisuals = true;
-            dynamicToggle.checked = true;
-            localStorage.setItem('purium_dynamic_visuals', 'true');
-            applyDynamicVisuals();
-            
-            if (document.getElementById('remember-choice').checked) {
-                localStorage.setItem('purium_remember_dynamic', 'true');
-                rememberDynamic = true;
-            }
-            document.getElementById('custom-modal').classList.remove('active');
-        };
+        function updateVolIcon() {
+            if (isMuted || currentVolume == 0) volIcon.className = 'fa-solid fa-volume-xmark mp-volume-icon';
+            else if (currentVolume < 50) volIcon.className = 'fa-solid fa-volume-low mp-volume-icon';
+            else volIcon.className = 'fa-solid fa-volume-high mp-volume-icon';
+        }
 
-        document.getElementById('modal-cancel').onclick = () => {
-            dynamicToggle.checked = false;
-            document.getElementById('custom-modal').classList.remove('active');
-        };
+        // Dynamic Visuals Toggle (Instant switch, no modal)
+        function toggleDynamicVisuals() {
+            dynamicVisuals = dynamicToggle.checked;
+            localStorage.setItem('purium_dynamic_visuals', dynamicVisuals);
+            applyDynamicVisuals();
+        }
 
         function applyDynamicVisuals() {
             const track = PLAYLIST[currentTrack];
             const isYT = track ? YouTubeProvider.detect(track.url) : false;
+            const ytEl = document.getElementById('yt-player');
             
             if (dynamicVisuals && isYT) {
-                ytVideoWrap.classList.add('active');
-                trackThumb.style.display = 'none'; // Hide thumbnail when video is playing
+                ytEl.classList.add('active');
+                trackThumb.style.opacity = '0'; // Hide image to show video
             } else {
-                ytVideoWrap.classList.remove('active');
-                // Restore thumbnail if exists
-                const meta = localMetaCache[track?.url];
-                if (meta && meta.thumbnail) trackThumb.style.display = 'block';
-            }
-            
-            // Resize YT player to ensure it fits properly
-            if (ytPlayer && ytPlayer.setSize) {
-                try {
-                    const width = ytVideoWrap.offsetWidth;
-                    const height = width * 9 / 16;
-                    ytPlayer.setSize(width, height);
-                } catch(e) {}
+                ytEl.classList.remove('active');
+                trackThumb.style.opacity = '1'; // Show image
             }
         }
 
@@ -1239,11 +1189,22 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
-                width: '100%', height: '100%',
+                width: '89', height: '50',
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'iv_load_policy': 3,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'playsinline': 1
+                },
                 events: {
                     'onReady': () => { 
                         ytReady = true; 
-                        applyDynamicVisuals(); // Apply correct sizing on load
+                        ytPlayer.setVolume(currentVolume);
+                        applyDynamicVisuals();
                     },
                     'onStateChange': (event) => {
                         if (event.data == YT.PlayerState.PLAYING) { 
@@ -1270,6 +1231,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             renderList('scripts'); renderList('music'); renderPlaylist(); loadTrack(0);
             playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; isPlaying = false;
             if (dynamicVisuals) dynamicToggle.checked = true;
+            setVolume(80); // Initial volume
             applyDynamicVisuals();
         };
     </script>
