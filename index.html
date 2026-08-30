@@ -46,7 +46,7 @@
 
         html, body {
             min-height: 100vh;
-            font-family: 'Inter', sans-serif; /* Single Font Applied Everywhere */
+            font-family: 'Inter', sans-serif;
             color: var(--text-main);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
@@ -73,9 +73,9 @@
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes glow { 0% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); } 50% { box-shadow: 0 0 15px rgba(125, 82, 222, 0.5); } 100% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); } }
-        @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 14px; } }
+        @keyframes eq { 0%, 100% { height: 6px; } 50% { height: 20px; } }
 
-        /* ── NAV ── (Increased Blur 10%) ── */
+        /* ── NAV ── */
         .nav {
             background: var(--nav); border-bottom: 1px solid var(--gb); padding: 12px 24px;
             display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
@@ -145,7 +145,7 @@
         .hbtn.grn { border-color: var(--grn); color: #7fdfaa; }
         .hbtn.grn:hover { background: var(--grn-dim); box-shadow: 0 6px 16px rgba(46, 200, 113, 0.2); }
 
-        /* ── FEATURE CARDS ── (Increased Blur 10%) ── */
+        /* ── FEATURE CARDS ── */
         .cards-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; padding: 0 24px 32px; max-width: 1000px; margin: 0 auto; }
         .fcard {
             background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 24px;
@@ -170,7 +170,7 @@
         .sdiv { border: none; border-top: 1px solid var(--gb); margin: 10px 24px 24px; }
         .slabel { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-main); margin-bottom: 16px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
-        /* ── PREMIUM SELECTOR PANELS ── (Increased Blur 10%) ── */
+        /* ── PREMIUM SELECTOR PANELS ── */
         .selector-wrap { max-width: 1000px; margin: 0 auto 40px; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; animation: fadeUp 0.8s ease-out; }
         .selector-card { 
             background: var(--card); border: 1px solid var(--gb); border-radius: 20px; padding: 24px; 
@@ -233,7 +233,7 @@
         .dd-open-btn { border: 1px solid var(--blu); color: #90c8f8; }
         .dd-open-btn:hover { background: var(--blu); color: var(--text-main); box-shadow: 0 4px 12px rgba(30, 124, 205, 0.3); }
 
-        /* ── REWORKED DOWNLOAD CARDS DESIGN ── (Increased Blur 10%) ── */
+        /* ── REWORKED DOWNLOAD CARDS DESIGN ── */
         .dl-section { padding: 0 24px 60px; max-width: 1200px; margin: 0 auto; }
         .dl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
         .dl-card { 
@@ -278,12 +278,13 @@
         .dl-btn.grn { border-color: var(--grn); color: #7fdfaa; }
         .dl-btn.grn:hover { background: var(--grn); color: var(--text-main); box-shadow: 0 8px 20px rgba(46, 200, 113, 0.3); }
 
-        /* ── GLASS MUSIC PLAYER PANEL ── (Increased Blur 10% & Bigger Size 1.25x) ── */
+        /* ── GLASS MUSIC PLAYER PANEL ── (Size 1.15x, Ultra Light Overlay) ── */
         .music-player {
-            position: fixed; top: 20px; right: 20px; width: 425px; /* 1.25x Bigger */
-            background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px;
+            position: fixed; top: 20px; right: 20px; width: 390px; /* 1.15x Bigger */
+            background: rgba(255, 255, 255, 0.03); /* Decreased dark overlay significantly */
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
             backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
-            z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
             overflow: hidden; transition: all 0.3s ease;
         }
         .music-player.dragging { box-shadow: 0 16px 40px rgba(0,0,0,0.8); cursor: grabbing; transition: none; }
@@ -299,9 +300,9 @@
         .mp-body { padding: 16px 20px; }
         .mp-track-info { display: flex; gap: 14px; margin-bottom: 14px; align-items: center; }
         
-        /* Custom Thumbnail Video Wrapper (1.25x Bigger) */
+        /* Custom Thumbnail & Display Wrapper (1.15x Bigger) */
         .mp-thumb-wrap { 
-            position: relative; width: 64px; height: 64px; flex-shrink: 0; 
+            position: relative; width: 60px; height: 60px; flex-shrink: 0; 
             border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
             background: #000; display: flex; align-items: center; justify-content: center;
         }
@@ -309,17 +310,31 @@
             width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; 
             transition: opacity 0.2s;
         }
-        /* Hide YouTube UI completely by cropping the iframe inside the 64x64 box */
-        #yt-player { 
-            position: absolute; top: -15px; left: -110px; 
-            width: 300px; height: 180px; z-index: 2; display: none; pointer-events: none;
-            border: none; background: #000;
+        
+        /* Custom CSS Visualizer Display (No YouTube Video) */
+        #mp-display {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; 
+            display: none; align-items: flex-end; justify-content: center; gap: 4px; 
+            background: rgba(0, 0, 0, 0.4); padding-bottom: 8px;
         }
-        #yt-player.active { display: block; }
+        #mp-display.active { display: flex; }
+        #mp-display span {
+            width: 4px; height: 6px; background: var(--pur); border-radius: 2px;
+            animation: eq 0.8s infinite ease-in-out;
+        }
+        #mp-display span:nth-child(2) { animation-delay: 0.2s; }
+        #mp-display span:nth-child(3) { animation-delay: 0.4s; }
+        #mp-display span:nth-child(4) { animation-delay: 0.6s; }
+
+        /* YouTube iframe is hidden completely off-screen to prevent any UI display, only used for audio */
+        #yt-player { 
+            position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; 
+            border: none; background: #000; pointer-events: none; opacity: 0;
+        }
 
         .mp-meta { flex: 1; min-width: 0; }
-        .mp-track-name { font-size: 15px; color: var(--text-main); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-        .mp-artist { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .mp-track-name { font-size: 14px; color: var(--text-main); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .mp-artist { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
         /* Volume Changer */
         .mp-volume-wrap { display: flex; align-items: center; gap: 10px; padding: 0 4px; margin-bottom: 14px; }
@@ -329,16 +344,16 @@
         .mp-volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--pur); cursor: pointer; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
         .mp-volume-slider::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--pur); cursor: pointer; border: none; }
 
-        .mp-progress { height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; cursor: pointer; margin-bottom: 8px; overflow: visible; position: relative; }
-        .mp-fill { height: 100%; background: var(--pur); border-radius: 5px; width: 0%; position: relative; }
-        .mp-fill::after { content: ''; position: absolute; right: 0; top: 50%; transform: translate(50%, -50%); width: 16px; height: 16px; border-radius: 50%; background: var(--text-main); box-shadow: 0 0 10px var(--pur); pointer-events: none; }
-        .mp-time { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 14px; }
+        .mp-progress { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; margin-bottom: 8px; overflow: visible; position: relative; }
+        .mp-fill { height: 100%; background: var(--pur); border-radius: 4px; width: 0%; position: relative; }
+        .mp-fill::after { content: ''; position: absolute; right: 0; top: 50%; transform: translate(50%, -50%); width: 14px; height: 14px; border-radius: 50%; background: var(--text-main); box-shadow: 0 0 10px var(--pur); pointer-events: none; }
+        .mp-time { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 14px; }
         
         .mp-controls { display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 14px; position: relative; }
         .mp-btn { background: transparent; border: none; color: var(--text-main); font-size: 16px; cursor: pointer; transition: all 0.2s; padding: 5px; position: relative; }
         .mp-btn:hover { color: #c4a8ff; transform: scale(1.1); }
         .mp-btn.active { color: var(--pur); text-shadow: 0 0 8px var(--pur); }
-        .mp-btn.play { background: var(--pur); color: var(--text-main); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .mp-btn.play { background: var(--pur); color: var(--text-main); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .mp-btn.play:hover { background: #8b62e8; transform: scale(1.05); }
 
         .mp-btn::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-5px); background: #1a1a2e; color: var(--text-main); padding: 4px 8px; border-radius: 4px; font-size: 10px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10; border: 1px solid var(--gb); }
@@ -350,7 +365,7 @@
         .mp-playlist-item { display: flex; align-items: center; gap: 10px; padding: 8px 6px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
         .mp-playlist-item:hover { background: rgba(255,255,255,0.05); }
         .mp-playlist-item.active { background: var(--pur-dim); border-left: 2px solid var(--pur); padding-left: 8px; }
-        .mp-pl-thumb { width: 36px; height: 36px; border-radius: 4px; }
+        .mp-pl-thumb { width: 34px; height: 34px; border-radius: 4px; }
         .mp-pl-info { flex: 1; min-width: 0; font-size: 13px; }
         .mp-pl-title { color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .mp-pl-playing { display: flex; gap: 2px; align-items: flex-end; height: 14px; }
@@ -621,14 +636,16 @@
             <div class="mp-track-info">
                 <div class="mp-thumb-wrap">
                     <img src="" alt="thumb" class="mp-thumb" id="mp-thumb">
-                    <div id="yt-player"></div> <!-- Custom YT thumbnail video -->
+                    <div id="mp-display">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
                 </div>
                 <div class="mp-meta">
                     <div class="mp-track-name" id="mp-track-name">Initializing...</div>
                     <div class="mp-artist" id="mp-artist">Purium Player</div>
                 </div>
-                <!-- Settings Toggle (Video Mode) -->
-                <label class="switch" title="Toggle Video Mode">
+                <!-- Settings Toggle (Display Mode) -->
+                <label class="switch" title="Toggle Dynamic Display">
                     <input type="checkbox" id="dynamic-toggle" onchange="toggleDynamicVisuals()">
                     <span class="slider" style="width: 36px; height: 18px; border-radius: 18px;"></span>
                 </label>
@@ -640,6 +657,8 @@
                 <input type="range" class="mp-volume-slider" id="mp-vol-slider" min="0" max="100" value="80" oninput="setVolume(this.value)">
             </div>
 
+            <!-- Hidden YouTube iframe (Audio Only) -->
+            <div id="yt-player"></div>
             <iframe id="sc-player" allow="autoplay" style="display:none;"></iframe>
             <audio id="audio-player" preload="metadata"></audio>
             
@@ -765,7 +784,6 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
     "FFlagDebugTaskSchedulerLimitConcurrentGroups": "true"
 }`;
 
-        // Clean Loadstrings (No comments)
         const DROPDOWNS = {
             scripts: { items: [
                 { icon: '<i class="fa-solid fa-terminal"></i>', name: 'CMD: No Restart', desc: 'Network & Input optimization', badge: 'CMD', badgeClass: 'b-beta', url: '#', script: CMD_NO_RESTART },
@@ -1023,7 +1041,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             }
             renderPlaylist(); startTimeLoop();
             applyDynamicVisuals();
-            setVolume(currentVolume); // Ensure volume is applied to new track
+            setVolume(currentVolume); 
         }
 
         function togglePlay() {
@@ -1034,7 +1052,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             } else { 
                 provider.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; isPlaying = true; 
             }
-            applyDynamicVisuals(); // Update video visibility on play/pause
+            applyDynamicVisuals(); 
         }
 
         function nextTrack() {
@@ -1062,12 +1080,12 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         let isDraggingProgress = false;
         function seekTrackStart(e) {
             isDraggingProgress = true;
-            document.body.style.userSelect = 'none'; // Prevent text selection
+            document.body.style.userSelect = 'none'; 
             seekTrack(e);
         }
         function seekTrackEnd() {
             isDraggingProgress = false;
-            document.body.style.userSelect = ''; // Restore selection
+            document.body.style.userSelect = ''; 
         }
         function seekTrack(event) {
             const rect = mpProgress.getBoundingClientRect();
@@ -1119,7 +1137,6 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
                 `;
                 mpPlaylistEl.appendChild(div);
             });
-            // OPTIMIZATION: Removed the mass-fetch loop. Metadata is fetched on demand when the track is played.
         }
 
         function formatTime(sec) { if (isNaN(sec) || sec === Infinity) return '0:00'; const m = Math.floor(sec / 60); const s = Math.floor(sec % 60); return `${m}:${s < 10 ? '0' + s : s}`; }
@@ -1157,17 +1174,15 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         }
 
         function applyDynamicVisuals() {
-            const track = PLAYLIST[currentTrack];
-            const isYT = track ? YouTubeProvider.detect(track.url) : false;
-            const ytEl = document.getElementById('yt-player');
+            const display = document.getElementById('mp-display');
             
-            // Video mode shows ONLY when playing, if paused it hides to show the static thumbnail (Fixes pause icon bug)
-            if (dynamicVisuals && isYT && isPlaying) {
-                ytEl.style.display = 'block';
-                trackThumb.style.opacity = '0'; // Hide image to show video
+            // Video mode shows ONLY when playing, if paused it hides to show the static thumbnail
+            if (dynamicVisuals && isPlaying) {
+                display.classList.add('active');
+                trackThumb.style.opacity = '0.5'; // Dim thumbnail slightly behind equalizer
             } else {
-                ytEl.style.display = 'none';
-                trackThumb.style.opacity = '1'; // Show image
+                display.classList.remove('active');
+                trackThumb.style.opacity = '1'; // Show full thumbnail
             }
         }
 
@@ -1204,7 +1219,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
-                width: '300', height: '180',
+                width: '1', height: '1', // 1x1 pixel hidden off-screen
                 playerVars: {
                     'autoplay': 1,
                     'controls': 0,
@@ -1248,7 +1263,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
             renderList('scripts'); renderList('music'); renderPlaylist(); loadTrack(0);
             playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; isPlaying = false;
             if (dynamicVisuals) dynamicToggle.checked = true;
-            setVolume(80); // Initial volume
+            setVolume(80); 
             applyDynamicVisuals();
         };
     </script>
