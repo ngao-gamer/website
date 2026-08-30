@@ -73,7 +73,7 @@
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes glow { 0% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); } 50% { box-shadow: 0 0 15px rgba(125, 82, 222, 0.5); } 100% { box-shadow: 0 0 5px rgba(125, 82, 222, 0.2); } }
-        @keyframes eq { 0%, 100% { height: 6px; } 50% { height: 20px; } }
+        @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 14px; } }
 
         /* ── NAV ── */
         .nav {
@@ -300,7 +300,7 @@
         .mp-body { padding: 16px 20px; }
         .mp-track-info { display: flex; gap: 14px; margin-bottom: 14px; align-items: center; }
         
-        /* Custom Thumbnail & Display Wrapper (1.15x Bigger) */
+        /* Custom Thumbnail Video Wrapper (1.15x Bigger) */
         .mp-thumb-wrap { 
             position: relative; width: 60px; height: 60px; flex-shrink: 0; 
             border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
@@ -311,26 +311,13 @@
             transition: opacity 0.2s;
         }
         
-        /* Custom CSS Visualizer Display (No YouTube Video) */
-        #mp-display {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; 
-            display: none; align-items: flex-end; justify-content: center; gap: 4px; 
-            background: rgba(0, 0, 0, 0.4); padding-bottom: 8px;
-        }
-        #mp-display.active { display: flex; }
-        #mp-display span {
-            width: 4px; height: 6px; background: var(--pur); border-radius: 2px;
-            animation: eq 0.8s infinite ease-in-out;
-        }
-        #mp-display span:nth-child(2) { animation-delay: 0.2s; }
-        #mp-display span:nth-child(3) { animation-delay: 0.4s; }
-        #mp-display span:nth-child(4) { animation-delay: 0.6s; }
-
-        /* YouTube iframe is hidden completely off-screen to prevent any UI display, only used for audio */
+        /* Cropped Real-Time YouTube Video Display */
         #yt-player { 
-            position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; 
-            border: none; background: #000; pointer-events: none; opacity: 0;
+            position: absolute; top: -15px; left: -50px; 
+            width: 160px; height: 90px; z-index: 2; display: none; pointer-events: none;
+            border: none; background: #000;
         }
+        #yt-player.active { display: block; }
 
         .mp-meta { flex: 1; min-width: 0; }
         .mp-track-name { font-size: 14px; color: var(--text-main); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
@@ -636,16 +623,14 @@
             <div class="mp-track-info">
                 <div class="mp-thumb-wrap">
                     <img src="" alt="thumb" class="mp-thumb" id="mp-thumb">
-                    <div id="mp-display">
-                        <span></span><span></span><span></span><span></span>
-                    </div>
+                    <div id="yt-player"></div> <!-- Custom Cropped YT Video -->
                 </div>
                 <div class="mp-meta">
                     <div class="mp-track-name" id="mp-track-name">Initializing...</div>
                     <div class="mp-artist" id="mp-artist">Purium Player</div>
                 </div>
                 <!-- Settings Toggle (Display Mode) -->
-                <label class="switch" title="Toggle Dynamic Display">
+                <label class="switch" title="Toggle Video Mode">
                     <input type="checkbox" id="dynamic-toggle" onchange="toggleDynamicVisuals()">
                     <span class="slider" style="width: 36px; height: 18px; border-radius: 18px;"></span>
                 </label>
@@ -657,8 +642,6 @@
                 <input type="range" class="mp-volume-slider" id="mp-vol-slider" min="0" max="100" value="80" oninput="setVolume(this.value)">
             </div>
 
-            <!-- Hidden YouTube iframe (Audio Only) -->
-            <div id="yt-player"></div>
             <iframe id="sc-player" allow="autoplay" style="display:none;"></iframe>
             <audio id="audio-player" preload="metadata"></audio>
             
@@ -1174,15 +1157,17 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
         }
 
         function applyDynamicVisuals() {
-            const display = document.getElementById('mp-display');
+            const track = PLAYLIST[currentTrack];
+            const isYT = track ? YouTubeProvider.detect(track.url) : false;
+            const ytEl = document.getElementById('yt-player');
             
-            // Video mode shows ONLY when playing, if paused it hides to show the static thumbnail
-            if (dynamicVisuals && isPlaying) {
-                display.classList.add('active');
-                trackThumb.style.opacity = '0.5'; // Dim thumbnail slightly behind equalizer
+            // Video mode shows ONLY when playing, if paused it hides to show the static thumbnail (Fixes pause icon bug)
+            if (dynamicVisuals && isYT && isPlaying) {
+                ytEl.classList.add('active');
+                trackThumb.style.opacity = '0'; // Hide image to show video
             } else {
-                display.classList.remove('active');
-                trackThumb.style.opacity = '1'; // Show full thumbnail
+                ytEl.classList.remove('active');
+                trackThumb.style.opacity = '1'; // Show image
             }
         }
 
@@ -1219,7 +1204,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\Syst
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
-                width: '1', height: '1', // 1x1 pixel hidden off-screen
+                width: '160', height: '90',
                 playerVars: {
                     'autoplay': 1,
                     'controls': 0,
